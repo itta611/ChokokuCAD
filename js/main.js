@@ -50,7 +50,6 @@ let camera;
 let currentRotation;
 let renderer;
 let model;
-let modelFrame;
 let controls;
 let scene = new THREE.Scene();
 let status = 'start';
@@ -302,7 +301,6 @@ createBtn.addEventListener('click', function() {
       faceColors.push("#ffffff");
     }
     scene.add(model);
-    setFrame();
     recordModel();
   
     mask.classList.add('hidden');
@@ -438,7 +436,6 @@ document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', 
     removeMesh(model);
     model.visible = false;
     model = newModel.clone();
-    setFrame();
     model.material.vertexColors = THREE.FaceColors;
     scene.add(model);
     removeMesh(uploadModel);
@@ -633,7 +630,6 @@ undoBtn.addEventListener('click', function() {
     redoBtn.classList.remove('disabled');
     removeMesh(model);
     model = undoBuffer[undoNowModelId];
-    setFrame();
     scene.add(model);
   }
 });
@@ -649,7 +645,6 @@ redoBtn.addEventListener('click', function() {
     undoBtn.classList.remove('disabled');
     removeMesh(model);
     model = undoBuffer[undoNowModelId];
-    setFrame();
     scene.add(model);
   }
 });
@@ -731,7 +726,12 @@ function setModelFromChokoku() {
     }
     if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) {
       scene.remove(lockObject);
-      lockObject = resultModelBSP.toMesh(new THREE.MeshBasicMaterial({color: 0xff0000}));
+      lockObject = resultModelBSP.toMesh(new THREE.MeshPhongMaterial({
+        color: 0xff0000,
+        depthTest: false,
+        transparent: true,
+        opacity: 0.6
+      }));
       scene.add(lockObject);
     } else {
       if (lockObject === undefined) {
@@ -769,7 +769,6 @@ function setModelFromChokoku() {
       }
       scene.remove(model);
       model = resultModel;
-      setFrame();
       scene.add(model);
       recordModel(model);
     }
@@ -865,19 +864,6 @@ function setModel(JSONData, isAdd = false) {
       render();
     }
   });
-}
-
-function setFrame() {
-  removeMesh(modelFrame);
-  modelFrame = new THREE.LineSegments(
-    new THREE.EdgesGeometry(model.geometry),
-    new THREE.LineBasicMaterial({
-      color: 0xffffff,
-      depthWrite: true,
-      depthTest: false
-    })
-  );
-  scene.add(modelFrame);
 }
 
 function toScreenXY(point, width = screenWidth, height = screenHeight) {
