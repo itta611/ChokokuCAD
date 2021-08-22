@@ -86,6 +86,7 @@ let pathGrabingOriginX;
 let pathGrabingOriginY;
 let removeCursorPath = false;
 let pointCircles = [];
+let lockObject;
 
 let viewBox;
 let viewRenderer;
@@ -688,7 +689,7 @@ function setModelFromChokoku() {
         screenVec.y * (screenHeight / 7) / camera.zoom
       );
       originI = i;
-      chokokuHole = createMeshFromPath(chokokuHole, pathShape);
+      chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
       pathShape = new THREE.Shape();
     }
   }
@@ -700,7 +701,7 @@ function setModelFromChokoku() {
     screenVec.x * (screenWidth / 7) / camera.zoom,
     screenVec.y * (screenHeight / 7) / camera.zoom
   );
-  chokokuHole = createMeshFromPath(chokokuHole, pathShape);
+  chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
   console.log(chokokuHole)
   let chokokuHoleBSP; // ThreeBSPインスタンス
   let modelBSP; // ThreeBSPインスタンス
@@ -709,54 +710,79 @@ function setModelFromChokoku() {
   try {
     chokokuHoleBSP = new ThreeBSP(chokokuHole) // ThreeBSPインスタンス
     modelBSP = new ThreeBSP(model) // ThreeBSPインスタンス
-    if (document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected')) {
-      resultModelBSP = modelBSP.subtract(chokokuHoleBSP);
+    if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) {
+      if (lockObject === undefined) {
+        resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
+        console.log('first lock')
+      } else {
+        let lockObjectBSP = new ThreeBSP(lockObject);
+        if (document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected')) {
+          resultModelBSP = lockObjectBSP.subtract(chokokuHoleBSP);
+        } else {
+          resultModelBSP = lockObjectBSP.union(modelBSP.intersect(chokokuHoleBSP));
+        }
+      }
     } else {
-      resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
+      if (document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected')) {
+        resultModelBSP = modelBSP.subtract(chokokuHoleBSP);
+      } else {
+        resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
+      }
     }
-    resultModel = resultModelBSP.toMesh(model.material);
+    if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) {
+      scene.remove(lockObject);
+      lockObject = resultModelBSP.toMesh(new THREE.MeshBasicMaterial({color: 0xff0000}));
+      scene.add(lockObject);
+    } else {
+      if (lockObject === undefined) {
+        resultModel = resultModelBSP.toMesh(model.material);
+      } else {
+        let lockObjectBSP = new ThreeBSP(lockObject);
+        resultModel = resultModelBSP.union(lockObjectBSP).toMesh(model.material);
+      }
+
+      // ------- 同一面データ作成 -------
+    
+      // ブーリアン処理後にはmaterialIndexが削除されるので自分でつける
+      // 共通する法線ベクトルを持つ面を調べる
+      let oldFaceNormals = [...faceNormals];
+      let oldFaceColors = [...faceColors];
+      faceNormals = [];
+      faceColors = [];
+      for (let i = 0;i < resultModel.geometry.faces.length;i++) {
+        let faceNormal = resultModel.geometry.faces[i].normal;
+        let materialIndex;
+        let sameNormalIndex = findSameNormal(faceNormals, faceNormal);
+        // 同じmaterialIndexは連続するとは限らない！！
+        if (sameNormalIndex !== null) {
+          // すでに今の面と同じ法線ベクトルの面が登録済み
+          // materialIndex = resultModel.geometry.faces[i - 1].materialIndex;
+          materialIndex = sameNormalIndex;
+        } else {
+          let oldNormalIndex = findSameNormal(oldFaceNormals, faceNormal);
+          faceNormals.push(faceNormal);
+          faceColors.push(oldNormalIndex === null ? "#ffffff" : oldFaceColors[oldNormalIndex]);
+          materialIndex = faceNormals.length - 1;
+        }
+        resultModel.geometry.faces[i].materialIndex = materialIndex;
+        resultModel.geometry.faces[i].color.set(faceColors[materialIndex]);
+      }
+      scene.remove(model);
+      model = resultModel;
+      setFrame();
+      scene.add(model);
+      recordModel(model);
+    }
   } catch (error) {
     statusBar.innerHTML = '<span style="color: #ff0000;">エラーが発生しました。</span>';
     console.log(error);
   }
-
-  // ------- 同一面データ作成 -------
-
-  // ブーリアン処理後にはmaterialIndexが削除されるので自分でつける
-  // 共通する法線ベクトルを持つ面を調べる
-  let oldFaceNormals = [...faceNormals];
-  let oldFaceColors = [...faceColors];
-  faceNormals = [];
-  faceColors = [];
-  for (let i = 0;i < resultModel.geometry.faces.length;i++) {
-    let faceNormal = resultModel.geometry.faces[i].normal;
-    let materialIndex;
-    let sameNormalIndex = findSameNormal(faceNormals, faceNormal);
-    // 同じmaterialIndexは連続するとは限らない！！
-    if (sameNormalIndex !== null) {
-      // すでに今の面と同じ法線ベクトルの面が登録済み
-      // materialIndex = resultModel.geometry.faces[i - 1].materialIndex;
-      materialIndex = sameNormalIndex;
-    } else {
-      let oldNormalIndex = findSameNormal(oldFaceNormals, faceNormal);
-      faceNormals.push(faceNormal);
-      faceColors.push(oldNormalIndex === null ? "#ffffff" : oldFaceColors[oldNormalIndex]);
-      materialIndex = faceNormals.length - 1;
-    }
-    resultModel.geometry.faces[i].materialIndex = materialIndex;
-    resultModel.geometry.faces[i].color.set(faceColors[materialIndex]);
-  }
-  scene.remove(model);
-  model = resultModel;
-  setFrame();
-  scene.add(model);
-  recordModel(model);
   chokokuHole = undefined;
   chokokuPath.remove();
   chokokuPath = new paper.Path();
 }
 
-function createMeshFromPath(chokokuHole, pathShape) {
+function createNewMeshFromPath(chokokuHole, pathShape) {
   const nowPath3dLen = 300;
   let nowPath3d = new THREE.Mesh(
     new THREE.ExtrudeGeometry(pathShape, {
@@ -767,7 +793,6 @@ function createMeshFromPath(chokokuHole, pathShape) {
   );
   nowPath3d.position.copy(camera.position.clone().setLength(nowPath3dLen / 2).negate());
   nowPath3d.lookAt(camera.position);
-  console.log(chokokuHole)
   if (chokokuHole === undefined) {
     chokokuHole = nowPath3d;
   } else {
