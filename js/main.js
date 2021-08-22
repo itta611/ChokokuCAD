@@ -245,7 +245,11 @@ document.querySelector('#paint-tool').addEventListener('click', function() {
   setStatus('paint');
 });
 
-document.querySelector('#file-upload').addEventListener('click', function() {
+document.querySelector('#upload-tool').addEventListener('click', function() {
+  setStatus('modelAdd1');
+});
+
+document.querySelector('#file-export .btn').addEventListener('click', function() {
   if (document.querySelector('#export-file-name').value !== '') {
     window.modelJSON = model.toJSON();
     window.open('export/');
@@ -428,7 +432,9 @@ document.querySelector('#set-material-btn').addEventListener('click', function()
 });
 
 document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', function() {
-  if (status === 'modelAdd2') {
+  this.textContent = '処理中...';
+  setTimeout(function() {
+    this.textContent = '決定';
     let uploadModelBSP = new ThreeBSP(uploadModel);
     let modelBSP = new ThreeBSP(model);
     let newModelBSP = modelBSP.union(uploadModelBSP);
@@ -449,8 +455,7 @@ document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', 
         document.querySelector(`#new-model-${element}-${xyz}`).value = ((element === 'scale') ? 1 : 0);
       });
     });
-  }
-  setStatus('modelAdd1');
+  });
 });
 
 ['position', 'rotation', 'scale'].forEach(element => {
@@ -807,17 +812,18 @@ function setModel(JSONData, isAdd = false) {
   JSONLoader.load(dataBlob, function(mesh) {
     if (isAdd) {
       uploadModel = mesh.clone();
-      let uploadModelPosition = uploadModel.position.clone();
-      let uploadModelRotation = uploadModel.rotation.clone();
-      let uploadModelScale = uploadModel.scale.clone();
+      let uploadModelPosition = uploadModel.position;
+      let uploadModelRotation = uploadModel.rotation;
+      let uploadModelScale = uploadModel.scale;
       ['x', 'y', 'z'].forEach(xyz => {
-        document.querySelector(`#new-model-position-${xyz}`).value = uploadModelPosition[xyz]
-        document.querySelector(`#new-model-rotation-${xyz}`).value = uploadModelRotation[xyz]
-        document.querySelector(`#new-model-scale-${xyz}`).value = uploadModelscale[xyz]
+        document.querySelector(`#new-model-position-${xyz}`).value = uploadModelPosition[xyz];
+        document.querySelector(`#new-model-rotation-${xyz}`).value = uploadModelRotation[xyz];
+        document.querySelector(`#new-model-scale-${xyz}`).value = uploadModelScale[xyz];
       });
       if (uploadModel.geometry.type === 'BufferGeometry') {
         let modelGeometry = new THREE.Geometry();
         let modelMaterial = uploadModel.material;
+        modelMaterial.depthTest = false;
         model.material.vertexColors = THREE.FaceColors;
         modelGeometry.fromBufferGeometry(uploadModel.geometry);
         uploadModel = new THREE.Mesh(
@@ -878,10 +884,13 @@ function setStatus(statusName) {
       for (let i = nowPath.segments.length - 1; i >= 0; i--) {
         nowPath.removeSegment(i);
       }
-      if (pointCircles.length === 1 && statusName === 'setpath') pointCircles[0].remove();
+      if (pointCircles.length === 1) pointCircles[0].remove();
     }
     document.querySelector(`#chokoku-tool`).classList.remove('selected');
     document.querySelector(`#chokoku-setting`).classList.add('hidden');
+  } else if (status === 'modelAdd1' || status === 'modelAdd2') {
+    document.querySelector(`#upload-tool`).classList.remove('selected');
+    document.querySelector(`#upload-setting`).classList.add('hidden');
   } else if (document.querySelector(`#${status}-tool`) !== null) {
     document.querySelector(`#${status}-tool`).classList.remove('selected');
     document.querySelector(`#${status}-setting`).classList.add('hidden');
@@ -889,6 +898,9 @@ function setStatus(statusName) {
   if (statusName === 'setpath' || statusName === 'adjustpath') {
     document.querySelector(`#chokoku-tool`).classList.add('selected');
     document.querySelector(`#chokoku-setting`).classList.remove('hidden');
+  } else if (statusName === 'modelAdd1' || statusName === 'modelAdd2') {
+    document.querySelector(`#upload-tool`).classList.add('selected');
+    document.querySelector(`#upload-setting`).classList.remove('hidden');
   } else if (document.querySelector(`#${statusName}-tool`) !== null) {
     document.querySelector(`#${statusName}-tool`).classList.add('selected');
     document.querySelector(`#${statusName}-setting`).classList.remove('hidden');
@@ -897,9 +909,11 @@ function setStatus(statusName) {
   status = statusName;
   statusBar.textContent = statusBarTexts[status];
   if (status === 'setpath' || status === 'adjustpath') {
-    renderer.domElement.style.cursor = "url(img/chokoku-cursor.svg) 5 5, auto";
-  } else if (document.querySelector(`#${status}-tool`) !== null) {
-    renderer.domElement.style.cursor = `url(img/${status}-cursor.svg) 5 5, auto`;
+    renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
+  } else if (status === 'paint') {
+    renderer.domElement.style.cursor = "url('img/paint-cursor.svg') 5 5, auto";
+  } else {
+    if (renderer !== undefined) renderer.domElement.style.cursor = 'default';
   }
 }
 

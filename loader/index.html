@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>読込中・・・</title>
+  <title>Loader</title>
 </head>
 <body>
   読込中です。しばらくお待ち下さい...
@@ -23,7 +23,6 @@
       );
       uploadModelJSON = uploadModel.toJSON();
       window.opener.setModel(uploadModelJSON, isAdd);
-      window.close();
     }, function() {}, function() {alert('エラーが発生しました。');});
   } else if (new RegExp('([^\s]+(\\.(glb|gltf))$)', 'i').test(fileName)) {
     loader = new THREE.GLTFLoader();
@@ -31,16 +30,14 @@
     loader.load(gltfBlob, function(arg) {
       uploadModel = arg.scene.children[0];
       uploadModelJSON = uploadModel.toJSON();
-      if (typeof uploadModel.geometry === 'undefined') {
+      if (uploadModel.geometry === undefined) {
         alert('申し訳ありませんが、この形式には対応していません。\n代わりにSTL形式でアップロードしてみてください。')
       } else {
         window.opener.setModel(uploadModelJSON, isAdd);
       }
-      window.close();
     }, function() {}, function() {alert('エラーが発生しました。');});
   } else {
     alert('ファイル形式が無効です（.glb, .gltf, .stlのみ）');
-    window.close();
   }
   </script>
 </body>

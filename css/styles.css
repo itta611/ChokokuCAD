@@ -396,7 +396,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   display: inline!important;
 }
 
-#setting label {
+#setting label:not(.btn, #file-upload-add-step2 label) {
   display: block;
 }
 
