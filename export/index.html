@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>エクスポート中・・・</title>
+</head>
+<body>
+  エクスポート中です。しばらくお待ち下さい...
+  <script src="three.min.js"></script>
+  <script src="GLTFExporter.js"></script>
+  <script>
+    let JSONData = JSON.stringify(window.opener.modelJSON);
+    let dataBlob = 'data:application/json,' + encodeURIComponent(JSONData);
+    let JSONLoader = new THREE.ObjectLoader();
+    let exporter = new THREE.GLTFExporter();
+    JSONLoader.load(dataBlob, function(model) {
+      let exportmodel;
+      let fileContent;
+      exporter.parse(model, function(arg) {
+        fileContent = JSON.stringify(arg);
+        let a = document.createElement('a');
+        a.href = 'data:application/octet-stream,' + encodeURIComponent(fileContent);
+        a.download = `${window.opener.document.querySelector('#export-file-name').value}.glb`;
+        a.click();
+        window.close();
+      });
+    });
+  </script>
+</body>
+</html>

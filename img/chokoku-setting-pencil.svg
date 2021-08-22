@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="40"
+   height="40"
+   viewBox="0 0 10.583333 10.583334"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="chokoku-setting-pencil.svg"
+   inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     units="px"
+     height="40px"
+     inkscape:zoom="6.8068461"
+     inkscape:cx="4.9215157"
+     inkscape:cy="35.405531"
+     inkscape:window-width="1440"
+     inkscape:window-height="746"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g914" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="レイヤー 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g914"
+       transform="translate(3.717794,0.21667484)">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:markers fill stroke"
+         id="rect846"
+         width="1.8520833"
+         height="7.9375"
+         x="3.6810038"
+         y="-2.1756377"
+         ry="0.051812831"
+         transform="rotate(45)" />
+      <path
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke;fill-opacity:1"
+         d="M -1.471389,6.6771146 -2.5471486,9.062495 -0.16176846,7.9867354 -1.471389,6.6771146"
+         id="path1081"
+         sodipodi:nodetypes="cccc" />
+    </g>
+    <path
+       style="fill:#000010;fill-opacity:1;stroke:#000000;stroke-width:0.29071;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 1.1706454,9.2791698 1.8185493,8.986978 1.4628373,8.6312659 1.1706454,9.2791698"
+       id="path1499" />
+  </g>
+</svg>
