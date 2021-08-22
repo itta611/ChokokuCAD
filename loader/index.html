@@ -35,7 +35,10 @@
       } else {
         window.opener.setModel(uploadModelJSON, isAdd);
       }
-    }, function() {}, function() {alert('エラーが発生しました。');});
+    }, function() {}, function(e) {
+      alert('エラーが発生しました。');
+      console.log(e);
+    });
   } else {
     alert('ファイル形式が無効です（.glb, .gltf, .stlのみ）');
   }

@@ -288,15 +288,42 @@ document.querySelectorAll('input[type="range"]').forEach(function(element) {
 });
 
 fileUploadAdd.addEventListener('change', function(e) {
-  let reader = new FileReader(e);
+  let reader = new FileReader();
   reader.addEventListener('load', function() {
-    window.isAdd = true;
-    window.fileName = e.target.files[0].name
-    window.reader = reader;
-    window.open('loader/');
-    fileUploadAdd.value = '';
+    let isAdd = true;
+    let fileName = e.target.files[0].name;
+    let uploadModelJSON;
+    if (new RegExp('([^\s]+(\\.stl)$)', 'i').test(fileName)) {
+      let stlBlob = reader.result;
+      let STLLoader = new THREE.STLLoader();
+      STLLoader.load(stlBlob, function(modelGeometry) {
+        uploadModel = new THREE.Mesh(
+          modelGeometry,
+          new THREE.MeshStandardMaterial(model.material)
+        );
+        uploadModelJSON = uploadModel.toJSON();
+        setModel(uploadModelJSON, isAdd);
+      }, function() {}, function() {alert('エラーが発生しました。');});
+    } else if (new RegExp('([^\s]+(\\.(glb|gltf))$)', 'i').test(fileName)) {
+      let GLTFLoader = new THREE.GLTFLoader();
+      let gltfBlob = reader.result;
+      GLTFLoader.load(gltfBlob, function(arg) {
+        uploadModel = arg.scene.children[0]
+        if (uploadModel.geometry === undefined) {
+          alert('申し訳ありませんが、このファイルには対応していません。\n代わりにSTL形式でアップロードしてみてください。');
+        } else {;
+          uploadModelJSON = uploadModel.toJSON();
+          setModel(uploadModelJSON, isAdd);
+        }
+      }, function() {}, function(uploadError) {
+        alert('エラーが発生しました。');
+        console.log(uploadError);
+      });
+    } else {
+      alert('ファイル形式が無効です（.glb, .gltf, .stlのみ）');
+    }
   });
-  reader.readAsDataURL(e.target.files[0]);
+  reader.readAsDataURL(this.files[0]);
 });
 
 createBtn.addEventListener('click', function() {
@@ -327,12 +354,40 @@ createBtn.addEventListener('click', function() {
 uploadBtn.addEventListener('change', function(e) {
   let reader = new FileReader();
   reader.addEventListener('load', function() {
-    window.isAdd = false;
-    window.fileName = e.target.files[0].name
-    window.reader = reader;
-    window.open('loader/');
+    let isAdd = false;
+    let fileName = e.target.files[0].name;
+    let uploadModelJSON;
+    if (new RegExp('([^\s]+(\\.stl)$)', 'i').test(fileName)) {
+      let stlBlob = reader.result;
+      let STLLoader = new THREE.STLLoader();
+      STLLoader.load(stlBlob, function(modelGeometry) {
+        uploadModel = new THREE.Mesh(
+          modelGeometry,
+          new THREE.MeshStandardMaterial(model.material)
+        );
+        uploadModelJSON = uploadModel.toJSON();
+        setModel(uploadModelJSON, isAdd);
+      }, function() {}, function() {alert('エラーが発生しました。');});
+    } else if (new RegExp('([^\s]+(\\.(glb|gltf))$)', 'i').test(fileName)) {
+      let GLTFLoader = new THREE.GLTFLoader();
+      let gltfBlob = reader.result;
+      GLTFLoader.load(gltfBlob, function(arg) {
+        uploadModel = arg.scene.children[0]
+        if (uploadModel.geometry === undefined) {
+          alert('申し訳ありませんが、このファイルには対応していません。\n代わりにSTL形式でアップロードしてみてください。');
+        } else {;
+          uploadModelJSON = uploadModel.toJSON();
+          setModel(uploadModelJSON, isAdd);
+        }
+      }, function() {}, function(uploadError) {
+        alert('エラーが発生しました。');
+        console.log(uploadError);
+      });
+    } else {
+      alert('ファイル形式が無効です（.glb, .gltf, .stlのみ）');
+    }
   });
-  reader.readAsDataURL(uploadBtn.files[0]);
+  reader.readAsDataURL(this.files[0]);
 });
 
 document.querySelector('#chokoku-setting-chokoku-btn').addEventListener('click', function() {
@@ -817,6 +872,7 @@ function createNewMeshFromPath(chokokuHole, pathShape) {
 }
 
 function setModel(JSONData, isAdd = false) {
+  console.log('hi')
   let JSONLoader = new THREE.ObjectLoader();
   let dataBlob = 'data:application/json,' + encodeURIComponent(JSON.stringify(JSONData));
   JSONLoader.load(dataBlob, function(mesh) {
