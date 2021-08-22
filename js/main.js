@@ -249,11 +249,21 @@ document.querySelector('#upload-tool').addEventListener('click', function() {
   setStatus('modelAdd1');
 });
 
-document.querySelector('#file-export .btn').addEventListener('click', function() {
+document.querySelector('#export-tool').addEventListener('click', function() {
+  setStatus('export');
+});
+
+document.querySelector('#export-setting .btn').addEventListener('click', function() {
   if (document.querySelector('#export-file-name').value !== '') {
-    window.modelJSON = model.toJSON();
-    window.open('export/');
-    notSaved = false;
+    let exporter = new THREE.GLTFExporter();
+    let fileContent;
+    exporter.parse(model, function(arg) {
+      fileContent = JSON.stringify(arg);
+      let a = document.createElement('a');
+      a.href = 'data:application/octet-stream,' + encodeURIComponent(fileContent);
+      a.download = `${document.querySelector('#export-file-name').value}.glb`;
+      a.click();
+    });
   } else {
     alert('ファイル名を入力してください。')
   }
@@ -299,11 +309,7 @@ createBtn.addEventListener('click', function() {
       new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 0.5, vertexColors: THREE.FaceColors})
       // new THREE.MeshStandardMaterial({wireframe: true})
     );
-    for (let i = 0; i < 6; i++) {
-      let faceNormal = model.geometry.faces[i * 2].normal;
-      faceNormals.push(faceNormal);
-      faceColors.push("#ffffff");
-    }
+    faceColors = ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'];
     scene.add(model);
     recordModel();
   
@@ -850,17 +856,8 @@ function setModel(JSONData, isAdd = false) {
       scene.add(model);
       mask.classList.add('hidden');
       startModal.classList.add('hidden');
-      cursorSphere = new THREE.Mesh(
-        new THREE.SphereGeometry((modelWidth + modelHeight + modelDepth) / 3 / 20, 32, 32),
-        new THREE.MeshLambertMaterial({color: 0xff0000, transparent: true, opacity: 0.5})
-      );
-      scene.add(cursorSphere);
-      cursorSphere.visible = false;
 
-      document.querySelector('#model-color').value = '#' + model.material.color.getHex().toString(16);
       document.querySelector('#model-color-btn').style.background = document.querySelector('#model-color').value;
-      document.querySelector('#model-roughness').value = model.material.roughness;
-      document.querySelector('#model-metalness').value = model.material.metalness;
 
       setStatus('setpath');
     

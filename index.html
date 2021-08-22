@@ -48,6 +48,7 @@
     <img src="img/chokoku-tool.svg" id="chokoku-tool" class="tool-item selected">
     <img src="img/paint-tool.svg" id="paint-tool" class="tool-item">
     <img src="img/upload-tool.svg" id="upload-tool" class="tool-item">
+    <img src="img/upload-tool.svg" id="export-tool" class="tool-item">
   </div>
   <div id="setting">
     <div class="setting-item" id="chokoku-setting">
@@ -86,54 +87,55 @@
           <div class="btn-wrap">
             <label for="file-upload-add" class="btn"><input type="file" id="file-upload-add" class="hidden" accept=".stl, .gltf, .glb">ファイルをアップロード</label>
           </div></div>
-      </div>
-      <div id="file-upload-add-step2" class="hidden">
-        X：
-        <label for="new-model-position-x">
-          <input type="number" id="new-model-position-x" value="0" data-zero-fix="true">&nbsp;cm
-        </label>,&nbsp;
-        <label for="new-model-rotation-x">
-          <input type="number" id="new-model-rotation-x" value="0">&nbsp;°
-        </label>,&nbsp;
-        <label for="new-model-scale-x">
-          &times;<input type="number" id="new-model-scale-x" value="1" data-zero-fix="true" min="0.01">
-        </label>
-        <br>
-        Y：
-        <label for="new-model-position-y">
-          <input type="number" id="new-model-position-y" value="0" data-zero-fix="true">
-          &nbsp;cm
-        </label>,&nbsp;
-        <label for="new-model-rotation-y">
-          <input type="number" id="new-model-rotation-y" value="0">&nbsp;°
-        </label>,&nbsp;
-        <label for="new-model-scale-y">
-          &times;<input type="number" id="new-model-scale-y" value="1" data-zero-fix="true" min="0.01">
+          </div>
+          <div id="file-upload-add-step2" class="hidden">
+          X：
+          <label for="new-model-position-x">
+            <input type="number" id="new-model-position-x" value="0" data-zero-fix="true">&nbsp;cm
+          </label>,&nbsp;
+          <label for="new-model-rotation-x">
+            <input type="number" id="new-model-rotation-x" value="0">&nbsp;°
+          </label>,&nbsp;
+          <label for="new-model-scale-x">
+            &times;<input type="number" id="new-model-scale-x" value="1" data-zero-fix="true" min="0.01">
           </label>
-        <br>
-        Z：
-        <label for="new-model-position-z">
-          <input type="number" id="new-model-position-z" value="0" data-zero-fix="true">&nbsp;cm
-        </label>,&nbsp;
-        <label for="new-model-rotation-z">
-          <input type="number" id="new-model-rotation-z" value="0">&nbsp;°
-        </label>,&nbsp;
-        <label for="new-model-scale-z">
-          &times;<input type="number" id="new-model-scale-z" value="1" data-zero-fix="true" min="0.01">
-        </label>
-        <br>
-        <div class="btn-wrap">
-          <div class="btn">決定</div>
+          <br>
+          Y：
+          <label for="new-model-position-y">
+            <input type="number" id="new-model-position-y" value="0" data-zero-fix="true">
+            &nbsp;cm
+          </label>,&nbsp;
+          <label for="new-model-rotation-y">
+            <input type="number" id="new-model-rotation-y" value="0">&nbsp;°
+          </label>,&nbsp;
+          <label for="new-model-scale-y">
+            &times;<input type="number" id="new-model-scale-y" value="1" data-zero-fix="true" min="0.01">
+          </label>
+          <br>
+          Z：
+          <label for="new-model-position-z">
+            <input type="number" id="new-model-position-z" value="0" data-zero-fix="true">&nbsp;cm
+          </label>,&nbsp;
+          <label for="new-model-rotation-z">
+            <input type="number" id="new-model-rotation-z" value="0">&nbsp;°
+          </label>,&nbsp;
+          <label for="new-model-scale-z">
+            &times;<input type="number" id="new-model-scale-z" value="1" data-zero-fix="true" min="0.01">
+          </label>
+          <br>
+          <div class="btn-wrap">
+            <div class="btn">決定</div>
+          </div>
         </div>
       </div>
-      <div class="setting-item hidden" id="file-export">
+      <div class="setting-item hidden" id="export-setting">
         <p>モデルをglb(gltf)形式でエクスポートします。</p>
         <div class="param-group">
           <label for="export-file-name">
             ファイル名: <input type="text" id="export-file-name" value="無題のモデル">
           </label>
         </div>
-        <div class="param-group"><div class="btn">エクスポート</div></div>
+        <div class="param-group setting-center"><div class="btn">エクスポート</div></div>
       </div>
       <div class="setting-item hidden">
         X：<label for="model-position-x"><input type="number" id="model-position-x" value="0" data-zero-fix="true">&nbsp;cm</label>,&nbsp;<label for="model-rotation-x"><input type="number" id="model-rotation-x" value="0">&nbsp;°</label>,&nbsp;<label for="model-scale-x">&times;<input type="number" id="model-scale-x" value="1" data-zero-fix="true"></label>
@@ -155,6 +157,7 @@
   </script>
   <script src="js/three.min.js" onload="changeLoadingText();"></script>
   <script src="js/ThreeBSP.js" onload="changeLoadingText();"></script>
+  <script src="js/GLTFExporter.js" onload="changeLoadingText();"></script>
   <script src="js/OrbitControls.js" onload="changeLoadingText();"></script>
   <script src="js/STLLoader.js" onload="changeLoadingText();"></script>
   <script src="js/paper-full.js" onload="changeLoadingText();"></script>
