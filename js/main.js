@@ -54,26 +54,14 @@ let modelFrame;
 let controls;
 let scene = new THREE.Scene();
 let status = 'start';
-let nowItem = 0;
-let chokokutou;
 let chokokuHoleGeometryVertices = [];
 let chokokuHoleGeometryFaces = [];
-let chokokuHoleMesh;
-let chokokutouMoveOrigin;
 let chokokuSize = 10;
 let chokokuResult;
 let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
-let cursorSphere;
-let cursorArrow;
-let pointA;
-let pointB;
 let uploadModel;
-let startLine;
-let finishLine;
-let startLineGeometry;
-let finishLineGeometry;
-let defaultPosition = new THREE.Vector3(100, 30, 0);
+let defaultPosition = new THREE.Vector3(0, 0, 100);
 let STLLoader = new THREE.STLLoader();
 let isChokokutouRotate = false;
 let undoBuffer = [];
@@ -110,17 +98,6 @@ let viewRaycast = new THREE.Raycaster();
 let viewMouse = new THREE.Vector2();
 
 setStatus(status)
-
-STLLoader.load('model/chokokutou.stl', function(geometry) {
-  chokokutou = new THREE.Mesh(
-    geometry,
-    new THREE.MeshLambertMaterial({color: 0x555555})
-  );
-  chokokutou.scale.set(chokokuSize / 20, chokokuSize / 20, chokokuSize / 20);
-  chokokutou.visible = false;
-  chokokutou.position.set(0, 0, 0);
-  scene.add(chokokutou);
-});
 
 loader.setPath('img/');
 viewBoxMaterial = [];
@@ -163,33 +140,9 @@ viewScene.add(viewLight)
 viewAmbientLight = new THREE.AmbientLight(0xffffff, 0.7);
 viewScene.add(viewAmbientLight)
 
-startLine = new THREE.Mesh(
-  new THREE.CylinderGeometry(1, 1, 1, 30),
-  new THREE.MeshBasicMaterial({
-    color: 0x0091ff,
-    transparent: true,
-    depthWrite: true,
-    depthTest: false
-  })
-);
-scene.add(startLine);
-startLine.visible = false;
-
-finishLine = new THREE.Mesh(
-  new THREE.CylinderGeometry(1, 1, 1, 30),
-  new THREE.MeshBasicMaterial({
-    color: 0x0091ff,
-    transparent: true,
-    depthWrite: true,
-    depthTest: false
-  })
-);
-scene.add(finishLine);
-finishLine.visible = false;
-
 viewCamera = new THREE.OrthographicCamera(180 / - 2, 180 / 2, 180 / 2, 180 / - 2, 1, 1000);
 // viewCamera = new THREE.PerspectiveCamera(45, 100 / 100, 1, 1000);
-viewCamera.position.set(...defaultPosition.normalize().setLength(250).toArray());
+viewCamera.position.copy(defaultPosition.normalize().setLength(250));
 viewCamera.lookAt(viewScene.position);
 
 viewRenderer = new THREE.WebGLRenderer({
@@ -216,7 +169,7 @@ scene.add(ambientLight)
 // camera
 // camera = new THREE.PerspectiveCamera(45, screenWidth / screenHeight, 1, 1000);
 camera = new THREE.OrthographicCamera(screenWidth / -7, screenWidth / 7, screenHeight / 7, screenHeight / -7, 1, 1000);
-camera.position.set(0, 100, 300);
+camera.position.copy(defaultPosition);
 camera.lookAt(scene.position);
 
 // pathCanvas
@@ -353,12 +306,6 @@ createBtn.addEventListener('click', function() {
   
     mask.classList.add('hidden');
     startModal.classList.add('hidden');
-    cursorSphere = new THREE.Mesh(
-      new THREE.SphereGeometry((modelWidth + modelHeight + modelDepth) / 60, 32, 32),
-      new THREE.MeshLambertMaterial({color: 0xff0000, transparent: true, opacity: 0.5})
-    );
-    scene.add(cursorSphere);
-    cursorSphere.visible = false;
     setStatus('setpath');
     render();
   }
