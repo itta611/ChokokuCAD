@@ -309,7 +309,11 @@ createBtn.addEventListener('click', function() {
       new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 0.5, vertexColors: THREE.FaceColors})
       // new THREE.MeshStandardMaterial({wireframe: true})
     );
-    faceColors = ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'];
+    for (let i = 0; i < 6; i++) {
+      let faceNormal = model.geometry.faces[i * 2].normal;
+      faceNormals.push(faceNormal);
+      faceColors.push("#ffffff");
+    }
     scene.add(model);
     recordModel();
   
