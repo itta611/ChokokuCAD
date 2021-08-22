@@ -697,7 +697,6 @@ function setModelFromChokoku() {
     screenVec.y * (screenHeight / 7) / camera.zoom
   );
   chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
-  console.log(chokokuHole)
   let chokokuHoleBSP; // ThreeBSPインスタンス
   let modelBSP; // ThreeBSPインスタンス
   let resultModelBSP;
@@ -708,7 +707,6 @@ function setModelFromChokoku() {
     if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) {
       if (lockObject === undefined) {
         resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
-        console.log('first lock')
       } else {
         let lockObjectBSP = new ThreeBSP(lockObject);
         if (document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected')) {
