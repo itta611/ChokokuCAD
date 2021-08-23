@@ -168,12 +168,14 @@ scene.add(ambientLight)
 
 // camera
 // camera = new THREE.PerspectiveCamera(45, screenWidth / screenHeight, 1, 1000);
-camera = new THREE.OrthographicCamera(screenWidth / -7, screenWidth / 7, screenHeight / 7, screenHeight / -7, 1, 1000);
+camera = new THREE.OrthographicCamera(
+  (screenWidth - 330) / -7, (screenWidth - 330) / 7, screenHeight / 7, screenHeight / -7, 1, 1000
+);
 camera.position.copy(defaultPosition);
 camera.lookAt(scene.position);
 
 // pathCanvas
-pathCanvas.width = screenWidth;
+pathCanvas.width = screenWidth - 330;
 pathCanvas.height = screenHeight;
 
 // renderer
@@ -181,7 +183,7 @@ renderer = new THREE.WebGLRenderer({
   antialias: true,
   alpha: true
 });
-renderer.setSize(screenWidth, screenHeight);
+renderer.setSize(screenWidth - 330, screenHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.querySelector('#main-canvas-wrap').appendChild(renderer.domElement);
 
@@ -201,6 +203,14 @@ class ToolItem {
 
     this.element.addEventListener('click', () => {
       setStatus(this.status);
+    });
+
+    this.element.addEventListener('mouseover', () => {
+      statusBar.textContent = statusBarTexts[this.status];
+    });
+
+    this.element.addEventListener('mouseout', () => {
+      statusBar.textContent = statusBarTexts[status];
     });
   }
 }
@@ -232,13 +242,13 @@ window.addEventListener('load', function() {
 window.addEventListener('resize', function() {
   screenWidth = document.documentElement.clientWidth;
   screenHeight = document.documentElement.clientHeight;
-  camera.left = screenWidth / -7;
-  camera.right = screenWidth / 7;
-  camera.top = screenHeight / 7;
-  camera.bottom = screenHeight / -7;
+  camera.left = (screenWidth - 330) / -7;
+  camera.right = (screenWidth - 330) / 7;
+  camera.top = (screenHeight) / 7;
+  camera.bottom = (screenHeight) / -7;
   camera.updateProjectionMatrix();
-  renderer.setSize(screenWidth, screenHeight);
-  pathCanvas.width = screenWidth;
+  renderer.setSize(screenWidth - 330, screenHeight);
+  pathCanvas.width = screenWidth - 330;
   pathCanvas.height = screenHeight;
 });
 
@@ -249,7 +259,7 @@ window.addEventListener('beforeunload', function(e) {
 });
 
 window.addEventListener('keyup', function(e) {
-  if ((status === 'setpath' || status === 'adjustPath') && e.key === 'Enter') {
+  if (status === 'setpath' && e.key === 'Enter') {
     setModelFromChokoku();
   }
 });
@@ -356,6 +366,7 @@ document.querySelector('#chokoku-setting-lock-btn').addEventListener('click', fu
 document.querySelector('#chokoku-setting-add-btn').addEventListener('click', function() {
   document.querySelector('#chokoku-setting-edit-btn').classList.remove('selected');
   document.querySelector('#chokoku-setting-add-mode-params').classList.remove('hidden');
+  document.querySelector('#chokoku-setting .btn').parentNode.classList.remove('hidden');
   this.classList.add('selected');
   nowPath.visible = true;
   setStatus('setpath');
@@ -377,6 +388,7 @@ document.querySelector('#chokoku-setting-add-btn').addEventListener('click', fun
 document.querySelector('#chokoku-setting-edit-btn').addEventListener('click', function() {
   document.querySelector('#chokoku-setting-add-btn').classList.remove('selected');
   document.querySelector('#chokoku-setting-add-mode-params').classList.add('hidden');
+  document.querySelector('#chokoku-setting .btn').parentNode.classList.add('hidden');
   this.classList.add('selected');
   setStatus('adjustpath');
   nowPath.visible = false;
@@ -515,7 +527,7 @@ renderer.domElement.addEventListener('mousemove', function(e) {
         chokokuPath.curves[i].point1.y += mouseY - pathGrabingOriginY;
         pointCircles[i].position.x += mouseX - pathGrabingOriginX;
         pointCircles[i].position.y += mouseY - pathGrabingOriginY;
-      } 
+      }
       pathGrabingOriginX = mouseX;
       pathGrabingOriginY = mouseY;
     }
@@ -660,7 +672,7 @@ redoBtn.addEventListener('click', function() {
 
 function setModelFromChokoku() {
   // 決定
-  if (chokokuPath.segments.length <= 2) {
+  if (chokokuPath.segments !== undefined && chokokuPath.segments.length <= 2) {
     statusBar.innerHTML = '<span style="color: #ff0000;">頂点は３つ以上用意する必要があります。</span>';
     setTimeout(function() {
       statusBar.innerHTML = statusBarTexts[status];
@@ -681,12 +693,12 @@ function setModelFromChokoku() {
     ) {
       if (pathShape.currentPoint.x === 0 && pathShape.currentPoint.y === 0) {
         pathShape.moveTo(
-          screenVec.x * (screenWidth / 7) / camera.zoom,
+          screenVec.x * ((screenWidth - 330) / 7) / camera.zoom,
           screenVec.y * (screenHeight / 7) / camera.zoom
         );
       } else {
         pathShape.lineTo(
-          screenVec.x * (screenWidth / 7) / camera.zoom,
+          screenVec.x * ((screenWidth - 330) / 7) / camera.zoom,
           screenVec.y * (screenHeight / 7) / camera.zoom
         );
       }
@@ -696,7 +708,7 @@ function setModelFromChokoku() {
         chokokuPath.curves[originI].point1.x, chokokuPath.curves[originI].point1.y
       ));
       pathShape.lineTo(
-        screenVec.x * (screenWidth / 7) / camera.zoom,
+        screenVec.x * ((screenWidth - 330) / 7) / camera.zoom,
         screenVec.y * (screenHeight / 7) / camera.zoom
       );
       originI = i;
@@ -709,7 +721,7 @@ function setModelFromChokoku() {
     chokokuPath.curves[originI].point1.x, chokokuPath.curves[originI].point1.y
   ));
   pathShape.lineTo(
-    screenVec.x * (screenWidth / 7) / camera.zoom,
+    screenVec.x * ((screenWidth - 330) / 7) / camera.zoom,
     screenVec.y * (screenHeight / 7) / camera.zoom
   );
   chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
@@ -910,7 +922,7 @@ function setModel(JSONData, isAdd = false) {
   });
 }
 
-function toScreenXY(point, width = screenWidth, height = screenHeight) {
+function toScreenXY(point, width = screenWidth - 330, height = screenHeight) {
   point.x = (point.x / width) * 2 - 1;
   point.y = -(point.y / height) * 2 + 1;
   return point;
