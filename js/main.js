@@ -193,6 +193,33 @@ controls.mouseButtons.ORBIT = THREE.MOUSE.RIGHT;
 controls.enableDamping = true;
 controls.dampingFactor = 0.2;
 
+class ToolItem {
+  constructor(option) {
+    this.selector = option.selector;
+    this.status = option.status;
+    this.element = document.querySelector(this.selector);
+
+    this.element.addEventListener('click', function() {
+      console.log(this)
+      setStatus(this.status);
+    });
+  }
+}
+
+let chokokuToolItem = new ToolItem({selector: '#chokoku-tool', status: 'setpath'});
+
+document.querySelector('#paint-tool').addEventListener('click', function() {
+  setStatus('paint');
+});
+
+document.querySelector('#upload-tool').addEventListener('click', function() {
+  setStatus('modelAdd1');
+});
+
+document.querySelector('#export-tool').addEventListener('click', function() {
+  setStatus('export');
+});
+
 // events
 
 window.addEventListener('load', function() {
@@ -235,22 +262,6 @@ window.addEventListener('keyup', function(e) {
   if ((status === 'setpath' || status === 'adjustPath') && e.key === 'Enter') {
     setModelFromChokoku();
   }
-});
-
-document.querySelector('#chokoku-tool').addEventListener('click', function() {
-  setStatus('setpath');
-});
-
-document.querySelector('#paint-tool').addEventListener('click', function() {
-  setStatus('paint');
-});
-
-document.querySelector('#upload-tool').addEventListener('click', function() {
-  setStatus('modelAdd1');
-});
-
-document.querySelector('#export-tool').addEventListener('click', function() {
-  setStatus('export');
 });
 
 document.querySelector('#export-setting .btn').addEventListener('click', function() {

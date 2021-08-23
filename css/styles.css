@@ -221,6 +221,19 @@ input[type="number"]:focus, input[type="text"]:focus, #model-color-btn:focus {
   margin-bottom: 10px;
 }
 
+#view-source {
+  position: absolute;
+  margin: auto;
+  bottom: 7px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+a {
+  color: #007bff;
+}
+
 .btn {
   border-radius: 5px;
   height: 30px;
