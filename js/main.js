@@ -199,26 +199,16 @@ class ToolItem {
     this.status = option.status;
     this.element = document.querySelector(this.selector);
 
-    this.element.addEventListener('click', function() {
-      console.log(this)
+    this.element.addEventListener('click', () => {
       setStatus(this.status);
     });
   }
 }
 
 let chokokuToolItem = new ToolItem({selector: '#chokoku-tool', status: 'setpath'});
-
-document.querySelector('#paint-tool').addEventListener('click', function() {
-  setStatus('paint');
-});
-
-document.querySelector('#upload-tool').addEventListener('click', function() {
-  setStatus('modelAdd1');
-});
-
-document.querySelector('#export-tool').addEventListener('click', function() {
-  setStatus('export');
-});
+let paintToolItem = new ToolItem({selector: '#paint-tool', status: 'paint'});
+let uploadToolItem = new ToolItem({selector: '#upload-tool', status: 'modelAdd1'});
+let exportToolItem = new ToolItem({selector: '#export-tool', status: 'export'});
 
 // events
 
@@ -525,7 +515,7 @@ renderer.domElement.addEventListener('mousemove', function(e) {
         chokokuPath.curves[i].point1.y += mouseY - pathGrabingOriginY;
         pointCircles[i].position.x += mouseX - pathGrabingOriginX;
         pointCircles[i].position.y += mouseY - pathGrabingOriginY;
-      }
+      } 
       pathGrabingOriginX = mouseX;
       pathGrabingOriginY = mouseY;
     }
