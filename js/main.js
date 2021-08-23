@@ -191,6 +191,7 @@ class ToolItem {
     this.selector = option.selector;
     this.status = option.status;
     this.element = document.querySelector(this.selector);
+    this.onSelected = option.onSelected || function() {};
 
     this.element.addEventListener('click', () => {
       setStatus(this.status);
@@ -203,6 +204,10 @@ class ToolItem {
     this.element.addEventListener('mouseout', () => {
       statusBar.textContent = statusBarTexts[status];
     });
+  }
+
+  selected() {
+    this.selected();
   }
 }
 
