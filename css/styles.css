@@ -2,7 +2,8 @@ body {
   margin: 0;
   color: #2a3d50;
   overflow: hidden;
-  font-family: Futura, Arial, Helvetica, sans-serif;
+  /* font-family: Futura, Arial, Helvetica, sans-serif; */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 #loading-mask {
@@ -333,8 +334,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   display: flex;
 }
 
-#re-undo, .tool-item-mini {
-  margin-left: 5px;
+.tool-item-mini + .tool-item-mini {
+  margin-left: 7px;
 }
 
 #new-file {
