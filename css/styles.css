@@ -108,7 +108,7 @@ h2 {
 
 #start-modal > img {
   display: block;
-  margin: 30px auto 0;
+  margin: 20px auto 30px;
 }
 
 input[type="color"] {
