@@ -76,6 +76,7 @@ let pathGrabingOriginY;
 let removeCursorPath = false;
 let pointCircles = [];
 let lockObject;
+let toolItems = [];
 
 let viewBox;
 let viewRenderer;
@@ -205,10 +206,10 @@ class ToolItem {
   }
 }
 
-let chokokuToolItem = new ToolItem({selector: '#chokoku-tool', status: 'setpath'});
-let paintToolItem = new ToolItem({selector: '#paint-tool', status: 'paint'});
-let uploadToolItem = new ToolItem({selector: '#upload-tool', status: 'modelAdd1'});
-let exportToolItem = new ToolItem({selector: '#export-tool', status: 'export'});
+toolItems['setpath'] = new ToolItem({selector: '#chokoku-tool', status: 'setpath'});
+toolItems['paint'] = new ToolItem({selector: '#paint-tool', status: 'paint'});
+toolItems['modelAdd1'] = new ToolItem({selector: '#upload-tool', status: 'modelAdd1'});
+toolItems['export'] = new ToolItem({selector: '#export-tool', status: 'export'});
 
 // events
 
@@ -857,7 +858,6 @@ function uploadNewModel(reader, isAdd) {
 }
 
 function setModel(JSONData, isAdd = false) {
-  console.log('hi')
   let JSONLoader = new THREE.ObjectLoader();
   let dataBlob = 'data:application/json,' + encodeURIComponent(JSON.stringify(JSONData));
   JSONLoader.load(dataBlob, function(mesh) {
@@ -948,15 +948,15 @@ function setStatus(statusName) {
     document.querySelector(`#${statusName}-setting`).classList.remove('hidden');
   }
 
-  status = statusName;
-  statusBar.textContent = statusBarTexts[status];
-  if (status === 'setpath' || status === 'adjustpath') {
+  statusBar.textContent = statusBarTexts[statusName];
+  if (statusName === 'setpath' || statusName === 'adjustpath') {
     renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
-  } else if (status === 'paint') {
+  } else if (statusName === 'paint') {
     renderer.domElement.style.cursor = "url('img/paint-cursor.svg') 5 5, auto";
   } else {
     if (renderer !== undefined) renderer.domElement.style.cursor = 'default';
   }
+  status = statusName;
 }
 
 function isSameNormal(normal1, normal2) {
