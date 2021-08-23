@@ -65,7 +65,7 @@ img[src="img/logo.svg"] {
 }
 
 .hidden {
-  display: none;
+  display: none!important;
 }
 
 summary {
@@ -77,10 +77,9 @@ summary {
   border: 1px solid #c9c9c9;
   border-radius: 10px;
   width: 300px;
-  /* margin: 100px auto 0; */
   position: absolute;
   margin: auto;
-  top: 100px;
+  top: 80px;
   left: 0;
   right: 0;
   padding: 50px 100px;
@@ -334,7 +333,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   display: flex;
 }
 
-#re-undo .tool-item-mini {
+#re-undo, .tool-item-mini {
   margin-left: 5px;
 }
 
@@ -386,8 +385,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   width: 300px;
   z-index: 3;
   position: absolute;
-  top: 60px;
-  right: 10px;
+  right: 0;
+  height: 100%;
   border: 1px solid #c9c9c9;
   box-shadow: 0px 0px 7px 0px #7a7a7a;
   padding: 15px;
