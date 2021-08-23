@@ -21,21 +21,11 @@ const statusBarTexts = {
   'start': 'Chokoku CADへようこそ。',
   'setpath': '残す形状を決めてください。',
   'adjustpath': '調節ができます。よければEnterキーを押してください。',
-  'drill': 'マウスをクリックしたところに穴を空けます。',
-  'fill': '物体の色を設定してください。',
+  'paint': 'オブジェクトの色を設定してください。',
   'modelAdd1': '新しく追加するモデルをアップロードしてください。',
-  'modelAdd2': 'アップロードしたモデルを回転・移動してください。',
+  'modelAdd2': 'アップロードしたモデルを回転・移動・大きさを調節してください。',
   'export': 'モデルをglb(gltf)形式でエクスポートしダウンロードします。',
-  'transform': 'モデルを移動、回転、サイズを変更します。',
 };
-const nameAndStatus = {
-  '彫刻刀': 'setpath',
-  'ドリル': 'drill',
-  'バケツ': 'fill',
-  '追加': 'modelAdd1',
-  'エクスポート': 'export',
-  '変形': 'transform'
-}
 let modelDepth = 50;
 let modelWidth = 50;
 let modelHeight = 50;
@@ -503,7 +493,7 @@ renderer.domElement.addEventListener('mousemove', function(e) {
       ) {
         pointCircles[i].fillColor = '#aaa';
         hoverPoint = i;
-        renderer.domElement.style.cursor = "default";
+        renderer.domElement.style.cursor = 'default';
       } else {
         pointCircles[i].fillColor = '#fff';
       }
@@ -511,9 +501,9 @@ renderer.domElement.addEventListener('mousemove', function(e) {
     pathHovering = !(chokokuPath.hitTest(mouseX, mouseY) === null);
     if (pathHovering && hoverPoint === -1) {
       if (isMouseClicking) {
-        renderer.domElement.style.cursor = "grabbing";
+        renderer.domElement.style.cursor = 'grabbing';
       } else {
-        renderer.domElement.style.cursor = "grab";
+        renderer.domElement.style.cursor = 'grab';
       }
     }
     if (!isMouseClicking) {
@@ -586,7 +576,7 @@ renderer.domElement.addEventListener('click', function(e) {
       chokokuPath.sendToBack();
       pointCircles[0].remove();
       pointCircles = [];
-      renderer.domElement.style.cursor = "url(img/chokoku-cursor.svg) 5 5, auto";
+      renderer.domElement.style.cursor = 'url(img/chokoku-cursor.svg) 5 5, auto';
       removeCursorPath = false;
     }
   } else if (status === 'paint') {
@@ -787,7 +777,7 @@ function setModelFromChokoku() {
         } else {
           let oldNormalIndex = findSameNormal(oldFaceNormals, faceNormal);
           faceNormals.push(faceNormal);
-          faceColors.push(oldNormalIndex === null ? "#ffffff" : oldFaceColors[oldNormalIndex]);
+          faceColors.push(oldNormalIndex === null ? '#ffffff' : oldFaceColors[oldNormalIndex]);
           materialIndex = faceNormals.length - 1;
         }
         resultModel.geometry.faces[i].materialIndex = materialIndex;
@@ -1090,7 +1080,7 @@ function render() {
         removeCursorPath = true;
       }
       nowPath.lineTo(mouseX, mouseY);
-      renderer.domElement.style.cursor = "url(img/chokoku-cursor.svg) 5 5, auto";
+      renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
       if (
         nowPath.segments[0].point.x - 5 < mouseX &&
         nowPath.segments[0].point.x + 5 > mouseX &&
@@ -1098,7 +1088,7 @@ function render() {
         nowPath.segments[0].point.y + 5 > mouseY
       ) {
         pointCircles[0].fillColor = '#aaa';
-        renderer.domElement.style.cursor = "default";
+        renderer.domElement.style.cursor = 'default';
       } else {
         pointCircles[0].fillColor = '#fff';
       }
