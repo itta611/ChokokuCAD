@@ -433,7 +433,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   bottom: 0;
   line-height: 20px;
   height: 20px;
-  z-index: 0;
+  z-index: 5;
   font-size: 18px;
   border-top: 1px solid #7a7a7a;
   padding: 10px 30px;
