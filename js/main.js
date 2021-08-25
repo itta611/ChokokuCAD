@@ -17,15 +17,7 @@ const undoBtn = document.querySelector('#undo-btn');
 const redoBtn = document.querySelector('#redo-btn');
 const pathCanvas = document.querySelector('#path-canvas');
 const loader = new THREE.TextureLoader();
-const statusBarTexts = {
-  'start': 'Chokoku CADへようこそ。',
-  'setpath': '残す形状を決めてください。',
-  'adjustpath': '調節ができます。よければEnterキーを押してください。',
-  'paint': 'オブジェクトの色を設定してください。',
-  'modelAdd1': '新しく追加するモデルをアップロードしてください。',
-  'modelAdd2': 'アップロードしたモデルを回転・移動・大きさを調節してください。',
-  'export': 'モデルをglb(gltf)形式でエクスポートしダウンロードします。',
-};
+let statuses = [];
 let modelDepth = 50;
 let modelWidth = 50;
 let modelHeight = 50;
@@ -186,40 +178,94 @@ controls.mouseButtons.ORBIT = THREE.MOUSE.RIGHT;
 controls.enableDamping = true;
 controls.dampingFactor = 0.2;
 
+class Status {
+  constructor(option) {
+    this.status = option.statusName;
+    this.group = option.group;
+    this.name = option.name;
+    this.desc = option.desc;
+  }
+
+  change() {
+    statusBar.textContent = `[${this.name}] ${this.desc}`;
+    toolItems[status].unSelect(this.group);
+    toolItems[this.group].select();
+    status = this.status;
+  }
+}
+
+statuses['start'] = new Status(
+  {name: 'スタート', statusName: 'start', group: 'start', desc: 'Chokoku CADへようこそ。'}
+);
+statuses['setpath'] = new Status(
+  {name: '彫刻ツール', statusName: 'setpath', group: 'setpath', desc: '残す形状を決めてください。'}
+);
+statuses['adjustpath'] = new Status(
+  {name: '彫刻ツール', statusName: 'adjustpath', group: 'setpath', desc: '調節ができます。よければEnterキーを押してください。'}
+);
+statuses['paint'] = new Status(
+  {name: 'ペイント', statusName: 'paint', group: 'paint', desc: 'オブジェクトの色を設定してください。'}
+);
+statuses['modelAdd1'] = new Status(
+  {name: 'モデル追加', statusName: 'modelAdd1', group: 'modelAdd1', desc: '新しく追加するモデルをアップロードしてください。'}
+);
+statuses['modelAdd2'] = new Status(
+  {name: 'モデル追加', statusName: 'modelAdd2', group: 'upload', desc: 'アップロードしたモデルを回転・移動・大きさを調節してください。'}
+);
+statuses['export'] = new Status(
+  {name: 'モデル出力', statusName: 'export', group: 'export', desc: 'モデルをglb(gltf)形式でエクスポートしダウンロードします。'}
+);
+
 class ToolItem {
   constructor(option) {
-    this.selector = option.selector;
+    this.domName = option.domName;
     this.status = option.status;
-    this.element = document.querySelector(this.selector);
+    this.domElement = document.querySelector(`#${this.domName}-tool`);
+    this.settingDomElement = document.querySelector(`#${this.domName}-setting`);
     this.onSelected = option.onSelected || function() {};
     this.statuses = option.statuses || [this.status];
 
-    this.element.addEventListener('click', () => {
-      setStatus(this.status);
+    this.domElement.addEventListener('click', () => {
+      statuses[this.status].change();
     });
 
-    this.element.addEventListener('mouseover', () => {
-      statusBar.textContent = statusBarTexts[this.status];
+    this.domElement.addEventListener('mouseover', () => {
+      statusBar.textContent = `[${statuses[this.status].name}] ${statuses[this.status].desc}`;
     });
 
-    this.element.addEventListener('mouseout', () => {
-      statusBar.textContent = statusBarTexts[status];
+    this.domElement.addEventListener('mouseout', () => {
+      statusBar.textContent = `[${statuses[status].name}] ${statuses[status].desc}`;
     });
   }
 
   select() {
-    this.onSelected();
+    this.domElement.classList.add('selected');
+    this.settingDomElement.classList.remove('hidden');
+  }
+
+  unSelect(statusTo) { 
+    this.domElement.classList.remove('selected');
+    this.settingDomElement.classList.add('hidden');
+    this.onSelected(statusTo);
   }
 }
 
 toolItems['setpath'] = new ToolItem(
-  {selector: '#chokoku-tool', status: 'setpath', statuses: ['setpath', 'adjustpath']}
+  {domName: 'chokoku', status: 'setpath', statuses: ['setpath', 'adjustpath'], onUnselected: function(statusTo) {
+    removeCursorPath = false;
+    if (statusTo !== 'setpath' && statusTo !== 'adjustpath') {
+      for (let i = nowPath.segments.length - 1; i >= 0; i--) {
+        nowPath.removeSegment(i);
+      }
+      if (pointCircles.length === 1) pointCircles[0].remove();
+    }
+  }}
 );
-toolItems['paint'] = new ToolItem({selector: '#paint-tool', status: 'paint'});
+toolItems['paint'] = new ToolItem({domName: 'paint', status: 'paint'});
 toolItems['modelAdd1'] = new ToolItem(
-  {selector: '#upload-tool', status: 'modelAdd1', statuses: ['modelAdd1', 'modelAdd2']}
+  {domName: 'upload', status: 'modelAdd1', statuses: ['modelAdd1', 'modelAdd2']}
 );
-toolItems['export'] = new ToolItem({selector: '#export-tool', status: 'export'});
+toolItems['export'] = new ToolItem({domName: 'export', status: 'export'});
 
 // events
 
@@ -929,36 +975,6 @@ function toScreenXY(point, width = screenWidth - 330, height = screenHeight) {
 }
 
 function setStatus(statusName) {
-  if (status === 'setpath' || status === 'adjustpath') {
-    // ↓chokoku同士のstatusの変化ではなかったら
-    if (statusName !== 'setpath' && statusName !== 'adjustpath') {
-      removeCursorPath = false;
-      for (let i = nowPath.segments.length - 1; i >= 0; i--) {
-        nowPath.removeSegment(i);
-      }
-      if (pointCircles.length === 1) pointCircles[0].remove();
-    }
-    document.querySelector(`#chokoku-tool`).classList.remove('selected');
-    document.querySelector(`#chokoku-setting`).classList.add('hidden');
-  } else if (status === 'modelAdd1' || status === 'modelAdd2') {
-    document.querySelector(`#upload-tool`).classList.remove('selected');
-    document.querySelector(`#upload-setting`).classList.add('hidden');
-  } else if (document.querySelector(`#${status}-tool`) !== null) {
-    document.querySelector(`#${status}-tool`).classList.remove('selected');
-    document.querySelector(`#${status}-setting`).classList.add('hidden');
-  }
-  if (statusName === 'setpath' || statusName === 'adjustpath') {
-    document.querySelector(`#chokoku-tool`).classList.add('selected');
-    document.querySelector(`#chokoku-setting`).classList.remove('hidden');
-  } else if (statusName === 'modelAdd1' || statusName === 'modelAdd2') {
-    document.querySelector(`#upload-tool`).classList.add('selected');
-    document.querySelector(`#upload-setting`).classList.remove('hidden');
-  } else if (document.querySelector(`#${statusName}-tool`) !== null) {
-    document.querySelector(`#${statusName}-tool`).classList.add('selected');
-    document.querySelector(`#${statusName}-setting`).classList.remove('hidden');
-  }
-
-  statusBar.textContent = statusBarTexts[statusName];
   if (statusName === 'setpath' || statusName === 'adjustpath') {
     renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
   } else if (statusName === 'paint') {
