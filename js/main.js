@@ -192,6 +192,7 @@ class ToolItem {
     this.status = option.status;
     this.element = document.querySelector(this.selector);
     this.onSelected = option.onSelected || function() {};
+    this.statuses = option.statuses || [this.status];
 
     this.element.addEventListener('click', () => {
       setStatus(this.status);
@@ -211,9 +212,13 @@ class ToolItem {
   }
 }
 
-toolItems['setpath'] = new ToolItem({selector: '#chokoku-tool', status: 'setpath'});
+toolItems['setpath'] = new ToolItem(
+  {selector: '#chokoku-tool', status: 'setpath', statuses: ['setpath', 'adjustpath']}
+);
 toolItems['paint'] = new ToolItem({selector: '#paint-tool', status: 'paint'});
-toolItems['modelAdd1'] = new ToolItem({selector: '#upload-tool', status: 'modelAdd1'});
+toolItems['modelAdd1'] = new ToolItem(
+  {selector: '#upload-tool', status: 'modelAdd1', statuses: ['modelAdd1', 'modelAdd2']}
+);
 toolItems['export'] = new ToolItem({selector: '#export-tool', status: 'export'});
 
 // events
