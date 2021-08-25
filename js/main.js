@@ -207,8 +207,8 @@ class ToolItem {
     });
   }
 
-  selected() {
-    this.selected();
+  select() {
+    this.onSelected();
   }
 }
 
