@@ -385,7 +385,7 @@ createBtn.addEventListener('click', function() {
       faceColors.push("#ffffff");
     }
     scene.add(model);
-    recordScene();
+    recordModel();
   
     mask.classList.add('hidden');
     startModal.classList.add('hidden');
@@ -525,7 +525,7 @@ document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', 
     scene.add(model);
     removeMesh(uploadModel);
     notSaved = true;
-    recordScene();
+    recordModel();
     document.querySelector('#file-upload-add-step1').classList.remove('hidden');
     document.querySelector('#file-upload-add-step2').classList.add('hidden');
     // 初期化
@@ -715,8 +715,13 @@ undoBtn.addEventListener('click', function() {
     }
     redoBtn.classList.remove('disabled');
     removeMesh(model);
-    model = undoBuffer[undoNowModelId];
+    model = undoBuffer[undoNowModelId][0];
     scene.add(model);
+    removeMesh(lockObject);
+    if (undoBuffer[undoNowModelId][1] !== undefined) {
+      lockObject = undoBuffer[undoNowModelId][1];
+      scene.add(lockObject);
+    }
   }
 });
 
@@ -730,8 +735,13 @@ redoBtn.addEventListener('click', function() {
     }
     undoBtn.classList.remove('disabled');
     removeMesh(model);
-    model = undoBuffer[undoNowModelId];
+    model = undoBuffer[undoNowModelId][0];
     scene.add(model);
+    if (undoBuffer[undoNowModelId][1] !== undefined) {
+      removeMesh(lockObject);
+      lockObject = undoBuffer[undoNowModelId][1];
+      scene.add(lockObject);
+    }
   }
 });
 
@@ -824,6 +834,7 @@ function setModelFromChokoku() {
         opacity: 0.6
       }));
       scene.add(lockObject);
+      recordModel();
     } else {
       if (lockObject === undefined) {
         resultModel = resultModelBSP.toMesh(model.material);
@@ -861,12 +872,12 @@ function setModelFromChokoku() {
       scene.remove(model);
       model = resultModel;
       scene.add(model);
-      recordScene(model);
+      recordModel(model);
     }
   } catch (error) {
     statusBar.innerHTML = '<span style="color: #ff0000;">エラーが発生しました。</span>';
     setTimeout(function() {
-      statusBar.innerHTML = statusBarTexts[status];
+      statusBar.innerHTML = statuses[status].desc;
     }, 1000);
     console.log(error);
   }
@@ -1076,11 +1087,11 @@ function removeMesh(mesh) {
   }
 }
 
-function recordScene() {
+function recordModel() {
   if (undoBuffer.length >= 3) {
     undoBuffer.shift(); // 最初の要素を削除
   }
-  undoBuffer.push(model.clone());
+  undoBuffer.push([model, lockObject]);
   undoNowModelId = undoBuffer.length - 1;
   if (undoNowModelId >= 1) {
     undoBtn.classList.remove('disabled');
