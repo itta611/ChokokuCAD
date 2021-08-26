@@ -63,8 +63,8 @@ let viewBoxAngles = [];
 let hoverIndex = -1;
 let hoverPoint = -1;
 let pathHovering = false;
-let pathGrabingOriginX;
-let pathGrabingOriginY;
+let pathGrabbingOriginX;
+let pathGrabbingOriginY;
 let removeCursorPath = false;
 let pointCircles = [];
 let lockObject;
@@ -273,9 +273,11 @@ toolItems['setpath'] = new ToolItem(
   }}
 );
 toolItems['paint'] = new ToolItem(
-  {domName: 'paint', status: 'paint', onSelected: function() {
+  {domName: 'paint', status: 'paint',
+  onSelected: function() {
     renderer.domElement.style.cursor = "url('img/paint-cursor.svg') 5 5, auto";
-}});
+  }
+});
 toolItems['modelAdd1'] = new ToolItem(
   {domName: 'upload', status: 'modelAdd1', statuses: ['modelAdd1', 'modelAdd2']}
 );
@@ -383,7 +385,7 @@ createBtn.addEventListener('click', function() {
       faceColors.push("#ffffff");
     }
     scene.add(model);
-    recordModel();
+    recordScene();
   
     mask.classList.add('hidden');
     startModal.classList.add('hidden');
@@ -523,7 +525,7 @@ document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', 
     scene.add(model);
     removeMesh(uploadModel);
     notSaved = true;
-    recordModel();
+    recordScene();
     document.querySelector('#file-upload-add-step1').classList.remove('hidden');
     document.querySelector('#file-upload-add-step2').classList.add('hidden');
     // 初期化
@@ -552,7 +554,6 @@ renderer.domElement.addEventListener('mousemove', function(e) {
   mouseX = e.clientX;
   mouseY = e.clientY;
   if (status === 'adjustpath') {
-    renderer.domElement.style.cursor = "url(img/chokoku-cursor.svg) 5 5, auto";
     // boolean演算後のsegmentsは⏳のような図形にはない
     for (let i = 0; i < chokokuPath.curves.length; i++) {
       if (
@@ -570,12 +571,9 @@ renderer.domElement.addEventListener('mousemove', function(e) {
       }
     }
     pathHovering = !(chokokuPath.hitTest(mouseX, mouseY) === null);
-    if (pathHovering && hoverPoint === -1) {
-      if (isMouseClicking) {
-        renderer.domElement.style.cursor = 'grabbing';
-      } else {
-        renderer.domElement.style.cursor = 'grab';
-      }
+    if (pathHovering && hoverPoint === -1 && renderer.domElement.style.cursor !== 'grabbing') {
+      console.log(renderer.domElement.style.cursor)
+      renderer.domElement.style.cursor = 'grab';
     }
     if (!isMouseClicking) {
       hoverPoint = -1;
@@ -584,13 +582,13 @@ renderer.domElement.addEventListener('mousemove', function(e) {
       pointCircles[hoverPoint].position.set(mouseX, mouseY)
     } else if (pathHovering) {
       for (let i = 0; i < chokokuPath.curves.length; i++) {
-        chokokuPath.curves[i].point1.x += mouseX - pathGrabingOriginX;
-        chokokuPath.curves[i].point1.y += mouseY - pathGrabingOriginY;
-        pointCircles[i].position.x += mouseX - pathGrabingOriginX;
-        pointCircles[i].position.y += mouseY - pathGrabingOriginY;
+        chokokuPath.curves[i].point1.x += mouseX - pathGrabbingOriginX;
+        chokokuPath.curves[i].point1.y += mouseY - pathGrabbingOriginY;
+        pointCircles[i].position.x += mouseX - pathGrabbingOriginX;
+        pointCircles[i].position.y += mouseY - pathGrabbingOriginY;
       }
-      pathGrabingOriginX = mouseX;
-      pathGrabingOriginY = mouseY;
+      pathGrabbingOriginX = mouseX;
+      pathGrabbingOriginY = mouseY;
     }
   } else if (status === 'paint') {
     let mouse = toScreenXY(new THREE.Vector2(mouseX, mouseY));
@@ -658,13 +656,19 @@ renderer.domElement.addEventListener('click', function(e) {
 renderer.domElement.addEventListener('mousedown', function() {
   isMouseClicking = true;
   if (status === 'adjustpath' && pathHovering) {
-    pathGrabingOriginX = mouseX;
-    pathGrabingOriginY = mouseY;
+    pathGrabbingOriginX = mouseX;
+    pathGrabbingOriginY = mouseY;
+  }
+  if (pathHovering && hoverPoint === -1 && renderer.domElement.style.cursor !== 'grabbing') {
+    renderer.domElement.style.cursor = 'grabbing';
   }
 });
 
 renderer.domElement.addEventListener('mouseup', function() {
   isMouseClicking = false;
+  if (renderer.domElement.style.cursor !== 'grab') {
+    renderer.domElement.style.cursor = 'grab';
+  }
 })
 
 viewRenderer.domElement.addEventListener('mousemove', function(e) {
@@ -857,7 +861,7 @@ function setModelFromChokoku() {
       scene.remove(model);
       model = resultModel;
       scene.add(model);
-      recordModel(model);
+      recordScene(model);
     }
   } catch (error) {
     statusBar.innerHTML = '<span style="color: #ff0000;">エラーが発生しました。</span>';
@@ -1072,11 +1076,10 @@ function removeMesh(mesh) {
   }
 }
 
-function recordModel() {
+function recordScene() {
   if (undoBuffer.length >= 3) {
-    undoBuffer.shift();
+    undoBuffer.shift(); // 最初の要素を削除
   }
-  undoBuffer.splice(undoNowModelId + 1, undoBuffer.length - 1 - undoNowModelId);
   undoBuffer.push(model.clone());
   undoNowModelId = undoBuffer.length - 1;
   if (undoNowModelId >= 1) {
