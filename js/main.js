@@ -80,8 +80,6 @@ let viewBoxMaterial;
 let viewRaycast = new THREE.Raycaster();
 let viewMouse = new THREE.Vector2();
 
-setStatus(status)
-
 loader.setPath('img/');
 viewBoxMaterial = [];
 for (let i = 1; i <= 6; i++) {
@@ -188,8 +186,12 @@ class Status {
 
   change() {
     statusBar.textContent = `[${this.name}] ${this.desc}`;
-    toolItems[status].unSelect(this.group);
-    toolItems[this.group].select();
+    if (toolItems[status]) {
+      toolItems[status].unSelect(this.group);
+    }
+    if (toolItems[this.group]) {
+      toolItems[this.group].select();
+    }
     status = this.status;
   }
 }
@@ -215,6 +217,8 @@ statuses['modelAdd2'] = new Status(
 statuses['export'] = new Status(
   {name: 'モデル出力', statusName: 'export', group: 'export', desc: 'モデルをglb(gltf)形式でエクスポートしダウンロードします。'}
 );
+
+statuses['start'].change();
 
 class ToolItem {
   constructor(option) {
@@ -383,7 +387,7 @@ createBtn.addEventListener('click', function() {
   
     mask.classList.add('hidden');
     startModal.classList.add('hidden');
-    setStatus('setpath');
+    statuses['setpath'].change();
     render();
   }
 });
@@ -426,7 +430,7 @@ document.querySelector('#chokoku-setting-add-btn').addEventListener('click', fun
   document.querySelector('#chokoku-setting .btn').parentNode.classList.remove('hidden');
   this.classList.add('selected');
   nowPath.visible = true;
-  setStatus('setpath');
+  statuses['setpath'].change();
   let firstI = 0;
   if (nowPath.curves.length > 0) { // パスが作りかけの場合
     pointCircles[0].visible = true;
@@ -447,7 +451,7 @@ document.querySelector('#chokoku-setting-edit-btn').addEventListener('click', fu
   document.querySelector('#chokoku-setting-add-mode-params').classList.add('hidden');
   document.querySelector('#chokoku-setting .btn').parentNode.classList.add('hidden');
   this.classList.add('selected');
-  setStatus('adjustpath');
+  statuses['adjustpath'].change();
   nowPath.visible = false;
   hoverPoint = -1;
   if (nowPath.curves.length > 0) pointCircles[0].visible = false;
@@ -736,7 +740,7 @@ function setModelFromChokoku() {
     }, 1000);
     return;
   }
-  setStatus('setpath');
+  statuses['setpath'].change();
   let pathShape = new THREE.Shape();
   let originI = 0;
   for (let i = 0; i < chokokuPath.curves.length; i++) {
@@ -954,7 +958,7 @@ function setModel(JSONData, isAdd = false) {
       scene.add(uploadModel);
       document.querySelector('#file-upload-add-step1').classList.add('hidden');
       document.querySelector('#file-upload-add-step2').classList.remove('hidden');
-      setStatus('modelAdd2');
+      statuses['modelAdd2'].change();
     } else {
       model = mesh.clone();
       if (model.geometry.type === 'BufferGeometry') {
@@ -970,7 +974,7 @@ function setModel(JSONData, isAdd = false) {
 
       document.querySelector('#model-color-btn').style.background = document.querySelector('#model-color').value;
 
-      setStatus('setpath');
+      statuses['setpath'].change();
     
       // Start main loop
       render();
@@ -982,17 +986,6 @@ function toScreenXY(point, width = screenWidth - 330, height = screenHeight) {
   point.x = (point.x / width) * 2 - 1;
   point.y = -(point.y / height) * 2 + 1;
   return point;
-}
-
-function setStatus(statusName) {
-  if (statusName === 'setpath' || statusName === 'adjustpath') {
-    renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
-  } else if (statusName === 'paint') {
-    renderer.domElement.style.cursor = "url('img/paint-cursor.svg') 5 5, auto";
-  } else {
-    if (renderer !== undefined) renderer.domElement.style.cursor = 'default';
-  }
-  status = statusName;
 }
 
 function isSameNormal(normal1, normal2) {
