@@ -571,9 +571,12 @@ renderer.domElement.addEventListener('mousemove', function(e) {
       }
     }
     pathHovering = !(chokokuPath.hitTest(mouseX, mouseY) === null);
-    if (pathHovering && hoverPoint === -1 && renderer.domElement.style.cursor !== 'grabbing') {
-      console.log(renderer.domElement.style.cursor)
-      renderer.domElement.style.cursor = 'grab';
+    if (pathHovering && hoverPoint === -1) {
+      if (renderer.domElement.style.cursor !== 'grabbing') {
+        renderer.domElement.style.cursor = 'grab';
+      }
+    } else {
+      renderer.domElement.style.cursor = 'url(img/chokoku-cursor.svg) 5 5, auto';
     }
     if (!isMouseClicking) {
       hoverPoint = -1;
