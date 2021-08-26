@@ -551,8 +551,8 @@ renderer.domElement.addEventListener('contextmenu', function(e) {
 
 renderer.domElement.addEventListener('mousemove', function(e) {
   // Set cursor
-  mouseX = e.clientX;
-  mouseY = e.clientY;
+  mouseX = (e.clientX + 25) - e.clientX % 50;
+  mouseY = (e.clientY + 25) - e.clientY % 50;
   if (status === 'adjustpath') {
     // boolean演算後のsegmentsは⏳のような図形にはない
     for (let i = 0; i < chokokuPath.curves.length; i++) {
@@ -625,13 +625,13 @@ renderer.domElement.addEventListener('mousemove', function(e) {
 renderer.domElement.addEventListener('click', function(e) {
   if (status === 'setpath') {
     if (nowPath.segments.length === 0) {
-      nowPath.moveTo(e.clientX, e.clientY);
-      let pointCircle = new paper.Path.Circle(new paper.Point(e.clientX, e.clientY), 5);
+      nowPath.moveTo(mouseX, mouseY);
+      let pointCircle = new paper.Path.Circle(new paper.Point(mouseX, mouseY), 5);
       pointCircle.strokeColor = '#000';
       pointCircle.fillColor = '#fff';
       pointCircles.push(pointCircle);
     } else if (pointCircles[0].fillColor.toCSS() === 'rgb(255,255,255)') {
-      nowPath.lineTo(e.clientX, e.clientY);
+      nowPath.lineTo(mouseX, mouseY);
     } else {
       // ---------- paper.jsで外側の先だけに（内部の線をなくす） ----------
       // boolean演算で大きな長方形と交差する部分を求める
