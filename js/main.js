@@ -222,6 +222,7 @@ class ToolItem {
     this.status = option.status;
     this.domElement = document.querySelector(`#${this.domName}-tool`);
     this.settingDomElement = document.querySelector(`#${this.domName}-setting`);
+    this.onUnselected = option.onUnselected || function() {};
     this.onSelected = option.onSelected || function() {};
     this.statuses = option.statuses || [this.status];
 
@@ -241,17 +242,23 @@ class ToolItem {
   select() {
     this.domElement.classList.add('selected');
     this.settingDomElement.classList.remove('hidden');
+    if (renderer !== undefined) renderer.domElement.style.cursor = 'default';
+    this.onSelected();
   }
 
   unSelect(statusTo) { 
     this.domElement.classList.remove('selected');
     this.settingDomElement.classList.add('hidden');
-    this.onSelected(statusTo);
+    this.onUnselected(statusTo);
   }
 }
 
 toolItems['setpath'] = new ToolItem(
-  {domName: 'chokoku', status: 'setpath', statuses: ['setpath', 'adjustpath'], onUnselected: function(statusTo) {
+  {domName: 'chokoku', status: 'setpath', statuses: ['setpath', 'adjustpath'], 
+  onSelected: function() {
+    renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
+  },
+  onUnselected: function(statusTo) {
     removeCursorPath = false;
     if (statusTo !== 'setpath' && statusTo !== 'adjustpath') {
       for (let i = nowPath.segments.length - 1; i >= 0; i--) {
@@ -261,7 +268,10 @@ toolItems['setpath'] = new ToolItem(
     }
   }}
 );
-toolItems['paint'] = new ToolItem({domName: 'paint', status: 'paint'});
+toolItems['paint'] = new ToolItem(
+  {domName: 'paint', status: 'paint', onSelected: function() {
+    renderer.domElement.style.cursor = "url('img/paint-cursor.svg') 5 5, auto";
+}});
 toolItems['modelAdd1'] = new ToolItem(
   {domName: 'upload', status: 'modelAdd1', statuses: ['modelAdd1', 'modelAdd2']}
 );
