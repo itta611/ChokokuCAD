@@ -555,24 +555,22 @@ renderer.domElement.addEventListener('mousemove', function(e) {
     mouseY = e.clientY;
   }
   if (status === 'adjustpath') {
-    if (renderer.domElement.style.cursor !== 'default')
     // boolean演算後のsegmentsは⏳のような図形にはない
-    hoverPoint = -1;
     for (let i = 0; i < chokokuPath.curves.length; i++) {
       if (
         chokokuPath.curves[i].point1.x - 5 < mouseX &&
         chokokuPath.curves[i].point1.x + 5 > mouseX &&
         chokokuPath.curves[i].point1.y - 5 < mouseY &&
-        chokokuPath.curves[i].point1.y + 5 > mouseY &&
-        hoverPoint === -1
+        chokokuPath.curves[i].point1.y + 5 > mouseY
       ) {
         pointCircles[i].fillColor = '#aaa';
-        hoverPoint = i;
+        if (hoverPoint === -1) hoverPoint = i;
       } else {
         pointCircles[i].fillColor = '#fff';
       }
     }
     pathHovering = !(chokokuPath.hitTest(mouseX, mouseY) === null);
+    // カーソル設定
     if (hoverPoint !== -1) {
       renderer.domElement.style.cursor = 'default';
     } else if (pathHovering && hoverPoint === -1) {
@@ -582,8 +580,9 @@ renderer.domElement.addEventListener('mousemove', function(e) {
     } else if (!pathHovering && hoverPoint === -1) {
       renderer.domElement.style.cursor = 'url(img/chokoku-cursor.svg) 5 5, auto';
     }
+
     if (!isMouseClicking) {
-      hoverPoint = -1;
+      hoverPoint = -1; // マウスが押されなくなったらhoverPointを初期化する
     } else if (hoverPoint !== -1) {
       chokokuPath.curves[hoverPoint].point1.set(mouseX, mouseY);
       pointCircles[hoverPoint].position.set(mouseX, mouseY)
