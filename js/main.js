@@ -226,9 +226,9 @@ class ToolItem {
     this.status = option.status;
     this.domElement = document.querySelector(`#${this.domName}-tool`);
     this.settingDomElement = document.querySelector(`#${this.domName}-setting`);
-    this.onUnselected = option.onUnselected || function() {};
-    this.onSelected = option.onSelected || function() {};
-    this.statuses = option.statuses || [this.status];
+    this.onUnselected = option.onUnselected ?? function() {};
+    this.onSelected = option.onSelected ?? function() {};
+    this.statuses = option.statuses ?? [this.status];
 
     this.domElement.addEventListener('click', () => {
       statuses[this.status].change();
@@ -551,8 +551,13 @@ renderer.domElement.addEventListener('contextmenu', function(e) {
 
 renderer.domElement.addEventListener('mousemove', function(e) {
   // Set cursor
-  mouseX = (e.clientX + 25) - e.clientX % 50;
-  mouseY = (e.clientY + 25) - e.clientY % 50;
+  if (document.querySelector('#chokoku-setting-issnap').checked) {
+    mouseX = (e.clientX + 25) - e.clientX % 50;
+    mouseY = (e.clientY + 25) - e.clientY % 50;
+  } else {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }
   if (status === 'adjustpath') {
     // boolean演算後のsegmentsは⏳のような図形にはない
     for (let i = 0; i < chokokuPath.curves.length; i++) {
@@ -602,7 +607,9 @@ renderer.domElement.addEventListener('mousemove', function(e) {
       let materialIndex = intersectObject.face.materialIndex;
       // ↓違う面にカーソルが入ったとき
       if (hoverIndex !== materialIndex) {
-        // ↓もし前は面が選択されていなかったら先ほどの面の色をもとに戻す
+        // ↓もし前は面が選択されていたら先ほどの面の色をもとに戻す
+        console.log(faceNormals[hoverIndex]);
+        console.log(hoverIndex);
         if (hoverIndex !== -1) {
           setColorByMaterialIndex(hoverIndex);
         }
@@ -669,7 +676,7 @@ renderer.domElement.addEventListener('mousedown', function() {
 
 renderer.domElement.addEventListener('mouseup', function() {
   isMouseClicking = false;
-  if (renderer.domElement.style.cursor !== 'grab') {
+  if (renderer.domElement.style.cursor === 'grabbing') {
     renderer.domElement.style.cursor = 'grab';
   }
 })
@@ -1007,9 +1014,9 @@ function toScreenXY(point, width = screenWidth - 330, height = screenHeight) {
 }
 
 function isSameNormal(normal1, normal2) {
-  return normal1.x.toFixed(3) === normal2.x.toFixed(3) &&
-  normal1.y.toFixed(3) === normal2.y.toFixed(3) &&
-  normal1.z.toFixed(3) === normal2.z.toFixed(3);
+  return +normal1.x.toFixed(3) === +normal2.x.toFixed(3) &&
+    +normal1.y.toFixed(3) === +normal2.y.toFixed(3) &&
+    +normal1.z.toFixed(3) === +normal2.z.toFixed(3);
 }
 
 function findSameNormal(normals, normal) {
