@@ -555,7 +555,9 @@ renderer.domElement.addEventListener('mousemove', function(e) {
     mouseY = e.clientY;
   }
   if (status === 'adjustpath') {
+    if (renderer.domElement.style.cursor !== 'default')
     // boolean演算後のsegmentsは⏳のような図形にはない
+    hoverPoint = -1;
     for (let i = 0; i < chokokuPath.curves.length; i++) {
       if (
         chokokuPath.curves[i].point1.x - 5 < mouseX &&
@@ -566,17 +568,18 @@ renderer.domElement.addEventListener('mousemove', function(e) {
       ) {
         pointCircles[i].fillColor = '#aaa';
         hoverPoint = i;
-        renderer.domElement.style.cursor = 'default';
       } else {
         pointCircles[i].fillColor = '#fff';
       }
     }
     pathHovering = !(chokokuPath.hitTest(mouseX, mouseY) === null);
-    if (pathHovering && hoverPoint === -1) {
+    if (hoverPoint !== -1) {
+      renderer.domElement.style.cursor = 'default';
+    } else if (pathHovering && hoverPoint === -1) {
       if (renderer.domElement.style.cursor !== 'grabbing') {
         renderer.domElement.style.cursor = 'grab';
       }
-    } else {
+    } else if (!pathHovering && hoverPoint === -1) {
       renderer.domElement.style.cursor = 'url(img/chokoku-cursor.svg) 5 5, auto';
     }
     if (!isMouseClicking) {
