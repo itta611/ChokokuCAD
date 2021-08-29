@@ -391,8 +391,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   border: 1px solid #c9c9c9;
   box-shadow: 0px 0px 7px 0px #7a7a7a;
   padding: 15px;
-  display: flex;
-  flex-direction: column;
 }
 
 .param-group {
@@ -432,8 +430,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   overflow-y: scroll;
   cursor: default;
   background: #F6F6F6;
-  flex-grow: 1;
-  margin-bottom: 70px;
+  position: absolute;
+  height: 300px;
+  width: 300px;
+  bottom: 90px;
+  border: 1px solid #ededed;
+  border-right: none;
 }
 
 .layer-item {
