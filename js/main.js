@@ -426,7 +426,7 @@ document.querySelector('#chokoku-setting-add-btn').addEventListener('click', fun
   document.querySelector('#chokoku-setting-edit-btn').classList.remove('selected');
   document.querySelector('#chokoku-setting-add-mode-params').classList.remove('hidden');
   document.querySelector('#chokoku-setting .btn').parentNode.classList.remove('hidden');
-  document.querySelector('#chokoku-setting-issnap').parentNode.classList.remove('hidden');
+  document.querySelector('#chokoku-setting-issnap').parentNode.parentNode.classList.remove('hidden');
   this.classList.add('selected');
   nowPath.visible = true;
   statuses['setpath'].change();
