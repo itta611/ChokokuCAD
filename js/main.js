@@ -709,6 +709,7 @@ viewRenderer.domElement.addEventListener('click', function(e) {
   viewRaycast.setFromCamera(viewMouse, viewCamera);
   let intersectObjects = viewRaycast.intersectObjects(viewBoxAngles);
   if (intersectObjects.length >= 1) {
+    if (intersectObjects[0].object.position.length() === 0) return; // 中心のboxだったら
     // ↓lookAtとcameraのlengthはOrbitControls自動で設定してくれるが、lookAtは1フレームくらい後に設定される事がある
     camera.position.copy(intersectObjects[0].object.position.clone().normalize().setLength(camera.position.length()));
     camera.lookAt(new THREE.Vector3());
