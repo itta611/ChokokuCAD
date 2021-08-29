@@ -69,6 +69,7 @@ let removeCursorPath = false;
 let pointCircles = [];
 let lockObject;
 let toolItems = [];
+let prevPath;
 
 let viewBox;
 let viewRenderer;
@@ -426,7 +427,6 @@ document.querySelector('#chokoku-setting-add-btn').addEventListener('click', fun
   document.querySelector('#chokoku-setting-edit-btn').classList.remove('selected');
   document.querySelector('#chokoku-setting-add-mode-params').classList.remove('hidden');
   document.querySelector('#chokoku-setting .btn').parentNode.classList.remove('hidden');
-  document.querySelector('#chokoku-setting-issnap').parentNode.parentNode.classList.remove('hidden');
   this.classList.add('selected');
   nowPath.visible = true;
   statuses['setpath'].change();
@@ -449,7 +449,6 @@ document.querySelector('#chokoku-setting-edit-btn').addEventListener('click', fu
   document.querySelector('#chokoku-setting-add-btn').classList.remove('selected');
   document.querySelector('#chokoku-setting-add-mode-params').classList.add('hidden');
   document.querySelector('#chokoku-setting .btn').parentNode.classList.add('hidden');
-  document.querySelector('#chokoku-setting-issnap').parentNode.parentNode.classList.add('hidden');
   this.classList.add('selected');
   statuses['adjustpath'].change();
   nowPath.visible = false;
@@ -489,8 +488,24 @@ document.querySelector('#chokoku-setting-eraser-btn').addEventListener('click', 
   this.classList.add('selected');
 });
 
-document.querySelector('#chokoku-setting .btn').addEventListener('click', function() {
+document.querySelector('#enter-btn').addEventListener('click', function() {
   setModelFromChokoku();
+});
+
+document.querySelector('#reuse-btn').addEventListener('click', function() {
+  chokokuPath.remove();
+  if (this.textContent === '一つ前のパスを使用') {
+    this.textContent = '新しいパスを使う';
+    chokokuPath = prevPath;
+    chokokuPath.visible = true;
+  } else {
+    this.textContent = '一つ前のパスを使用';
+    chokokuPath = new paper.Path();
+    pointCircles = [];
+    for (let i = chokokuPath.segments.length - 1; i >= 0; i--) {
+      chokokuPath.removeSegment(i);
+    }
+  }
 });
 
 document.querySelector('#model-color').addEventListener('input', function() {
@@ -709,7 +724,6 @@ viewRenderer.domElement.addEventListener('click', function(e) {
   viewRaycast.setFromCamera(viewMouse, viewCamera);
   let intersectObjects = viewRaycast.intersectObjects(viewBoxAngles);
   if (intersectObjects.length >= 1) {
-    if (intersectObjects[0].object.position.length() === 0) return; // 中心のboxだったら
     // ↓lookAtとcameraのlengthはOrbitControls自動で設定してくれるが、lookAtは1フレームくらい後に設定される事がある
     camera.position.copy(intersectObjects[0].object.position.clone().normalize().setLength(camera.position.length()));
     camera.lookAt(new THREE.Vector3());
@@ -761,7 +775,7 @@ function setModelFromChokoku() {
   if (chokokuPath.segments !== undefined && chokokuPath.segments.length <= 2) {
     statusBar.innerHTML = '<span style="color: #ff0000;">頂点は３つ以上用意する必要があります。</span>';
     setTimeout(function() {
-      statusBar.innerHTML = statusBarTexts[status];
+      statusBar.innerHTML = statuses[status].desc;
     }, 1000);
     return;
   }
@@ -893,8 +907,11 @@ function setModelFromChokoku() {
     console.log(error);
   }
   chokokuHole = undefined;
-  chokokuPath.remove();
+  prevPath = chokokuPath;
+  prevPath.visible = false;
   chokokuPath = new paper.Path();
+  this.textContent = '一つ前のパスを使用';
+  document.querySelector('#reuse-btn').classList.remove('disabled');
 }
 
 function createNewMeshFromPath(chokokuHole, pathShape) {
