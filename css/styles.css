@@ -381,7 +381,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   cursor: default;
 }
 
-#setting {
+#right-pane {
   background: #fbfbfb;
   width: 300px;
   z-index: 3;
@@ -409,7 +409,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   display: inline!important;
 }
 
-#setting label:not(.btn, #file-upload-add-step2 label) {
+#right-pane label:not(.btn, #file-upload-add-step2 label) {
   display: block;
 }
 
