@@ -129,7 +129,6 @@ input[type="checkbox"] {
   vertical-align: middle;
   margin: 0 3px;
   margin-bottom: 0!important;
-  vertical-align: baseline;
   outline: none;
   background: #fff;
   transition-duration: 0.2s;
@@ -317,7 +316,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
 
 .tool-item-mini {
   padding: 5px;
-  background: #ffffffcc;
 }
 
 .tool-item-mini.disabled {
@@ -336,6 +334,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
 
 .tool-item-mini + .tool-item-mini {
   margin-left: 7px;
+}
+
+#re-undo .tool-item-mini {
+  background: #ffffffcc;
 }
 
 #new-file {
@@ -438,9 +440,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   border-right: none;
 }
 
+#layer-toolbar {
+  padding: 7px;
+  background: #fafafa;
+  border-bottom: #ededed 1px solid;
+}
+
+.layer-toolbar-item {
+  margin-left: 0!important; /* 文字のスペースの幅でちょうどよい */
+}
+
 .layer-item {
   padding: 7px;
-  word-break: break-word;
 }
 
 #layers input[type="radio"] {
@@ -465,6 +476,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   height: 20px;
   z-index: 5;
   font-size: 18px;
-  border-top: 1px solid #d8d8d8;
+  border-top: 1px solid #ededed;
   padding: 10px 30px;
 }

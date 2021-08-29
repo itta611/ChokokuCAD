@@ -362,6 +362,13 @@ document.querySelectorAll('input[type="range"]').forEach(function(element) {
   element.style.background = `linear-gradient(to right, #ffc42d ${percent}%, #eee ${percent}% 100%)`;
 });
 
+document.querySelector('#layers').addEventListener('click', function() {
+  let layerChecks = document.querySelectorAll('.layer-check');
+  for (let i = 0; i < layerChecks.length; i++) {
+    if (layerChecks[i].checked) layerID = i;
+  }
+});
+
 fileUploadAdd.addEventListener('change', function(e) {
   let reader = new FileReader();
   uploadNewModel(reader, true, e);
