@@ -391,6 +391,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   border: 1px solid #c9c9c9;
   box-shadow: 0px 0px 7px 0px #7a7a7a;
   padding: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
 .param-group {
@@ -423,6 +425,32 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   position: absolute;
   top: 7px;
   right: 7px;
+}
+
+#layers {
+  font-size: 18px;
+  overflow-y: scroll;
+  cursor: default;
+  background: #F6F6F6;
+  flex-grow: 1;
+  margin-bottom: 70px;
+}
+
+.layer-item {
+  padding: 7px;
+  word-break: break-word;
+}
+
+#layers input[type="radio"] {
+  display: none;
+}
+
+#layers input[type="radio"]:checked ~ .layer-item {
+  background: #007bff;
+}
+
+#layers input[type="radio"]:checked ~ .layer-item {
+  color: #fff;
 }
 
 #status-bar {
