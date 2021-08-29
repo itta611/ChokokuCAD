@@ -188,7 +188,7 @@
           <img src="img/layer-remove.svg" id="layer-remove-btn" class="tool-item-mini layer-toolbar-item">
         </div>
         <label class="layer-item-wrap">
-          <input type="radio" name="list-radio" class="layer-check"> <!-- nameは他のcheckboxと互換性を持たせるために -->
+          <input type="radio" name="list-radio" class="layer-check"><!-- nameは他のcheckboxと互換性を持たせるために -->
           <div class="layer-item">レイヤー１</div>
         </label>
         <label class="layer-item-wrap">
@@ -207,7 +207,7 @@
     loadingStatus = 1;
     function changeLoadingText() {
       loadingStatus++;
-      document.querySelector('#loading-mask-inner h4').textContent = `LOADING... (${loadingStatus} / 5)`
+      document.querySelector('#loading-mask-inner h4').textContent = `LOADING... (${loadingStatus} / 8)`
     }
   </script>
   <script src="js/three.min.js" onload="changeLoadingText();"></script>
@@ -216,7 +216,6 @@
   <script src="js/STLLoader.js" onload="changeLoadingText();"></script>
   <script src="js/GLTFLoader.js" onload="changeLoadingText();"></script>
   <script src="js/OrbitControls.js" onload="changeLoadingText();"></script>
-  <script src="js/STLLoader.js" onload="changeLoadingText();"></script>
   <script src="js/paper-full.js" onload="changeLoadingText();"></script>
   <script src="js/main.js"></script>
 

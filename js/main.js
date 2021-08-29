@@ -550,6 +550,8 @@ document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', 
   });
 });
 
+document.querySelector('#layer-add-btn').addEventListener(function() {});
+
 renderer.domElement.addEventListener('contextmenu', function(e) {
   e.preventDefault();
   return false;
