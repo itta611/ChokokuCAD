@@ -31,7 +31,8 @@ let ambientLight;
 let camera;
 let currentRotation;
 let renderer;
-let model;
+let layers = [];
+let layerID = 0;
 let controls;
 let scene = new THREE.Scene();
 let status = 'start';
@@ -331,7 +332,7 @@ document.querySelector('#export-setting .btn').addEventListener('click', functio
   if (document.querySelector('#export-file-name').value !== '') {
     let exporter = new THREE.GLTFExporter();
     let fileContent;
-    exporter.parse(model, function(arg) {
+    exporter.parse(layers[layerID], function(arg) {
       fileContent = JSON.stringify(arg);
       let a = document.createElement('a');
       a.href = 'data:application/octet-stream,' + encodeURIComponent(fileContent);
@@ -372,17 +373,17 @@ createBtn.addEventListener('click', function() {
     modelDepth = document.querySelector('#depth').value * 1;
     modelWidth = document.querySelector('#width').value * 1;
     modelHeight = document.querySelector('#height').value * 1;
-    model = new THREE.Mesh(
+    layers[0] = new THREE.Mesh(
       new THREE.BoxGeometry(modelWidth, modelHeight, modelDepth),
       new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 0.5, vertexColors: THREE.FaceColors})
       // new THREE.MeshStandardMaterial({wireframe: true})
     );
     for (let i = 0; i < 6; i++) {
-      let faceNormal = model.geometry.faces[i * 2].normal;
+      let faceNormal = layers[layerID].geometry.faces[i * 2].normal;
       faceNormals.push(faceNormal);
       faceColors.push("#ffffff");
     }
-    scene.add(model);
+    scene.add(layers[0]);
     recordModel();
   
     mask.classList.add('hidden');
@@ -501,11 +502,11 @@ document.querySelector('#model-color').addEventListener('input', function() {
 document.querySelector('#set-material-btn').addEventListener('click', function() {
   let color = document.querySelector('#model-color').value;
   // ↓model.material.colorだと、面の色とモデルの色が混ざってしまうので、すべての面に色を付ける
-  for (let i = 0; i < model.geometry.faces.length; i++) {
-    model.geometry.faces[i].color.set(color);
+  for (let i = 0; i < layers[layerID].geometry.faces.length; i++) {
+    layers[layerID].geometry.faces[i].color.set(color);
     faceColors[i] = color;
   }
-  model.geometry.colorsNeedUpdate = true;
+  layers[layerID].geometry.colorsNeedUpdate = true;
 });
 
 document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', function() {
@@ -513,14 +514,14 @@ document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', 
   setTimeout(function() {
     this.textContent = '決定';
     let uploadModelBSP = new ThreeBSP(uploadModel);
-    let modelBSP = new ThreeBSP(model);
+    let modelBSP = new ThreeBSP(layers[layerID]);
     let newModelBSP = modelBSP.union(uploadModelBSP);
-    let newModel = newModelBSP.toMesh(model.material);
-    removeMesh(model);
-    model.visible = false;
-    model = newModel.clone();
-    model.material.vertexColors = THREE.FaceColors;
-    scene.add(model);
+    let newModel = newModelBSP.toMesh(layers[layerID].material);
+    removeMesh(layers[layerID]);
+    layers[layerID].visible = false;
+    layers[layerID] = newModel.clone();
+    layers[layerID].material.vertexColors = THREE.FaceColors;
+    scene.add(layers[layerID]);
     removeMesh(uploadModel);
     notSaved = true;
     recordModel();
@@ -601,7 +602,7 @@ renderer.domElement.addEventListener('mousemove', function(e) {
   } else if (status === 'paint') {
     let mouse = toScreenXY(new THREE.Vector2(mouseX, mouseY));
     raycaster.setFromCamera(mouse, camera);
-    let intersectObject = raycaster.intersectObject(model)[0];
+    let intersectObject = raycaster.intersectObject(layers[layerID])[0];
     // MaterialIndexから色を付ける
     if (intersectObject !== undefined) {
       let materialIndex = intersectObject.face.materialIndex;
@@ -625,7 +626,7 @@ renderer.domElement.addEventListener('mousemove', function(e) {
         hoverIndex = -1;
       }
     }
-    model.geometry.colorsNeedUpdate = true;
+    layers[layerID].geometry.colorsNeedUpdate = true;
   }
 });
 
@@ -725,9 +726,9 @@ undoBtn.addEventListener('click', function() {
       undoBtn.classList.add('disabled');
     }
     redoBtn.classList.remove('disabled');
-    removeMesh(model);
-    model = undoBuffer[undoNowModelId][0];
-    scene.add(model);
+    removeMesh(layers[layerID]);
+    layers[layerID] = undoBuffer[undoNowModelId][0];
+    scene.add(layers[layerID]);
     removeMesh(lockObject);
     if (undoBuffer[undoNowModelId][1] !== undefined) {
       lockObject = undoBuffer[undoNowModelId][1];
@@ -745,9 +746,9 @@ redoBtn.addEventListener('click', function() {
       redoBtn.classList.add('disabled');
     }
     undoBtn.classList.remove('disabled');
-    removeMesh(model);
-    model = undoBuffer[undoNowModelId][0];
-    scene.add(model);
+    removeMesh(layers[layerID]);
+    layers[layerID] = undoBuffer[undoNowModelId][0];
+    scene.add(layers[layerID]);
     if (undoBuffer[undoNowModelId][1] !== undefined) {
       removeMesh(lockObject);
       lockObject = undoBuffer[undoNowModelId][1];
@@ -817,7 +818,7 @@ function setModelFromChokoku() {
   let resultModel;
   try {
     chokokuHoleBSP = new ThreeBSP(chokokuHole) // ThreeBSPインスタンス
-    modelBSP = new ThreeBSP(model) // ThreeBSPインスタンス
+    modelBSP = new ThreeBSP(layers[layerID]) // ThreeBSPインスタンス
     if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) {
       if (lockObject === undefined) {
         resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
@@ -848,10 +849,10 @@ function setModelFromChokoku() {
       recordModel();
     } else {
       if (lockObject === undefined) {
-        resultModel = resultModelBSP.toMesh(model.material);
+        resultModel = resultModelBSP.toMesh(layers[layerID].material);
       } else {
         let lockObjectBSP = new ThreeBSP(lockObject);
-        resultModel = resultModelBSP.union(lockObjectBSP).toMesh(model.material);
+        resultModel = resultModelBSP.union(lockObjectBSP).toMesh(layers[layerID].material);
       }
 
       // ------- 同一面データ作成 -------
@@ -880,10 +881,10 @@ function setModelFromChokoku() {
         resultModel.geometry.faces[i].materialIndex = materialIndex;
         resultModel.geometry.faces[i].color.set(faceColors[materialIndex]);
       }
-      scene.remove(model);
-      model = resultModel;
-      scene.add(model);
-      recordModel(model);
+      scene.remove(layers[layerID]);
+      layers[layerID] = resultModel;
+      scene.add(layers[layerID]);
+      recordModel(layers[layerID]);
     }
   } catch (error) {
     statusBar.innerHTML = '<span style="color: #ff0000;">エラーが発生しました。</span>';
@@ -929,7 +930,7 @@ function uploadNewModel(reader, isAdd, e) {
       STLLoader.load(stlBlob, function(modelGeometry) {
         uploadModel = new THREE.Mesh(
           modelGeometry,
-          new THREE.MeshStandardMaterial(model.material)
+          new THREE.MeshStandardMaterial(layers[layerID].material)
         );
         uploadModelJSON = uploadModel.toJSON();
         setModel(uploadModelJSON, isAdd);
@@ -973,7 +974,7 @@ function setModel(JSONData, isAdd = false) {
         let modelGeometry = new THREE.Geometry();
         let modelMaterial = uploadModel.material;
         modelMaterial.depthTest = false;
-        model.material.vertexColors = THREE.FaceColors;
+        layers[layerID].material.vertexColors = THREE.FaceColors;
         modelGeometry.fromBufferGeometry(uploadModel.geometry);
         uploadModel = new THREE.Mesh(
           modelGeometry,
@@ -988,15 +989,15 @@ function setModel(JSONData, isAdd = false) {
       document.querySelector('#file-upload-add-step2').classList.remove('hidden');
       statuses['modelAdd2'].change();
     } else {
-      model = mesh.clone();
-      if (model.geometry.type === 'BufferGeometry') {
+      layers[layerID] = mesh.clone();
+      if (layers[layerID].geometry.type === 'BufferGeometry') {
         let modelGeometry = new THREE.Geometry();
-        let modelMaterial = model.material;
-        model.material.vertexColors = THREE.FaceColors;
-        modelGeometry.fromBufferGeometry(model.geometry);
-        model = new THREE.Mesh(modelGeometry, modelMaterial);
+        let modelMaterial = layers[layerID].material;
+        layers[layerID].material.vertexColors = THREE.FaceColors;
+        modelGeometry.fromBufferGeometry(layers[layerID].geometry);
+        layers[layerID] = new THREE.Mesh(modelGeometry, modelMaterial);
       }
-      scene.add(model);
+      scene.add(layers[layerID]);
       mask.classList.add('hidden');
       startModal.classList.add('hidden');
 
@@ -1057,17 +1058,17 @@ function transformUploadModel() {
 }
 
 function transformModel() {
-  model.position.set(
+  layers[layerID].position.set(
     document.querySelector('#model-position-x').value,
     document.querySelector('#model-position-y').value,
     document.querySelector('#model-position-z').value
   );
-  model.rotation.set(
+  layers[layerID].rotation.set(
     THREE.Math.degToRad(document.querySelector('#model-rotation-x').value),
     THREE.Math.degToRad(document.querySelector('#model-rotation-y').value),
     THREE.Math.degToRad(document.querySelector('#model-rotation-z').value)
   );
-  model.scale.set(
+  layers[layerID].scale.set(
     document.querySelector('#model-scale-x').value,
     document.querySelector('#model-scale-y').value,
     document.querySelector('#model-scale-z').value
@@ -1076,17 +1077,17 @@ function transformModel() {
 
 function setColorByMaterialIndex(index, color = false) {
   let foundIndex = false;
-  model.geometry.sortFacesByMaterialIndex();
-  for (let i = 0;i < model.geometry.faces.length;i++) {
-    let nowMaterialIndex = model.geometry.faces[i].materialIndex;
+  layers[layerID].geometry.sortFacesByMaterialIndex();
+  for (let i = 0;i < layers[layerID].geometry.faces.length;i++) {
+    let nowMaterialIndex = layers[layerID].geometry.faces[i].materialIndex;
     if (nowMaterialIndex === index && !foundIndex) foundIndex = true;
     if (foundIndex) {
       if (nowMaterialIndex !== index) break;
       if (color) {
-        model.geometry.faces[i].color.set(color);
+        layers[layerID].geometry.faces[i].color.set(color);
       } else {
         // 設定されていなければfaceColorsに基づいて色を設定する
-        model.geometry.faces[i].color.set(faceColors[index]);
+        layers[layerID].geometry.faces[i].color.set(faceColors[index]);
       }
     }
   }
@@ -1104,7 +1105,7 @@ function recordModel() {
   if (undoBuffer.length >= 3) {
     undoBuffer.shift(); // 最初の要素を削除
   }
-  undoBuffer.push([model, lockObject]);
+  undoBuffer.push([layers[layerID], lockObject]);
   undoNowModelId = undoBuffer.length - 1;
   if (undoNowModelId >= 1) {
     undoBtn.classList.remove('disabled');
