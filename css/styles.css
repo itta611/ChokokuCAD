@@ -129,6 +129,7 @@ input[type="checkbox"] {
   vertical-align: middle;
   margin: 0 3px;
   margin-bottom: 0!important;
+  vertical-align: baseline;
   outline: none;
   background: #fff;
   transition-duration: 0.2s;
@@ -256,6 +257,15 @@ a {
   background: #00448d;
 }
 
+.btn + .btn {
+  margin-top: 15px;
+}
+
+.btn.disabled {
+  background: #aaa!important;
+  cursor: default!important;
+}
+
 #model-color-btn {
   padding: 0;
 }
@@ -316,6 +326,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
 
 .tool-item-mini {
   padding: 5px;
+  background: #ffffffcc;
 }
 
 .tool-item-mini.disabled {
@@ -334,10 +345,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
 
 .tool-item-mini + .tool-item-mini {
   margin-left: 7px;
-}
-
-#re-undo .tool-item-mini {
-  background: #ffffffcc;
 }
 
 #new-file {
@@ -383,7 +390,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   cursor: default;
 }
 
-#right-pane {
+#setting {
   background: #fbfbfb;
   width: 300px;
   z-index: 3;
@@ -411,7 +418,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   display: inline!important;
 }
 
-#right-pane label:not(.btn, #file-upload-add-step2 label) {
+#setting label:not(.btn, #file-upload-add-step2 label) {
   display: block;
 }
 
@@ -427,45 +434,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   right: 7px;
 }
 
-#layers {
-  font-size: 18px;
-  overflow-y: scroll;
-  cursor: default;
-  background: #F6F6F6;
-  position: absolute;
-  height: 300px;
-  width: 300px;
-  bottom: 90px;
-  border: 1px solid #ededed;
-  border-right: none;
-}
-
-#layer-toolbar {
-  padding: 7px;
-  background: #fafafa;
-  border-bottom: #ededed 1px solid;
-}
-
-.layer-toolbar-item {
-  margin-left: 0!important; /* 文字のスペースの幅でちょうどよい */
-}
-
-.layer-item {
-  padding: 7px;
-}
-
-#layers input[type="radio"] {
-  display: none;
-}
-
-#layers input[type="radio"]:checked ~ .layer-item {
-  background: #007bff;
-}
-
-#layers input[type="radio"]:checked ~ .layer-item {
-  color: #fff;
-}
-
 #status-bar {
   background: #ebebeb;
   position: absolute;
@@ -476,6 +444,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
   height: 20px;
   z-index: 5;
   font-size: 18px;
-  border-top: 1px solid #ededed;
+  border-top: 1px solid #7a7a7a;
   padding: 10px 30px;
 }

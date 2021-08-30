@@ -493,18 +493,15 @@ document.querySelector('#enter-btn').addEventListener('click', function() {
 });
 
 document.querySelector('#reuse-btn').addEventListener('click', function() {
-  chokokuPath.remove();
+  // chokokuPath.remove();
   if (this.textContent === '一つ前のパスを使用') {
     this.textContent = '新しいパスを使う';
     chokokuPath = prevPath;
-    chokokuPath.visible = true;
+    chokokuPath.visible = true; // もともとprevPathのvisibleはfalse
   } else {
     this.textContent = '一つ前のパスを使用';
-    chokokuPath = new paper.Path();
+    chokokuPath.visible = false;
     pointCircles = [];
-    for (let i = chokokuPath.segments.length - 1; i >= 0; i--) {
-      chokokuPath.removeSegment(i);
-    }
   }
 });
 
@@ -910,7 +907,7 @@ function setModelFromChokoku() {
   prevPath = chokokuPath;
   prevPath.visible = false;
   chokokuPath = new paper.Path();
-  this.textContent = '一つ前のパスを使用';
+  document.querySelector('#reuse-btn').textContent = '一つ前のパスを使用';
   document.querySelector('#reuse-btn').classList.remove('disabled');
 }
 
