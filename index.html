@@ -170,8 +170,8 @@
           <label for="export-file-name">
             ファイル名: <input type="text" id="export-file-name" value="無題のモデル">
           </label>
+          <div class="param-group setting-center"><div class="btn">エクスポート</div></div>
         </div>
-        <div class="param-group setting-center"><div class="btn">エクスポート</div></div>
       </div>
       <div class="setting-item hidden">
         X：<label for="model-position-x"><input type="number" id="model-position-x" value="0" data-zero-fix="true">&nbsp;cm</label>,&nbsp;<label for="model-rotation-x"><input type="number" id="model-rotation-x" value="0">&nbsp;°</label>,&nbsp;<label for="model-scale-x">&times;<input type="number" id="model-scale-x" value="1" data-zero-fix="true"></label>
@@ -180,6 +180,24 @@
         <br>
         Z：<label for="model-position-z"><input type="number" id="model-position-z" value="0" data-zero-fix="true">&nbsp;cm</label>,&nbsp;<label for="model-rotation-z"><input type="number" id="model-rotation-z" value="0">&nbsp;°</label>,&nbsp;<label for="model-scale-z">&times;<input type="number" id="model-scale-z" value="1" data-zero-fix="true"></label>
         <br>
+      </div>
+      <div id="layers">
+        <div id="layer-toolbar">
+          <img src="img/layer-add.svg" id="layer-add-btn" class="tool-item-mini layer-toolbar-item">
+          <img src="img/layer-remove.svg" id="layer-remove-btn" class="tool-item-mini layer-toolbar-item">
+        </div>
+        <label class="layer-item-wrap">
+          <input type="radio" name="list-radio" class="layer-check"><!-- nameは他のcheckboxと互換性を持たせるために -->
+          <div class="layer-item">レイヤー１</div>
+        </label>
+        <label class="layer-item-wrap">
+          <input type="radio" name="list-radio" class="layer-check">
+          <div class="layer-item">レイヤー１</div>
+        </label>
+        <label class="layer-item-wrap">
+          <input type="radio" name="list-radio" class="layer-check">
+          <div class="layer-item">レイヤー１</div>
+        </label>
       </div>
     </div>
   </div>
