@@ -188,7 +188,7 @@
     loadingStatus = 1;
     function changeLoadingText() {
       loadingStatus++;
-      document.querySelector('#loading-mask-inner h4').textContent = `LOADING... (${loadingStatus} / 9)`
+      document.querySelector('#loading-mask-inner h4').textContent = `LOADING... (${loadingStatus} / 8)`
     }
   </script>
   <script src="js/three.min.js" onload="changeLoadingText();"></script>
@@ -197,11 +197,13 @@
   <script src="js/STLLoader.js" onload="changeLoadingText();"></script>
   <script src="js/GLTFLoader.js" onload="changeLoadingText();"></script>
   <script src="js/OrbitControls.js" onload="changeLoadingText();"></script>
-  <script src="js/STLLoader.js" onload="changeLoadingText();"></script>
   <script src="js/paper-full.js" onload="changeLoadingText();"></script>
   <script src="js/main.js"></script>
 
   <script>
+    if (navigator.userAgent.indexOf('MSIE') !== -1 && navigator.userAgent.indexOf('TRIDENT') !== -1) {
+      alert('IEブラウザには対応していません。')
+    }
   </script>
 </body>
 </html>
