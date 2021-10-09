@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <script src="js/palalax.js"></script>
+  <script src="js/i18n.js"></script>
 
                 <!-- For old IEs -->
  <link rel="shortcut icon" href="favicon.ico"> 
@@ -54,24 +55,25 @@
   <div id="main-canvas-wrap"></div>
   <div id="start-modal" class="modal">
     <img src="img/logo.svg" alt="Chokoku CAD" width="300" height="64">
-    <h2>新規作成</h2>
-    <h3>直方体の寸法</h3>
+    <h2 data-en="Create new">新規作成</h2>
+    <h3 data-en="Size">直方体の寸法</h3>
     <div id="size-input-wrap">
-      <label for="depth">縦：<input type="number" min="1" value="50" id="depth" data-zero-fix="true">&nbsp;cm</label><br>
-      <label for="width">横：<input type="number" min="1" value="50" id="width" data-zero-fix="true">&nbsp;cm</label><br>
-      <label for="height">高さ：<input type="number" min="1" value="50" id="height" data-zero-fix="true">&nbsp;cm</label>
+      <label for="depth"><span data-en="depth: ">縦：</span><input type="number" min="1" value="50" id="depth" data-zero-fix="true">&nbsp;cm</label><br>
+      <label for="width"><span data-en="width: ">横：</span><input type="number" min="1" value="50" id="width" data-zero-fix="true">&nbsp;cm</label><br>
+      <label for="height"><span data-en="height: ">高さ：</span><input type="number" min="1" value="50" id="height" data-zero-fix="true">&nbsp;cm</label>
       <div class="btn-wrap">
-        <div class="btn">作成！</div>
+        <div class="btn" data-en="Create!">作成！</div>
       </div>
-      <h2>開く</h2>
+      <h2 data-en="Open file">開く</h2>
       <div class="btn-wrap">
         <label for="file-upload-start" class="btn">
-          <input type="file" id="file-upload-start" class="hidden" accept=".stl, .gltf, .glb">ファイルをアップロード！
+          <input type="file" id="file-upload-start" class="hidden" accept=".stl, .gltf, .glb"><span data-en="Upload file">ファイルをアップロード</span>
         </label><br>
-        ※.stl, .glb(gltf)のみ
+        <span data-en="* available extension: .stl, .glb(gltf)">※.stl, .glb(gltf)のみ</span>
       </div>
-      <span id="view-source">
-        <a href="https://github.com/itta611/ChokokuCAD" target="blank">GitHub</a>でソースコードを見る</span>
+      <!-- <span id="view-source">
+        <a href="https://github.com/itta611/ChokokuCAD" target="blank">GitHub</a>でソースコードを見る
+      </span> -->
     </div>
   </div>
   <div id="tools">
@@ -83,25 +85,25 @@
   <div id="setting">
     <div class="setting-item" id="chokoku-setting">
       <div class="param-group setting-center">
-        <img src="img/chokoku-setting-chokokutou.svg" width="40" height="40" alt="彫刻" id="chokoku-setting-chokoku-btn" class="tool-item-mini selected">
-        <img src="img/chokoku-setting-lock.svg" width="40" height="40" alt="ロック" id="chokoku-setting-lock-btn" class="tool-item-mini">
+        <img src="img/chokoku-setting-chokokutou.svg" width="40" height="40" alt="Sclupt" id="chokoku-setting-chokoku-btn" class="tool-item-mini selected">
+        <img src="img/chokoku-setting-lock.svg" width="40" height="40" alt="Lock" id="chokoku-setting-lock-btn" class="tool-item-mini">
       </div>
       <div class="param-group setting-center">
-        <img src="img/chokoku-setting-add.svg" width="40" height="40" alt="追加モード" id="chokoku-setting-add-btn" class="tool-item-mini selected">
-        <img src="img/chokoku-setting-edit.svg" width="40" height="40" alt="編集モード" id="chokoku-setting-edit-btn" class="tool-item-mini">
+        <img src="img/chokoku-setting-add.svg" width="40" height="40" alt="Add mode" id="chokoku-setting-add-btn" class="tool-item-mini selected">
+        <img src="img/chokoku-setting-edit.svg" width="40" height="40" alt="Edit mode" id="chokoku-setting-edit-btn" class="tool-item-mini">
       </div>
       <div class="param-group setting-center" id="chokoku-setting-add-mode-params">
-        <img src="img/chokoku-setting-pencil.svg" width="40" height="40" alt="鉛筆" id="chokoku-setting-pencil-btn" class="tool-item-mini selected">
-        <img src="img/chokoku-setting-eraser.svg" width="40" height="40" alt="消しゴム" id="chokoku-setting-eraser-btn" class="tool-item-mini">
+        <img src="img/chokoku-setting-pencil.svg" width="40" height="40" alt="pencil" id="chokoku-setting-pencil-btn" class="tool-item-mini selected">
+        <img src="img/chokoku-setting-eraser.svg" width="40" height="40" alt="eraser" id="chokoku-setting-eraser-btn" class="tool-item-mini">
       </div>
       <div class="param-group setting-center">
         <label for="chokoku-setting-issnap">
-          マス目にスナップ：<input type="checkbox" id="chokoku-setting-issnap">
+          <span data-en="Snap">マス目にスナップ：</span><input type="checkbox" id="chokoku-setting-issnap">
         </label>
       </div>
       <div class="param-group setting-center">
-        <div class="btn" id="enter-btn">決定（Enterキー）</div>
-        <div class="btn disabled" id="reuse-btn">一つ前のパスを使用</div>
+        <div class="btn" id="enter-btn" data-en="OK (Enter)">決定（Enterキー）</div>
+        <div class="btn disabled" id="reuse-btn" data-en="Use previous path">一つ前のパスを使用</div>
       </div>
     </div>
     <div class="setting-item hidden" id="paint-setting">
@@ -110,18 +112,18 @@
         <label for="model-color-btn">
           色：<label for="model-color" id="model-color-btn" class="color-select-label" style="background: #f9c446;"><input type="color" id="model-color" value="#f9c446"></label>
         </label>
-        モデルをクリックすることで色を付けることができます。
+        <span data-en="Click model to set color.">モデルをクリックすることで色を付けることができます。
       </div>
       <div class="param-group setting-center">
-        <div id="set-material-btn" class="btn">すべての面に適用</div>
+        <div id="set-material-btn" class="btn" data-en="Apply to all faces">すべての面に適用</div>
       </div>
     </div>
     <div class="setting-item hidden" id="upload-setting">
       <div id="file-upload-add-step1">
         <div class="param-group">
-          <p>既存のファイルを追加することができます。</p>
+          <p data-en="Add a existing file.">既存のファイルを追加することができます。</p>
           <div class="btn-wrap">
-            <label for="file-upload-add" class="btn"><input type="file" id="file-upload-add" class="hidden" accept=".stl, .gltf, .glb">ファイルをアップロード</label>
+            <label for="file-upload-add" class="btn"><input type="file" id="file-upload-add" class="hidden" accept=".stl, .gltf, .glb"><span data-en="Upload file">ファイルをアップロード</span></label>
           </div></div>
           </div>
           <div id="file-upload-add-step2" class="hidden">
@@ -160,18 +162,18 @@
           </label>
           <br>
           <div class="btn-wrap">
-            <div class="btn">決定</div>
+            <div class="btn" data-en="OK">決定</div>
           </div>
         </div>
       </div>
       <div class="setting-item hidden" id="export-setting">
-        <p>モデルをglb(gltf)形式でエクスポートします。</p>
+        <p data-en="Export model glb(gltf)">モデルをglb(gltf)形式でエクスポートします。</p>
         <div class="param-group">
           <label for="export-file-name">
-            ファイル名: <input type="text" id="export-file-name" value="無題のモデル">
+            <span data-en="File name: ">ファイル名： </span><input type="text" id="export-file-name" value="無題のモデル" data-en="Untitled">
           </label>
         </div>
-        <div class="param-group setting-center"><div class="btn">エクスポート</div></div>
+        <div class="param-group setting-center"><div class="btn" data-en="Export">エクスポート</div></div>
       </div>
       <div class="setting-item hidden">
         X：<label for="model-position-x"><input type="number" id="model-position-x" value="0" data-zero-fix="true">&nbsp;cm</label>,&nbsp;<label for="model-rotation-x"><input type="number" id="model-rotation-x" value="0">&nbsp;°</label>,&nbsp;<label for="model-scale-x">&times;<input type="number" id="model-scale-x" value="1" data-zero-fix="true"></label>

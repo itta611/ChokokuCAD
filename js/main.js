@@ -17,6 +17,10 @@ const undoBtn = document.querySelector('#undo-btn');
 const redoBtn = document.querySelector('#redo-btn');
 const pathCanvas = document.querySelector('#path-canvas');
 const loader = new THREE.TextureLoader();
+const language = (window.navigator.languages && window.navigator.languages[0]) ||
+          window.navigator.language ||
+          window.navigator.userLanguage ||
+          window.navigator.browserLanguage;
 let statuses = [];
 let modelDepth = 50;
 let modelWidth = 50;
@@ -183,10 +187,15 @@ class Status {
     this.group = option.group;
     this.name = option.name;
     this.desc = option.desc;
+    this.descEn = option.descEn;
   }
 
   change() {
-    statusBar.textContent = `[${this.name}] ${this.desc}`;
+    if (language === 'ja') {
+      statusBar.textContent = `[${this.name}] ${this.desc}`;
+    } else {
+      statusBar.textContent = `[${this.group}] ${this.descEn}`;
+    }
     if (toolItems[status]) {
       toolItems[status].unSelect(this.group);
     }
@@ -198,25 +207,25 @@ class Status {
 }
 
 statuses['start'] = new Status(
-  {name: 'スタート', statusName: 'start', group: 'start', desc: 'Chokoku CADへようこそ。'}
+  {name: 'スタート', statusName: 'start', group: 'start', desc: 'Chokoku CADへようこそ。', descEn: 'Welcome to Chokoku CAD.'}
 );
 statuses['setpath'] = new Status(
-  {name: '彫刻ツール', statusName: 'setpath', group: 'setpath', desc: '残す形状を決めてください。'}
+  {name: '彫刻ツール', statusName: 'setpath', group: 'setpath', desc: '残す形状を決めてください。', descEn: 'Decide the shave path.'}
 );
 statuses['adjustpath'] = new Status(
-  {name: '彫刻ツール', statusName: 'adjustpath', group: 'setpath', desc: '調節ができます。よければEnterキーを押してください。'}
+  {name: '彫刻ツール', statusName: 'adjustpath', group: 'setpath', desc: '調節ができます。よければEnterキーを押してください。', descEn: 'You can adjust path. Press enter key to finish.'}
 );
 statuses['paint'] = new Status(
-  {name: 'ペイント', statusName: 'paint', group: 'paint', desc: 'オブジェクトの色を設定してください。'}
+  {name: 'ペイント', statusName: 'paint', group: 'paint', desc: 'オブジェクトの色を設定してください。', descEn: 'Set the object color.'}
 );
 statuses['modelAdd1'] = new Status(
-  {name: 'モデル追加', statusName: 'modelAdd1', group: 'modelAdd1', desc: '新しく追加するモデルをアップロードしてください。'}
+  {name: 'モデル追加', statusName: 'modelAdd1', group: 'modelAdd1', desc: '新しく追加するモデルをアップロードしてください。', descEn: 'Upload the new model.'}
 );
 statuses['modelAdd2'] = new Status(
-  {name: 'モデル追加', statusName: 'modelAdd2', group: 'upload', desc: 'アップロードしたモデルを回転・移動・大きさを調節してください。'}
+  {name: 'モデル追加', statusName: 'modelAdd2', group: 'upload', desc: 'アップロードしたモデルを回転・移動・大きさを調節してください。', descEn: 'Transform the object.'}
 );
 statuses['export'] = new Status(
-  {name: 'モデル出力', statusName: 'export', group: 'export', desc: 'モデルをglb(gltf)形式でエクスポートしダウンロードします。'}
+  {name: 'モデル出力', statusName: 'export', group: 'export', desc: 'モデルをglb(gltf)形式でエクスポートしダウンロードします。', descEn: 'Export the model with glb(gltf) format file.'}
 );
 
 statuses['start'].change();
@@ -236,11 +245,19 @@ class ToolItem {
     });
 
     this.domElement.addEventListener('mouseover', () => {
-      statusBar.textContent = `[${statuses[this.status].name}] ${statuses[this.status].desc}`;
+      if (language === 'ja') {
+        statusBar.textContent = `[${statuses[this.status].name}] ${statuses[this.status].desc}`;
+      } else {
+        statusBar.textContent = `[${statuses[this.status].group}] ${statuses[this.status].descEn}`;
+      }
     });
 
     this.domElement.addEventListener('mouseout', () => {
-      statusBar.textContent = `[${statuses[status].name}] ${statuses[status].desc}`;
+      if (language === 'ja') {
+        statusBar.textContent = `[${statuses[status].name}] ${statuses[status].desc}`;
+      } else {
+        statusBar.textContent = `[${statuses[status].group}] ${statuses[status].descEn}`;
+      }
     });
   }
 
@@ -318,7 +335,7 @@ window.addEventListener('resize', function() {
 
 window.addEventListener('beforeunload', function(e) {
   if (notSaved) {
-    e.returnValue = 'ページを離れようとしています。よろしいですか？';
+    e.returnValue = i18n('ページを離れようとしています。よろしいですか？', 'Are you sure?');
   }
 });
 
@@ -340,7 +357,7 @@ document.querySelector('#export-setting .btn').addEventListener('click', functio
       a.click();
     });
   } else {
-    alert('ファイル名を入力してください。')
+    alert(i18n('ファイル名を入力してください。', 'please'));
   }
 });
 
@@ -494,12 +511,12 @@ document.querySelector('#enter-btn').addEventListener('click', function() {
 
 document.querySelector('#reuse-btn').addEventListener('click', function() {
   // chokokuPath.remove();
-  if (this.textContent === '一つ前のパスを使用') {
-    this.textContent = '新しいパスを使う';
+  if (this.textContent === i18n('一つ前のパスを使用', 'Use previous path')) {
+    this.textContent = i18n('新しいパスを使う', 'Use new path');
     chokokuPath = prevPath;
     chokokuPath.visible = true; // もともとprevPathのvisibleはfalse
   } else {
-    this.textContent = '一つ前のパスを使用';
+    this.textContent = i18n('一つ前のパスを使用', 'Use previous path');
     chokokuPath.visible = false;
     pointCircles = [];
   }
@@ -521,9 +538,9 @@ document.querySelector('#set-material-btn').addEventListener('click', function()
 });
 
 document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', function() {
-  this.textContent = '処理中...';
+  this.textContent = i18n('処理中...', 'Progressing...');
   setTimeout(function() {
-    this.textContent = '決定';
+    this.textContent = i18n('決定', 'OK');
     let uploadModelBSP = new ThreeBSP(uploadModel);
     let modelBSP = new ThreeBSP(model);
     let newModelBSP = modelBSP.union(uploadModelBSP);
@@ -897,7 +914,7 @@ function setModelFromChokoku() {
       recordModel(model);
     }
   } catch (error) {
-    statusBar.innerHTML = '<span style="color: #ff0000;">エラーが発生しました。</span>';
+    statusBar.innerHTML = `<span style="color: #ff0000;">${i18n('エラーが発生しました。', 'An error has occurred.')}</span>`;
     setTimeout(function() {
       statusBar.innerHTML = statuses[status].desc;
     }, 1000);
@@ -907,7 +924,7 @@ function setModelFromChokoku() {
   prevPath = chokokuPath;
   prevPath.visible = false;
   chokokuPath = new paper.Path();
-  document.querySelector('#reuse-btn').textContent = '一つ前のパスを使用';
+  document.querySelector('#reuse-btn').textContent = i18n('一つ前のパスを使用', 'Use previous path');
   document.querySelector('#reuse-btn').classList.remove('disabled');
 }
 
@@ -947,24 +964,24 @@ function uploadNewModel(reader, isAdd, e) {
         );
         uploadModelJSON = uploadModel.toJSON();
         setModel(uploadModelJSON, isAdd);
-      }, function() {}, function() {alert('エラーが発生しました。');});
+      }, function() {}, function() {alert(i18n('エラーが発生しました。', 'An error has occurred.'));});
     } else if (new RegExp('([^\s]+(\\.(glb|gltf))$)', 'i').test(fileName)) {
       let GLTFLoader = new THREE.GLTFLoader();
       let gltfBlob = reader.result;
       GLTFLoader.load(gltfBlob, function(arg) {
         uploadModel = arg.scene.children[0]
         if (uploadModel.geometry === undefined) {
-          alert('申し訳ありませんが、このファイルには対応していません。\n代わりにSTL形式でアップロードしてみてください。');
+          alert(i18n('申し訳ありませんが、このファイルには対応していません。\n代わりにSTL形式でアップロードしてみてください。', 'Sorry, this file format is not supported. \nPlease uploading in STL format instead.'));
         } else {;
           uploadModelJSON = uploadModel.toJSON();
           setModel(uploadModelJSON, isAdd);
         }
       }, function() {}, function(uploadError) {
-        alert('エラーが発生しました。');
+        alert(i18n('エラーが発生しました。', 'An error has occurred'));
         console.log(uploadError);
       });
     } else {
-      alert('ファイル形式が無効です（.glb, .gltf, .stlのみ）');
+      alert(i18n('ファイル形式が無効です（.glb, .gltf, .stlのみ）', 'The file format is not supported.(.glb, .gltf, .stl are supported.)'));
     }
   });
 }
