@@ -357,7 +357,7 @@ document.querySelector('#export-setting .btn').addEventListener('click', functio
       a.click();
     });
   } else {
-    alert(i18n('ファイル名を入力してください。', 'please'));
+    alert(i18n('ファイル名を入力してください。', 'Please input the file name.'));
   }
 });
 
