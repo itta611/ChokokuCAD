@@ -846,9 +846,10 @@ function setModelFromChokoku() {
     const isEraser = document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected');
     if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) { // Lock tool
       let lockObjectBSP;
-      if (lockObject === undefined) { // If first lock
-        if (!isEraser) lockObjectBSP = modelBSP.intersect(chokokuHoleBSP);
-        else return;
+      if (lockObject === undefined || lockObject.geometry.faces.length == 0) { // If first lock
+        if (!isEraser) {
+          lockObjectBSP = modelBSP.intersect(chokokuHoleBSP);
+        }
       } else {
         lockObjectBSP = new ThreeBSP(lockObject);
         if (isEraser) {
