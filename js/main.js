@@ -698,7 +698,7 @@ renderer.domElement.addEventListener('mousedown', function() {
     pathGrabbingOriginX = mouseX;
     pathGrabbingOriginY = mouseY;
   }
-  if (pathHovering && hoverPoint === -1 && renderer.domElement.style.cursor !== 'grabbing') {
+  if (pathHovering && hoverPoint !== -1 && renderer.domElement.style.cursor !== 'grabbing') {
     renderer.domElement.style.cursor = 'grabbing';
   }
 });
