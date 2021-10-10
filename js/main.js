@@ -346,14 +346,15 @@ window.addEventListener('keyup', function(e) {
 });
 
 document.querySelector('#export-setting .btn').addEventListener('click', function() {
-  if (document.querySelector('#export-file-name').value !== '') {
+  const fileName = document.querySelector('#export-file-name').value;
+  if (fileName !== '') {
     let exporter = new THREE.GLTFExporter();
     let fileContent;
     exporter.parse(model, function(arg) {
       fileContent = JSON.stringify(arg);
       let a = document.createElement('a');
       a.href = 'data:application/octet-stream,' + encodeURIComponent(fileContent);
-      a.download = `${document.querySelector('#export-file-name').value}.glb`;
+      a.download = `${fileName}.glb`;
       a.click();
     });
   } else {
@@ -558,7 +559,7 @@ document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', 
     // 初期化
     ['position', 'rotation', 'scale'].forEach(element => {
       ['x', 'y', 'z'].forEach(xyz => {
-        document.querySelector(`#new-model-${element}-${xyz}`).value = ((element === 'scale') ? 1 : 0);
+        document.querySelector(`#new-model-${element}-${xyz}`).value = (element === 'scale') * 1;
       });
     });
   });
@@ -586,7 +587,6 @@ renderer.domElement.addEventListener('mousemove', function(e) {
     mouseY = e.clientY;
   }
   if (status === 'adjustpath') {
-    // boolean演算後のsegmentsは⏳のような図形にはない
     for (let i = 0; i < chokokuPath.curves.length; i++) {
       if (
         chokokuPath.curves[i].point1.x - 5 < mouseX &&
@@ -637,8 +637,6 @@ renderer.domElement.addEventListener('mousemove', function(e) {
       // ↓違う面にカーソルが入ったとき
       if (hoverIndex !== materialIndex) {
         // ↓もし前は面が選択されていたら先ほどの面の色をもとに戻す
-        console.log(faceNormals[hoverIndex]);
-        console.log(hoverIndex);
         if (hoverIndex !== -1) {
           setColorByMaterialIndex(hoverIndex);
         }
@@ -844,9 +842,11 @@ function setModelFromChokoku() {
   let resultModelBSP;
   let resultModel;
   try {
+
+    // Compute model
     chokokuHoleBSP = new ThreeBSP(chokokuHole) // ThreeBSPインスタンス
     modelBSP = new ThreeBSP(model) // ThreeBSPインスタンス
-    if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) {
+    if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) { // Lock tool
       if (lockObject === undefined) {
         resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
       } else {
@@ -857,14 +857,16 @@ function setModelFromChokoku() {
           resultModelBSP = lockObjectBSP.union(modelBSP.intersect(chokokuHoleBSP));
         }
       }
-    } else {
+    } else { // Chokoku tool
       if (document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected')) {
         resultModelBSP = modelBSP.subtract(chokokuHoleBSP);
       } else {
         resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
       }
     }
-    if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) {
+
+    // Set model
+    if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) { // Lock tool
       scene.remove(lockObject);
       lockObject = resultModelBSP.toMesh(new THREE.MeshPhongMaterial({
         color: 0xff0000,
@@ -874,7 +876,7 @@ function setModelFromChokoku() {
       }));
       scene.add(lockObject);
       recordModel();
-    } else {
+    } else { // Chokoku tool
       if (lockObject === undefined) {
         resultModel = resultModelBSP.toMesh(model.material);
       } else {
