@@ -25,3 +25,8 @@ Select the path add icon<img src="./img/chokoku-setting-add.svg" width="30"> and
 ### Lock
 Maybe you want to create a shape with holes like a cup.
 To do so, select the lock icon<img src="./img/chokoku-setting-lock.svg" width="30">, and the Chokoku tool will not shave off the area selected by the path.
+
+## Credits
+- THREE.js (https://github.com/mrdoob/three.js)
+- Paper.js (https://github.com/paperjs/paper.js)
+- ThreeBSP (https://github.com/sshirokov/ThreeBSP)
