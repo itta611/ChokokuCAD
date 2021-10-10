@@ -839,50 +839,49 @@ function setModelFromChokoku() {
   chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
   let chokokuHoleBSP; // ThreeBSPインスタンス
   let modelBSP; // ThreeBSPインスタンス
-  let resultModelBSP;
   let resultModel;
   try {
-
-    // Compute model
     chokokuHoleBSP = new ThreeBSP(chokokuHole) // ThreeBSPインスタンス
     modelBSP = new ThreeBSP(model) // ThreeBSPインスタンス
+    const isEraser = document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected');
     if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) { // Lock tool
-      if (lockObject === undefined) {
-        resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
+      let lockObjectBSP;
+      if (lockObject === undefined) { // If first lock
+        if (!isEraser) lockObjectBSP = modelBSP.intersect(chokokuHoleBSP);
       } else {
-        let lockObjectBSP = new ThreeBSP(lockObject);
-        if (document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected')) {
-          resultModelBSP = lockObjectBSP.subtract(chokokuHoleBSP);
+        lockObjectBSP = new ThreeBSP(lockObject);
+        if (isEraser) {
+          lockObjectBSP = lockObjectBSP.subtract(chokokuHoleBSP);
         } else {
-          resultModelBSP = lockObjectBSP.union(modelBSP.intersect(chokokuHoleBSP));
+          lockObjectBSP = lockObjectBSP.union(modelBSP.intersect(chokokuHoleBSP));
         }
       }
-    } else { // Chokoku tool
-      if (document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected')) {
-        resultModelBSP = modelBSP.subtract(chokokuHoleBSP);
-      } else {
-        resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
-      }
-    }
-
-    // Set model
-    if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) { // Lock tool
       scene.remove(lockObject);
-      lockObject = resultModelBSP.toMesh(new THREE.MeshPhongMaterial({
+      lockObject = lockObjectBSP.toMesh(new THREE.MeshPhongMaterial({
         color: 0xff0000,
         depthTest: false,
         transparent: true,
         opacity: 0.6
       }));
       scene.add(lockObject);
-      recordModel();
     } else { // Chokoku tool
+      let resultModelBSP;
+      if (isEraser) {
+        resultModelBSP = modelBSP.subtract(chokokuHoleBSP);
+      } else {
+        resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
+      }
       if (lockObject === undefined) {
         resultModel = resultModelBSP.toMesh(model.material);
       } else {
         let lockObjectBSP = new ThreeBSP(lockObject);
         resultModel = resultModelBSP.union(lockObjectBSP).toMesh(model.material);
       }
+    }
+    recordModel();
+
+    // Set model
+    if (!document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) { // Lock tool
 
       // ------- 同一面データ作成 -------
     
