@@ -510,7 +510,7 @@ document.querySelector('#enter-btn').addEventListener('click', function() {
 });
 
 document.querySelector('#reuse-btn').addEventListener('click', function() {
-  // chokokuPath.remove();
+  if (document.querySelector('#reuse-btn').classList.contains('disabled')) return;
   if (this.textContent === i18n('一つ前のパスを使用', 'Use previous path')) {
     this.textContent = i18n('新しいパスを使う', 'Use new path');
     chokokuPath = prevPath;
