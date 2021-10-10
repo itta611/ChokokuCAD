@@ -1,3 +1,0 @@
-使用した著作物
-・THREE.js
-・paper.js
