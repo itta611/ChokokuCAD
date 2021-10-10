@@ -28,5 +28,5 @@ To do so, select the lock icon<img src="./img/chokoku-setting-lock.svg" width="3
 
 ## Credits
 - THREE.js (https://github.com/mrdoob/three.js)
-- Paper.js (https://github.com/paperjs/paper.js)
+- paper.js (https://github.com/paperjs/paper.js)
 - ThreeBSP (https://github.com/sshirokov/ThreeBSP)
