@@ -132,7 +132,7 @@ input[type="checkbox"] {
   vertical-align: baseline;
   outline: none;
   background: #fff;
-  transition-duration: 0.2s;
+  transition-duration: 0.1s;
 }
 
 input[type="checkbox"]:checked {
