@@ -135,6 +135,10 @@ input[type="checkbox"] {
   transition-duration: 0.1s;
 }
 
+label:hover input[type="checkbox"] {
+  border: 1px solid #ccc;
+}
+
 input[type="checkbox"]:checked {
   background: #efab00;
 }
