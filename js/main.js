@@ -848,6 +848,7 @@ function setModelFromChokoku() {
       let lockObjectBSP;
       if (lockObject === undefined) { // If first lock
         if (!isEraser) lockObjectBSP = modelBSP.intersect(chokokuHoleBSP);
+        else return;
       } else {
         lockObjectBSP = new ThreeBSP(lockObject);
         if (isEraser) {
