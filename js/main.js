@@ -93,10 +93,17 @@ for (let i = 1; i <= 6; i++) {
 }
 
 // rotationView
-viewBox = new THREE.Mesh(
-  new THREE.BoxGeometry(100, 100, 100),
-  new THREE.MultiMaterial(viewBoxMaterial)
-);
+if (language == 'ja') {
+  viewBox = new THREE.Mesh(
+    new THREE.BoxGeometry(100, 100, 100),
+    new THREE.MultiMaterial(viewBoxMaterial)
+  );
+} else {
+  viewBox = new THREE.Mesh(
+    new THREE.BoxGeometry(100, 100, 100),
+    new THREE.MeshBasicMaterial({color: 0xcfe0fc})
+  );
+}
 viewBox.position.set(0, 0, 0)
 viewScene.add(viewBox);
 
