@@ -10,6 +10,7 @@ https://ittakun.sakura.ne.jp/chokokucad/
 
 ![Sample1](./img/sample1.png)
 <img src="./img/screenshot.png" width="550">
+<img src="./img/video.gif" width="550">
 
 ## How to use Chokoku tool
 ### Make path
