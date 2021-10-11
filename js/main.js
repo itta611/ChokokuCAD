@@ -794,7 +794,11 @@ function setModelFromChokoku() {
   if (chokokuPath.segments !== undefined && chokokuPath.segments.length <= 2) {
     statusBar.innerHTML = '<span style="color: #ff0000;">頂点は３つ以上用意する必要があります。</span>';
     setTimeout(function() {
-      statusBar.innerHTML = statuses[status].desc;
+      if (language === 'ja') {
+        statusBar.textContent = `[${this.name}] ${this.desc}`;
+      } else {
+        statusBar.textContent = `[${this.group}] ${this.descEn}`;
+      }
     }, 1000);
     return;
   }
@@ -925,7 +929,11 @@ function setModelFromChokoku() {
   } catch (error) {
     statusBar.innerHTML = `<span style="color: #ff0000;">${i18n('エラーが発生しました。', 'An error has occurred.')}</span>`;
     setTimeout(function() {
-      statusBar.innerHTML = statuses[status].desc;
+      if (language === 'ja') {
+        statusBar.textContent = `[${this.name}] ${this.desc}`;
+      } else {
+        statusBar.textContent = `[${this.group}] ${this.descEn}`;
+      }
     }, 1000);
     console.log(error);
   }
