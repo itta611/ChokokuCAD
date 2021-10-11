@@ -873,7 +873,7 @@ function setModelFromChokoku() {
       } else {
         resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
       }
-      if (lockObject === undefined) {
+      if (lockObject === undefined || lockObject.geometry.faces.length == 0) {
         resultModel = resultModelBSP.toMesh(model.material);
       } else {
         let lockObjectBSP = new ThreeBSP(lockObject);
@@ -883,8 +883,7 @@ function setModelFromChokoku() {
     recordModel();
 
     // Set model
-    if (!document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) { // Lock tool
-
+    if (document.querySelector('#chokoku-setting-chokoku-btn').classList.contains('selected')) { // Chokoku tool
       // ------- 同一面データ作成 -------
     
       // ブーリアン処理後にはmaterialIndexが削除されるので自分でつける
