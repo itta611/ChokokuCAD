@@ -795,9 +795,9 @@ function setModelFromChokoku() {
     statusBar.innerHTML = '<span style="color: #ff0000;">頂点は３つ以上用意する必要があります。</span>';
     setTimeout(function() {
       if (language === 'ja') {
-        statusBar.textContent = `[${this.name}] ${this.desc}`;
+        statusBar.textContent = `[${statuses[status].name}] ${statuses[status].desc}`;
       } else {
-        statusBar.textContent = `[${this.group}] ${this.descEn}`;
+        statusBar.textContent = `[${status}] ${statuses[status].descEn}`;
       }
     }, 1000);
     return;
@@ -930,9 +930,9 @@ function setModelFromChokoku() {
     statusBar.innerHTML = `<span style="color: #ff0000;">${i18n('エラーが発生しました。', 'An error has occurred.')}</span>`;
     setTimeout(function() {
       if (language === 'ja') {
-        statusBar.textContent = `[${this.name}] ${this.desc}`;
+        statusBar.textContent = `[${statuses[status].name}] ${statuses[status].desc}`;
       } else {
-        statusBar.textContent = `[${this.group}] ${this.descEn}`;
+        statusBar.textContent = `[${status}] ${statuses[status].descEn}`;
       }
     }, 1000);
     console.log(error);
