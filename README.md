@@ -8,8 +8,7 @@ Chokoku CAD can create complex shapes with few and simple controls.
 
 https://ittakun.sakura.ne.jp/chokokucad/
 
-<img src="./img/sample1.png" height="100">
-<img src="./img/video.gif" height="100">
+<img src="./img/sample1.png" height="300"><img src="./img/video.gif" height="300">
 
 ## How to use Chokoku tool
 ### Make path
