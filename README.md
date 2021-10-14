@@ -1,4 +1,4 @@
-# Chokoku CAD
+<img src="./img/logo.svg" height="300">
 
 ```
 A breakthrough CAD software on your browser
