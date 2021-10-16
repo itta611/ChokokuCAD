@@ -1001,7 +1001,6 @@ function uploadNewModel(reader, isAdd, e) {
 function setUploadModel(JSONData, isAdd = false) {
   let JSONLoader = new THREE.ObjectLoader();
   let dataBlob = 'data:application/json,' + encodeURIComponent(JSON.stringify(JSONData));
-  console.log(encodeURIComponent(JSON.stringify(JSONData)))
   JSONLoader.load(dataBlob, function(mesh) {
     if (isAdd) {
       uploadModel = mesh.clone();
