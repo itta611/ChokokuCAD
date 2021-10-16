@@ -1,8 +1,8 @@
+const language = (window.navigator.languages && window.navigator.languages[0]) ||
+  window.navigator.language ||
+  window.navigator.userLanguage ||
+  window.navigator.browserLanguage;
 window.addEventListener('DOMContentLoaded', function () {
-  const language = (window.navigator.languages && window.navigator.languages[0]) ||
-            window.navigator.language ||
-            window.navigator.userLanguage ||
-            window.navigator.browserLanguage;
   if (language !== 'ja') {
     document.querySelectorAll('*[data-en]:not(input)').forEach(function (element) {
       element.textContent = element.dataset.en;

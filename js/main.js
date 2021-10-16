@@ -1,5 +1,6 @@
 'use strict'
 
+import loader from './loader.js'
 const createBtn = document.querySelector('#size-input-wrap .btn');
 const uploadBtn = document.querySelector('#file-upload-start');
 const mask = document.querySelector('#mask');
@@ -16,7 +17,7 @@ const fileUploadAdd = document.querySelector('#file-upload-add');
 const undoBtn = document.querySelector('#undo-btn');
 const redoBtn = document.querySelector('#redo-btn');
 const pathCanvas = document.querySelector('#path-canvas');
-const loader = new THREE.TextureLoader();
+const textureLoader = new THREE.TextureLoader();
 const language = (window.navigator.languages && window.navigator.languages[0]) ||
           window.navigator.language ||
           window.navigator.userLanguage ||
@@ -85,10 +86,10 @@ let viewBoxMaterial;
 let viewRaycast = new THREE.Raycaster();
 let viewMouse = new THREE.Vector2();
 
-loader.setPath('img/');
+textureLoader.setPath('img/');
 viewBoxMaterial = [];
 for (let i = 1; i <= 6; i++) {
-  let texMat = new THREE.MeshBasicMaterial({map: loader.load(`view-box-texture-${i}.png`)});
+  let texMat = new THREE.MeshBasicMaterial({map: textureLoader.load(`view-box-texture-${i}.png`)});
   viewBoxMaterial.push(texMat);
 }
 
@@ -388,9 +389,7 @@ document.querySelectorAll('input[type="range"]').forEach(function(element) {
 });
 
 fileUploadAdd.addEventListener('change', function(e) {
-  let reader = new FileReader();
-  uploadNewModel(reader, true, e);
-  reader.readAsDataURL(this.files[0]);
+  setModel(loader(fileUploadAdd, e.target.files[0].name), true);
 });
 
 createBtn.addEventListener('click', function() {
@@ -418,10 +417,8 @@ createBtn.addEventListener('click', function() {
   }
 });
 
-uploadBtn.addEventListener('change', function(e) {
-  let reader = new FileReader();
-  uploadNewModel(reader, false, e);
-  reader.readAsDataURL(this.files[0]);
+uploadBtn.addEventListener('change', async function(e) {
+  setModel(await loader(uploadBtn, e.target.files[0].name));
 });
 
 document.querySelector('#chokoku-setting-chokoku-btn').addEventListener('click', function() {
@@ -1006,6 +1003,7 @@ function uploadNewModel(reader, isAdd, e) {
 function setModel(JSONData, isAdd = false) {
   let JSONLoader = new THREE.ObjectLoader();
   let dataBlob = 'data:application/json,' + encodeURIComponent(JSON.stringify(JSONData));
+  console.log(encodeURIComponent(JSON.stringify(JSONData)))
   JSONLoader.load(dataBlob, function(mesh) {
     if (isAdd) {
       uploadModel = mesh.clone();
@@ -1199,3 +1197,5 @@ function render() {
     }
   }
 }
+
+export {model}
