@@ -393,29 +393,27 @@ fileUploadAdd.addEventListener('change', async function(e) {
 });
 
 createBtn.addEventListener('click', function() {
-  if (status === 'start') {
-    modelDepth = document.querySelector('#depth').value * 1;
-    modelWidth = document.querySelector('#width').value * 1;
-    modelHeight = document.querySelector('#height').value * 1;
-    model = new THREE.Mesh(
-      new THREE.BoxGeometry(modelWidth, modelHeight, modelDepth),
-      new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 0.5, vertexColors: THREE.FaceColors})
-      // new THREE.MeshStandardMaterial({wireframe: true})
-    );
-    for (let i = 0; i < 6; i++) {
-      let faceNormal = model.geometry.faces[i * 2].normal;
-      faceNormals.push(faceNormal);
-      faceColors.push("#ffffff");
-    }
-    scene.add(model);
-    recordModel();
-  
-    mask.classList.add('hidden');
-    startModal.classList.add('hidden');
-    statuses['setpath'].change();
-    render();
+  modelDepth = document.querySelector('#depth').value * 1;
+  modelWidth = document.querySelector('#width').value * 1;
+  modelHeight = document.querySelector('#height').value * 1;
+  model = new THREE.Mesh(
+    new THREE.BoxGeometry(modelWidth, modelHeight, modelDepth),
+    new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 0.5, vertexColors: THREE.FaceColors})
+    // new THREE.MeshStandardMaterial({wireframe: true})
+  );
+  for (let i = 0; i < 6; i++) {
+    let faceNormal = model.geometry.faces[i * 2].normal;
+    faceNormals.push(faceNormal);
+    faceColors.push("#ffffff");
   }
-});
+  scene.add(model);
+  recordModel();
+
+  mask.classList.add('hidden');
+  startModal.classList.add('hidden');
+  statuses['setpath'].change();
+  render();
+}, {once: true});
 
 uploadBtn.addEventListener('change', async function(e) {
   setUploadModel(await loader(uploadBtn, e.target.files[0].name));
