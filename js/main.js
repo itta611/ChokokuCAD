@@ -388,8 +388,8 @@ document.querySelectorAll('input[type="range"]').forEach(function(element) {
   element.style.background = `linear-gradient(to right, #ffc42d ${percent}%, #eee ${percent}% 100%)`;
 });
 
-fileUploadAdd.addEventListener('change', function(e) {
-  setModel(loader(fileUploadAdd, e.target.files[0].name), true);
+fileUploadAdd.addEventListener('change', async function(e) {
+  setUploadModel(await loader(fileUploadAdd, e.target.files[0].name), true);
 });
 
 createBtn.addEventListener('click', function() {
@@ -418,7 +418,7 @@ createBtn.addEventListener('click', function() {
 });
 
 uploadBtn.addEventListener('change', async function(e) {
-  setModel(await loader(uploadBtn, e.target.files[0].name));
+  setUploadModel(await loader(uploadBtn, e.target.files[0].name));
 });
 
 document.querySelector('#chokoku-setting-chokoku-btn').addEventListener('click', function() {
@@ -977,7 +977,7 @@ function uploadNewModel(reader, isAdd, e) {
           new THREE.MeshStandardMaterial(model.material)
         );
         uploadModelJSON = uploadModel.toJSON();
-        setModel(uploadModelJSON, isAdd);
+        setUploadModel(uploadModelJSON, isAdd);
       }, function() {}, function() {alert(i18n('エラーが発生しました。', 'An error has occurred.'));});
     } else if (new RegExp('([^\s]+(\\.(glb|gltf))$)', 'i').test(fileName)) {
       let GLTFLoader = new THREE.GLTFLoader();
@@ -988,7 +988,7 @@ function uploadNewModel(reader, isAdd, e) {
           alert(i18n('申し訳ありませんが、このファイルには対応していません。\n代わりにSTL形式でアップロードしてみてください。', 'Sorry, this file format is not supported. \nPlease uploading in STL format instead.'));
         } else {;
           uploadModelJSON = uploadModel.toJSON();
-          setModel(uploadModelJSON, isAdd);
+          setUploadModel(uploadModelJSON, isAdd);
         }
       }, function() {}, function(uploadError) {
         alert(i18n('エラーが発生しました。', 'An error has occurred'));
@@ -1000,7 +1000,7 @@ function uploadNewModel(reader, isAdd, e) {
   });
 }
 
-function setModel(JSONData, isAdd = false) {
+function setUploadModel(JSONData, isAdd = false) {
   let JSONLoader = new THREE.ObjectLoader();
   let dataBlob = 'data:application/json,' + encodeURIComponent(JSON.stringify(JSONData));
   console.log(encodeURIComponent(JSON.stringify(JSONData)))

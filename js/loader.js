@@ -40,8 +40,8 @@ function onReaderLoad(reader, fileName) {
   });
 }
 
-export default async function(element, fileName) {
+export default function(element, fileName) {
   let reader = new FileReader();
   reader.readAsDataURL(element.files[0]);
-  return await onReaderLoad(reader, fileName);
+  return onReaderLoad(reader, fileName);
 }
