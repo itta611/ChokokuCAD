@@ -659,6 +659,13 @@ renderer.domElement.addEventListener('mousemove', function(e) {
 });
 
 renderer.domElement.addEventListener('click', function(e) {
+  if (document.querySelector('#chokoku-setting-issnap').checked) {
+    mouseX = (e.clientX + 25) - e.clientX % 50;
+    mouseY = (e.clientY + 25) - e.clientY % 50;
+  } else {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }
   if (status === 'setpath') {
     if (nowPath.segments.length === 0) {
       nowPath.moveTo(mouseX, mouseY);
