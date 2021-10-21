@@ -11,10 +11,12 @@ if (language !== 'ja') {
   });
 }
 
-function i18n(textJa, textEn) {
+export function i18n(textJa, textEn) {
   if (language === 'ja') {
     return textJa;
   } else {
     return textEn;
   }
 }
+
+export {language};

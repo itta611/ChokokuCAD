@@ -1,7 +1,7 @@
 'use strict'
 
 import loader from './loader.js'
-import loader from './i18n.js'
+import {i18n, language} from './i18n.js';
 const createBtn = document.querySelector('#size-input-wrap .btn');
 const uploadBtn = document.querySelector('#file-upload-start');
 const mask = document.querySelector('#mask');
@@ -11,10 +11,7 @@ const undoBtn = document.querySelector('#undo-btn');
 const redoBtn = document.querySelector('#redo-btn');
 const pathCanvas = document.querySelector('#path-canvas');
 const textureLoader = new THREE.TextureLoader();
-const language = (window.navigator.languages && window.navigator.languages[0]) ||
-          window.navigator.language ||
-          window.navigator.userLanguage ||
-          window.navigator.browserLanguage;
+const fileUploadAdd = document.querySelector('#file-upload-add');
 let statuses = [];
 let modelDepth = 50;
 let modelWidth = 50;
@@ -34,6 +31,7 @@ let status = 'start';
 let raycaster = new THREE.Raycaster();
 let uploadModel;
 let defaultPosition = new THREE.Vector3(0, 0, 100);
+let pathToCursor;
 let undoBuffer = [];
 let undoNowModelId = 0;
 let isMouseClicking = false;
