@@ -1,6 +1,7 @@
 'use strict'
 
 import loader from './loader.js'
+import loader from './i18n.js'
 const createBtn = document.querySelector('#size-input-wrap .btn');
 const uploadBtn = document.querySelector('#file-upload-start');
 const mask = document.querySelector('#mask');
