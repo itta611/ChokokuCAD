@@ -18,8 +18,6 @@ body {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAfCAYAAAAfrhY5AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAADRJREFUSInt16EBACAMwDDg/5+LwuFn0geiu6vWVFN41ZmAX3A4HA6Hw+FwOBwO/7YnL/UCx10QK3LYirYAAAAASUVORK5CYII=), -moz-radial-gradient(center, ellipse cover,  rgba(255,248,232,1) 0%, rgba(198,198,198,1) 100%); /* FF3.6-15 */
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAfCAYAAAAfrhY5AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAADRJREFUSInt16EBACAMwDDg/5+LwuFn0geiu6vWVFN41ZmAX3A4HA6Hw+FwOBwO/7YnL/UCx10QK3LYirYAAAAASUVORK5CYII=), -webkit-radial-gradient(center, ellipse cover,  rgba(255,248,232,1) 0%,rgba(198,198,198,1) 100%); /* Chrome10-25,Safari5.1-6 */
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAfCAYAAAAfrhY5AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAADRJREFUSInt16EBACAMwDDg/5+LwuFn0geiu6vWVFN41ZmAX3A4HA6Hw+FwOBwO/7YnL/UCx10QK3LYirYAAAAASUVORK5CYII=), radial-gradient(ellipse at center,  rgba(255,248,232,1) 0%,rgba(198,198,198,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  /* Pathが正しくないといけない HTMLの属性とCSS側ではパスの書き方が異なる */
-  /* background-imageが最優先に */
 }
 
 #loading-mask-inner {
@@ -78,11 +76,13 @@ summary {
   border: 1px solid #c9c9c9;
   border-radius: 10px;
   width: 300px;
+  height: 570px;
   position: absolute;
   margin: auto;
-  top: 80px;
+  top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   padding: 50px 100px;
   background: #fff;
   z-index: 10;
