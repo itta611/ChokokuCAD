@@ -4,13 +4,23 @@ import {exportFile} from './export.js';
 import {transformUploadModel, unionToModel, loader, setUploadModel} from './loader.js';
 import {i18n} from './i18n.js';
 import {undo, redo} from './undo.js';
-import {status} from './status.js';
+import {status, statuses} from './status.js';
 import {createModel} from './renderer.js';
 export let mouseX, mouseY;
 let notSaved = false;
 
 export function flagNotSaved(bool) {
   notSaved = bool;
+}
+
+function setMousePos(x, y) {
+  if (isSnapCheck.checked && statuses[status].group === 'setpath') {
+    mouseX = (x + 25) - x % 50;
+    mouseY = (y + 25) - y % 50;
+  } else {
+    mouseX = x;
+    mouseY = y;
+  }
 }
 
 window.addEventListener('beforeunload', function(e) {
@@ -33,23 +43,11 @@ window.addEventListener('load', function() {
   document.querySelector('#loading-mask').style.display = 'none';
 
   window.mainCanvas.addEventListener('mousemove', function(e) {
-    if (isSnapCheck.checked) {
-      mouseX = (e.clientX + 25) - e.clientX % 50;
-      mouseY = (e.clientY + 25) - e.clientY % 50;
-    } else {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    }
+    setMousePos(e.clientX, e.clientY);
   });
   
   window.mainCanvas.addEventListener('click', function(e) {
-    if (isSnapCheck.checked) {
-      mouseX = (e.clientX + 25) - e.clientX % 50;
-      mouseY = (e.clientY + 25) - e.clientY % 50;
-    } else {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    }
+    setMousePos(e.clientX, e.clientY);
   });
 });
 
