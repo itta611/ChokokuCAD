@@ -1,4 +1,6 @@
-import {model} from './renderer.js'
+import {model, scene, updateModel, startRender} from './renderer.js'
+import {hideStartModal} from './gui.js';
+import {statuses} from './status.js';
 
 let uploadModel;
 function onReaderLoad(reader, fileName) {
@@ -81,7 +83,7 @@ export function setUploadModel(JSONData, isAdd = false) {
       if (uploadModel.geometry.type === 'BufferGeometry') {
         let modelGeometry = new THREE.Geometry();
         let modelMaterial = uploadModel.material;
-        modelMaterial.depthTest = false;
+        // modelMaterial.depthTest = false;
         model.material.vertexColors = THREE.FaceColors;
         modelGeometry.fromBufferGeometry(uploadModel.geometry);
         uploadModel = new THREE.Mesh(
@@ -97,24 +99,21 @@ export function setUploadModel(JSONData, isAdd = false) {
       document.querySelector('#file-upload-add-step2').classList.remove('hidden');
       statuses['modelAdd2'].change();
     } else {
-      model = mesh.clone();
+      updateModel(mesh.clone());
       if (model.geometry.type === 'BufferGeometry') {
         let modelGeometry = new THREE.Geometry();
         let modelMaterial = model.material;
         model.material.vertexColors = THREE.FaceColors;
         modelGeometry.fromBufferGeometry(model.geometry);
-        model = new THREE.Mesh(modelGeometry, modelMaterial);
+        updateModel(new THREE.Mesh(modelGeometry, modelMaterial));
       }
       scene.add(model);
-      mask.classList.add('hidden');
-      startModal.classList.add('hidden');
+      hideStartModal();
 
       document.querySelector('#model-color-btn').style.background = document.querySelector('#model-color').value;
-
-      statuses['setpath'].change();
     
       // Start main loop
-      render();
+      startRender();
     }
   });
 }
