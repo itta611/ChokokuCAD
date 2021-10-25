@@ -65,7 +65,6 @@ toolItems['setpath'] = new ToolItem(
     }
   },
   onUnselected: function(statusTo) {
-    console.log(statuses[statusTo].group)
     if (statuses[statusTo] && statuses[statusTo].group !== 'setpath') {
       nowPath.visible = false;
       chokokuPath.visible = false;

@@ -18,7 +18,8 @@ let hoverPoint = -1;
 export function setPrevPathFromChokokuPath() {
   prevPath = chokokuPath.clone();
   prevPath.visible = false;
-  chokokuPath.set(new paper.Path());
+  chokokuPath.visible = false;
+  chokokuPath = new paper.Path();
 }
 
 window.addEventListener('load', function() {
@@ -234,7 +235,6 @@ document.querySelector('#reuse-btn').addEventListener('click', function() {
   if (document.querySelector('#reuse-btn').classList.contains('disabled')) return;
   if (this.textContent === i18n('一つ前のパスを使用', 'Use previous path')) {
     this.textContent = i18n('新しいパスを使う', 'Use new path');
-    console.log(prevPath);
     chokokuPath = prevPath;
     chokokuPath.visible = true; // visible property of prevPath is false by default
   } else {
