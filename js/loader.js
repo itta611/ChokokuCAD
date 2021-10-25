@@ -1,4 +1,4 @@
-import {model} from './main.js'
+import {model} from './renderer.js'
 
 let uploadModel;
 function onReaderLoad(reader, fileName) {
@@ -40,8 +40,93 @@ function onReaderLoad(reader, fileName) {
   });
 }
 
-export default function(element, fileName) {
+export function loader(element, fileName) {
   let reader = new FileReader();
   reader.readAsDataURL(element.files[0]);
   return onReaderLoad(reader, fileName);
+}
+
+export function transformUploadModel() {
+  uploadModel.position.set(
+    document.querySelector('#new-model-position-x').value,
+    document.querySelector('#new-model-position-y').value,
+    document.querySelector('#new-model-position-z').value
+  );
+  uploadModel.rotation.set(
+    THREE.Math.degToRad(document.querySelector('#new-model-rotation-x').value),
+    THREE.Math.degToRad(document.querySelector('#new-model-rotation-y').value),
+    THREE.Math.degToRad(document.querySelector('#new-model-rotation-z').value)
+  );
+  uploadModel.scale.set(
+    document.querySelector('#new-model-scale-x').value,
+    document.querySelector('#new-model-scale-y').value,
+    document.querySelector('#new-model-scale-z').value
+  );
+}
+
+export function setUploadModel(JSONData, isAdd = false) {
+  let JSONLoader = new THREE.ObjectLoader();
+  let dataBlob = 'data:application/json,' + encodeURIComponent(JSON.stringify(JSONData));
+  JSONLoader.load(dataBlob, function(mesh) {
+    if (isAdd) {
+      uploadModel = mesh.clone();
+      let uploadModelPosition = uploadModel.position;
+      let uploadModelRotation = uploadModel.rotation;
+      let uploadModelScale = uploadModel.scale;
+      ['x', 'y', 'z'].forEach(xyz => {
+        document.querySelector(`#new-model-position-${xyz}`).value = uploadModelPosition[xyz];
+        document.querySelector(`#new-model-rotation-${xyz}`).value = uploadModelRotation[xyz];
+        document.querySelector(`#new-model-scale-${xyz}`).value = uploadModelScale[xyz];
+      });
+      if (uploadModel.geometry.type === 'BufferGeometry') {
+        let modelGeometry = new THREE.Geometry();
+        let modelMaterial = uploadModel.material;
+        modelMaterial.depthTest = false;
+        model.material.vertexColors = THREE.FaceColors;
+        modelGeometry.fromBufferGeometry(uploadModel.geometry);
+        uploadModel = new THREE.Mesh(
+          modelGeometry,
+          modelMaterial
+        );
+      }
+      uploadModel.scale.set(...uploadModelScale.toArray());
+      uploadModel.position.set(...uploadModelPosition.toArray());
+      uploadModel.rotation.set(...uploadModelRotation.toArray());
+      scene.add(uploadModel);
+      document.querySelector('#file-upload-add-step1').classList.add('hidden');
+      document.querySelector('#file-upload-add-step2').classList.remove('hidden');
+      statuses['modelAdd2'].change();
+    } else {
+      model = mesh.clone();
+      if (model.geometry.type === 'BufferGeometry') {
+        let modelGeometry = new THREE.Geometry();
+        let modelMaterial = model.material;
+        model.material.vertexColors = THREE.FaceColors;
+        modelGeometry.fromBufferGeometry(model.geometry);
+        model = new THREE.Mesh(modelGeometry, modelMaterial);
+      }
+      scene.add(model);
+      mask.classList.add('hidden');
+      startModal.classList.add('hidden');
+
+      document.querySelector('#model-color-btn').style.background = document.querySelector('#model-color').value;
+
+      statuses['setpath'].change();
+    
+      // Start main loop
+      render();
+    }
+  });
+}
+
+export function unionToModel() {
+  let uploadModelBSP = new ThreeBSP(uploadModel);
+  let modelBSP = new ThreeBSP(model);
+  let newModelBSP = modelBSP.union(uploadModelBSP);
+  let newModel = newModelBSP.toMesh(model.material);
+  removeMesh(model);
+  model.visible = false;
+  uploadModel(newModel.clone());
+
+  model.material.vertexColors = THREE.FaceColors;
 }
