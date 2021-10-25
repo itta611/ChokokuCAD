@@ -41,7 +41,7 @@ document.querySelector('#enter-btn').addEventListener('click', function() {
 
 window.addEventListener('load', function() {
   setTimeout(function() {
-    endPalalax();
+    endParallax();
     document.querySelector('#loading-mask').style.display = 'none';
   }, 2000);
 
