@@ -40,7 +40,10 @@ document.querySelector('#enter-btn').addEventListener('click', function() {
 });
 
 window.addEventListener('load', function() {
-  document.querySelector('#loading-mask').style.display = 'none';
+  setTimeout(function() {
+    endPalalax();
+    document.querySelector('#loading-mask').style.display = 'none';
+  }, 2000);
 
   window.mainCanvas.addEventListener('mousemove', function(e) {
     setMousePos(e.clientX, e.clientY);

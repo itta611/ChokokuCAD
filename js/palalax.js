@@ -16,7 +16,6 @@ function onMouseMove(e) {
 document.addEventListener('mousemove', onMouseMove);
 
 // documentじゃなくてwindow
-window.addEventListener('load', function() {
-  console.log('content-loaded');
+function endPalalax() {
   document.removeEventListener('mousemove', onMouseMove, false);
-});
+};
