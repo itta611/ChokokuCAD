@@ -136,7 +136,7 @@ input[type="checkbox"] {
 }
 
 label:hover input[type="checkbox"] {
-  border: 1px solid #ccc;
+  border: 1px solid #888;
 }
 
 input[type="checkbox"]:checked {
