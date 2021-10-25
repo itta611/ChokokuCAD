@@ -2,7 +2,7 @@ import {language} from './i18n.js';
 import {statusBar} from './gui.js';
 import {statuses, status} from './status.js';
 import {renderer} from './renderer.js';
-import {nowPath, pointCircles} from './pathCanvas.js';
+import {chokokuPath, nowPath, pointCircles} from './pathCanvas.js';
 let toolItems = [];
 
 export class ToolItem {
@@ -43,26 +43,39 @@ export class ToolItem {
     this.onSelected();
   }
 
-  unSelect() { 
+  unSelect(statusTo) { 
     this.domElement.classList.remove('selected');
     this.settingDomElement.classList.add('hidden');
-    this.onUnselected();
-    console.log(`${this.domName}: unselected`);
+    this.onUnselected(statusTo);
   }
 }
 
 toolItems['setpath'] = new ToolItem(
   {domName: 'chokoku', status: 'setpath', statuses: ['setpath', 'adjustpath'], 
   onSelected: function() {
-    renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
+    if (status === 'setpath') {
+      document.querySelector('#chokoku-setting-add-btn').classList.add('selected');
+      document.querySelector('#chokoku-setting-edit-btn').classList.remove('selected');
+      document.querySelector('#chokoku-setting .btn').parentNode.classList.remove('hidden');
+      document.querySelector('#chokoku-setting-issnap').parentNode.parentNode.classList.remove('hidden');
+      renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
+      nowPath.visible = true;
+      chokokuPath.visible = true;
+      if (pointCircles.length === 1) pointCircles[0].visible = true;
+    }
   },
-  onUnselected: function() {
-    // removeCursorPath = false;
-    if (status !== 'setpath' && status !== 'adjustpath') {
-      for (let i = nowPath.segments.length - 1; i >= 0; i--) {
-        nowPath.removeSegment(i);
+  onUnselected: function(statusTo) {
+    console.log(statuses[statusTo].group)
+    if (statuses[statusTo] && statuses[statusTo].group !== 'setpath') {
+      nowPath.visible = false;
+      chokokuPath.visible = false;
+      if (status === 'adjustpath') {
+        for (let i = 0;i < pointCircles.length;i++) {
+          pointCircles[i].visible = false;
+        }
+      } else {
+        if (pointCircles.length === 1) pointCircles[0].visible = false;
       }
-      if (pointCircles.length === 1) pointCircles[0].remove();
     }
   }}
 );

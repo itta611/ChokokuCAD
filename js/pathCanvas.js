@@ -190,6 +190,7 @@ document.querySelector('#chokoku-setting-edit-btn').addEventListener('click', fu
   document.querySelector('#chokoku-setting-add-btn').classList.remove('selected');
   document.querySelector('#chokoku-setting-add-mode-params').classList.add('hidden');
   document.querySelector('#chokoku-setting .btn').parentNode.classList.add('hidden');
+  document.querySelector('#chokoku-setting-issnap').parentNode.parentNode.classList.add('hidden');
   this.classList.add('selected');
   statuses['adjustpath'].change();
   nowPath.visible = false;

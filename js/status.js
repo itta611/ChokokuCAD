@@ -19,9 +19,9 @@ class Status {
     } else {
       statusBar.textContent = `[${this.group}] ${this.descEn}`;
     }
-    if (statuses[status] && toolItems[statuses[status].group]) toolItems[statuses[status].group].unSelect();
-    if (toolItems[this.group]) toolItems[this.group].select();
+    if (statuses[status] && toolItems[statuses[status].group]) toolItems[statuses[status].group].unSelect(this.group);
     status = this.status;
+    if (toolItems[this.group]) toolItems[this.group].select();
   }
 }
 
