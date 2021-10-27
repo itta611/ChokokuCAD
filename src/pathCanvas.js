@@ -3,6 +3,7 @@ import {mouseX, mouseY} from './domEvents.js';
 import {renderer} from './renderer.js';
 import {status, statuses} from './status.js';
 import {modifyRemoveCursorPath} from './render.js';
+import {initGrid} from './grid.js';
 import {i18n} from './i18n.js';
 
 let nowPath;
@@ -36,6 +37,7 @@ window.addEventListener('load', function() {
   chokokuPath.dashArray = [2, 2];
   chokokuPath.strokeColor = '#000';
   chokokuPath.sendToBack();
+  initGrid();
 
   renderer.domElement.addEventListener('mousedown', function() {
     isMouseClicking = true;
@@ -106,10 +108,11 @@ window.addEventListener('load', function() {
     }
   });
   
-  renderer.domElement.addEventListener('click', function(e) {
+  renderer.domElement.addEventListener('click', function() {
     if (status === 'setpath') {
       if (nowPath.segments.length === 0) {
         nowPath.moveTo(mouseX, mouseY);
+        nowPath.bringToFront();
         let pointCircle = new paper.Path.Circle(new paper.Point(mouseX, mouseY), 5);
         pointCircle.strokeColor = '#000';
         pointCircle.fillColor = '#fff';
@@ -126,7 +129,6 @@ window.addEventListener('load', function() {
         for (let i = nowPath.segments.length - 1; i >= 0; i--) {
           nowPath.removeSegment(i);
         }
-        chokokuPath.sendToBack();
         pointCircles[0].remove();
         pointCircles = [];
         renderer.domElement.style.cursor = 'url(img/chokoku-cursor.svg) 5 5, auto';

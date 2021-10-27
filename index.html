@@ -6,8 +6,7 @@
   <title>Chokoku CAD</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <script src="js/parallax.js"></script>
-  <!-- <script src="js/i18n.js"></script> -->
+  <script src="src/parallax.js"></script>
   <meta name="description" content="A breakthrough CAD software on your browser">
 
     <!-- For old IEs -->
@@ -194,14 +193,14 @@
       document.querySelector('#loading-mask-inner h4').textContent = `LOADING... (${loadingStatus} / 8)`
     }
   </script>
-  <script src="js/three.min.js" onload="changeLoadingText();"></script>
-  <script src="js/ThreeBSP.js" onload="changeLoadingText();"></script>
-  <script src="js/GLTFExporter.js" onload="changeLoadingText();"></script>
-  <script src="js/STLLoader.js" onload="changeLoadingText();"></script>
-  <script src="js/GLTFLoader.js" onload="changeLoadingText();"></script>
-  <script src="js/OrbitControls.js" onload="changeLoadingText();"></script>
-  <script src="js/paper-full.js" onload="changeLoadingText();"></script>
-  <script src="js/main.js" type="module"></script>
+  <script src="lib/three.min.js" onload="changeLoadingText();"></script>
+  <script src="lib/ThreeBSP.js" onload="changeLoadingText();"></script>
+  <script src="lib/GLTFExporter.js" onload="changeLoadingText();"></script>
+  <script src="lib/STLLoader.js" onload="changeLoadingText();"></script>
+  <script src="lib/GLTFLoader.js" onload="changeLoadingText();"></script>
+  <script src="lib/OrbitControls.js" onload="changeLoadingText();"></script>
+  <script src="lib/paper-full.js" onload="changeLoadingText();"></script>
+  <script src="src/main.js" type="module"></script>
 
   <script>
     if (navigator.userAgent.indexOf('MSIE') !== -1 && navigator.userAgent.indexOf('TRIDENT') !== -1) {
