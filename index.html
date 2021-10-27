@@ -4,38 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chokoku CAD</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="./static/css/styles.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <script src="src/parallax.js"></script>
   <meta name="description" content="A breakthrough CAD software on your browser">
 
     <!-- For old IEs -->
-  <link rel="shortcut icon" href="favicon.ico"> 
+  <link rel="shortcut icon" href="favicon.ico">
   <!-- For new browsers - multisize ico  -->
   <link rel="icon" type="image/x-icon" sizes="16x16 32x32" href="favicon.ico"> 
   <!-- For iPad with high-resolution Retina display running iOS ≥ 7: -->
-  <link rel="apple-touch-icon" sizes="152x152" href="./img/icon/favicon-152-precomposed.png"> 
+  <link rel="apple-touch-icon" sizes="152x152" href="."./static/> 
   <!-- For iPad with high-resolution Retina display running iOS ≤ 6: -->
-  <link rel="apple-touch-icon" sizes="144x144" href="./img/icon/favicon-144-precomposed.png"> 
+  <link rel="apple-touch-icon" sizes="144x144" href="./static/img/icon/favicon-144-precomposed.png"> 
   <!-- For iPhone with high-resolution Retina display running iOS ≥ 7: -->
-  <link rel="apple-touch-icon" sizes="120x120" href="./img/icon/favicon-120-precomposed.png"> 
+  <link rel="apple-touch-icon" sizes="120x120" href="./static/img/icon/favicon-120-precomposed.png"> 
   <!-- For iPhone with high-resolution Retina display running iOS ≤ 6: -->
-  <link rel="apple-touch-icon" sizes="114x114" href="./img/icon/favicon-114-precomposed.png"> 
+  <link rel="apple-touch-icon" sizes="114x114" href="./static/img/icon/favicon-114-precomposed.png"> 
   <!-- For iPhone 6+ -->
-  <link rel="apple-touch-icon" sizes="180x180" href="./img/icon/favicon-180-precomposed.png"> 
+  <link rel="apple-touch-icon" sizes="180x180" href="./static/img/icon/favicon-180-precomposed.png"> 
   <!-- For first- and second-generation iPad: -->
-  <link rel="apple-touch-icon" sizes="72x72" href="./img/icon/favicon-72-precomposed.png"> 
+  <link rel="apple-touch-icon" sizes="72x72" href="./static/img/icon/favicon-72-precomposed.png"> 
   <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
-  <link rel="apple-touch-icon" sizes="57x57" href="./img/icon/favicon-57.png"> 
+  <link rel="apple-touch-icon" sizes="57x57" href="./static/img/icon/favicon-57.png"> 
   <!-- For Old Chrome -->
-  <link rel="icon" sizes="32x32" href="./img/icon/favicon-32.png" > 
+  <link rel="icon" sizes="32x32" href="./static/img/icon/favicon-32.png" > 
   <!-- For IE10 Metro -->
   <meta name="msapplication-TileColor" content="#efab00">
-  <meta name="msapplication-TileImage" content="./img/icon/favicon-144.png">
+  <meta name="msapplication-TileImage" content="./static/img/icon/favicon-144.png">
   <meta name="theme-color" content="#efab00"> 
   <!-- Chrome for Android -->
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" sizes="192x192" href="./img/icon/favicon-192.png">
+  <link rel="icon" sizes="192x192" href="./static/img/icon/favicon-192.png">
 </head>
 <body>
   <div id="loading-mask">
@@ -49,12 +49,12 @@
   <div id="view-canvas-wrap">
   </div>
   <div id="re-undo">
-    <img src="img/undo.svg" width="25" height="25" alt="戻す" title="戻す" id="undo-btn" class="tool-item-mini disabled">
-    <img src="img/redo.svg" width="25" height="25" alt="進む" title="進む" id="redo-btn" class="tool-item-mini disabled">
+    <img src="./static/img/undo.svg" width="25" height="25" alt="戻す" title="戻す" id="undo-btn" class="tool-item-mini disabled">
+    <img src="./static/img/redo.svg" width="25" height="25" alt="進む" title="進む" id="redo-btn" class="tool-item-mini disabled">
   </div>
   <div id="main-canvas-wrap"></div>
   <div id="start-modal" class="modal">
-    <img src="img/logo.svg" alt="Chokoku CAD" width="300" height="64">
+    <img src="./static/img/logo.svg" alt="Chokoku CAD" width="300" height="64">
     <h2 data-en="Create new">新規作成</h2>
     <h3 data-en="Size">直方体の寸法</h3>
     <div id="size-input-wrap">
@@ -77,24 +77,24 @@
     </div>
   </div>
   <div id="tools">
-    <img src="img/chokoku-tool.svg" id="chokoku-tool" class="tool-item selected">
-    <img src="img/paint-tool.svg" id="paint-tool" class="tool-item">
-    <img src="img/upload-tool.svg" id="upload-tool" class="tool-item">
-    <img src="img/export-tool.svg" id="export-tool" class="tool-item">
+    <img src="./static/img/chokoku-tool.svg" id="chokoku-tool" class="tool-item selected">
+    <img src="./static/img/paint-tool.svg" id="paint-tool" class="tool-item">
+    <img src="./static/img/upload-tool.svg" id="upload-tool" class="tool-item">
+    <img src="./static/img/export-tool.svg" id="export-tool" class="tool-item">
   </div>
   <div id="setting">
     <div class="setting-item" id="chokoku-setting">
       <div class="param-group setting-center">
-        <img src="img/chokoku-setting-chokokutou.svg" width="40" height="40" alt="Sclupt" id="chokoku-setting-chokoku-btn" class="tool-item-mini selected">
-        <img src="img/chokoku-setting-lock.svg" width="40" height="40" alt="Lock" id="chokoku-setting-lock-btn" class="tool-item-mini">
+        <img src="./static/img/chokoku-setting-chokokutou.svg" width="40" height="40" alt="Sclupt" id="chokoku-setting-chokoku-btn" class="tool-item-mini selected">
+        <img src="./static/img/chokoku-setting-lock.svg" width="40" height="40" alt="Lock" id="chokoku-setting-lock-btn" class="tool-item-mini">
       </div>
       <div class="param-group setting-center">
-        <img src="img/chokoku-setting-add.svg" width="40" height="40" alt="Add mode" id="chokoku-setting-add-btn" class="tool-item-mini selected">
-        <img src="img/chokoku-setting-edit.svg" width="40" height="40" alt="Edit mode" id="chokoku-setting-edit-btn" class="tool-item-mini">
+        <img src="./static/img/chokoku-setting-add.svg" width="40" height="40" alt="Add mode" id="chokoku-setting-add-btn" class="tool-item-mini selected">
+        <img src="./static/img/chokoku-setting-edit.svg" width="40" height="40" alt="Edit mode" id="chokoku-setting-edit-btn" class="tool-item-mini">
       </div>
       <div class="param-group setting-center" id="chokoku-setting-add-mode-params">
-        <img src="img/chokoku-setting-pencil.svg" width="40" height="40" alt="pencil" id="chokoku-setting-pencil-btn" class="tool-item-mini selected">
-        <img src="img/chokoku-setting-eraser.svg" width="40" height="40" alt="eraser" id="chokoku-setting-eraser-btn" class="tool-item-mini">
+        <img src="./static/img/chokoku-setting-pencil.svg" width="40" height="40" alt="pencil" id="chokoku-setting-pencil-btn" class="tool-item-mini selected">
+        <img src="./static/img/chokoku-setting-eraser.svg" width="40" height="40" alt="eraser" id="chokoku-setting-eraser-btn" class="tool-item-mini">
       </div>
       <div class="param-group setting-center">
         <label for="chokoku-setting-issnap">

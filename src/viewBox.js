@@ -7,7 +7,7 @@ let viewBoxAngles = [];
 const textureLoader = new THREE.TextureLoader();
 const defaultCameraPosition = new THREE.Vector3(0, 0, 100);
 
-textureLoader.setPath('img/');
+textureLoader.setPath('static/img/');
 let viewBoxMaterial = [];
 for (let i = 1; i <= 6; i++) {
   let texMat = new THREE.MeshBasicMaterial({map: textureLoader.load(`view-box-texture-${i}.png`)});
