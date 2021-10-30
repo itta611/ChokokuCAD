@@ -85,7 +85,7 @@ window.addEventListener('load', function() {
           renderer.domElement.style.cursor = 'grab';
         }
       } else if (!pathHovering && hoverPoint === -1) {
-        renderer.domElement.style.cursor = 'url(img/chokoku-cursor.svg) 5 5, auto';
+        renderer.domElement.style.cursor = 'url(./static/img/chokoku-cursor.svg) 5 5, auto';
       }
   
       if (!isMouseClicking) {
@@ -129,7 +129,7 @@ window.addEventListener('load', function() {
         }
         pointCircles[0].remove();
         pointCircles = [];
-        renderer.domElement.style.cursor = 'url(img/chokoku-cursor.svg) 5 5, auto';
+        renderer.domElement.style.cursor = 'url(./static/img/chokoku-cursor.svg) 5 5, auto';
         modifyRemoveCursorPath(false);
       }
     }

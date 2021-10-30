@@ -58,7 +58,7 @@ toolItems['setpath'] = new ToolItem(
       document.querySelector('#chokoku-setting-edit-btn').classList.remove('selected');
       document.querySelector('#chokoku-setting .btn').parentNode.classList.remove('hidden');
       document.querySelector('#chokoku-setting-issnap').parentNode.parentNode.classList.remove('hidden');
-      renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
+      renderer.domElement.style.cursor = "url('./static/img/chokoku-cursor.svg') 5 5, auto";
       nowPath.visible = true;
       chokokuPath.visible = true;
       if (pointCircles.length === 1) pointCircles[0].visible = true;
@@ -81,7 +81,7 @@ toolItems['setpath'] = new ToolItem(
 toolItems['paint'] = new ToolItem(
   {domName: 'paint', status: 'paint',
   onSelected: function() {
-    renderer.domElement.style.cursor = "url('img/paint-cursor.svg') 5 5, auto";
+    renderer.domElement.style.cursor = "url('./staticimg/paint-cursor.svg') 5 5, auto";
   }
 });
 toolItems['upload'] = new ToolItem(
