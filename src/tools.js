@@ -81,7 +81,7 @@ toolItems['setpath'] = new ToolItem(
 toolItems['paint'] = new ToolItem(
   {domName: 'paint', status: 'paint',
   onSelected: function() {
-    renderer.domElement.style.cursor = "url('./staticimg/paint-cursor.svg') 5 5, auto";
+    renderer.domElement.style.cursor = "url('./static/img/paint-cursor.svg') 5 5, auto";
   }
 });
 toolItems['upload'] = new ToolItem(
