@@ -1,4 +1,4 @@
-import {model, scene, updateModel, startRender} from './renderer.js'
+import {model, scene, updateModel, startRender, removeMesh} from './renderer.js'
 import {hideStartModal} from './gui.js';
 import {statuses} from './status.js';
 
@@ -125,7 +125,7 @@ export function unionToModel() {
   let newModel = newModelBSP.toMesh(model.material);
   removeMesh(model);
   model.visible = false;
-  uploadModel(newModel.clone());
+  updateModel(newModel.clone());
 
   model.material.vertexColors = THREE.FaceColors;
 }
