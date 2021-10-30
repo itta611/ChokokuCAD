@@ -81,6 +81,10 @@ isSnapCheck.addEventListener('change', function() {
   }
 });
 
+gridSizeInput.addEventListener('change', function() {
+  updateGrid();
+});
+
 exportBtn.addEventListener('click', function() {
   const fileName = document.querySelector('#export-file-name').value;
   exportFile(fileName);

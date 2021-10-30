@@ -1,9 +1,9 @@
-import {screenHeight} from './gui.js';
+import {screenHeight, gridSizeInput} from './gui.js';
 import {camera} from './renderer.js'; // TODO: move to renderer.js
-let gridSize = 50 / 6;
 let gridXLines = [];
 let gridYLines = [];
 export function updateGrid() {
+  let gridSize = gridSizeInput.value;
   removeGrid();
   let canvasWidth = window.mainCanvas.width / 2; // support retina
   const cameraHeight = window.mainCanvas.height / 7;
@@ -46,6 +46,7 @@ export function removeGrid() {
 }
 
 export function getNearGridPoint(mouseX, mouseY) {
+  let gridSize = gridSizeInput.value;
   let canvasWidth = window.mainCanvas.width / 2; // Screen width in pixels
   let cameraHeight = window.mainCanvas.height / 7; // THREE.js camera height
   let screenGridSize = gridSize / cameraHeight * screenHeight * camera.zoom; // grid size in screen pixels at the current camera zoom
