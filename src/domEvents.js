@@ -92,10 +92,12 @@ exportBtn.addEventListener('click', function() {
 
 fileUploadAdd.addEventListener('change', async function(e) {
   setUploadModel(await loader(fileUploadAdd, e.target.files[0].name), true);
+  fileUploadAdd.value = '';
 });
 
 uploadBtn.addEventListener('change', async function(e) {
   setUploadModel(await loader(uploadBtn, e.target.files[0].name));
+  uploadBtn.value = '';
 });
 
 ['position', 'rotation', 'scale'].forEach(element => {
@@ -106,9 +108,7 @@ uploadBtn.addEventListener('change', async function(e) {
 });
 
 document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', function() {
-  this.textContent = i18n('処理中...', 'Progressing...');
   setTimeout(function() {
-    this.textContent = i18n('決定', 'OK');
     unionToModel();
     document.querySelector('#file-upload-add-step1').classList.remove('hidden');
     document.querySelector('#file-upload-add-step2').classList.add('hidden');
@@ -118,7 +118,7 @@ document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', 
         document.querySelector(`#new-model-${element}-${xyz}`).value = (element === 'scale') * 1;
       });
     });
-  });
+  }, 10);
 });
 
 undoBtn.addEventListener('click', function() {
