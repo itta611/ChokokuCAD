@@ -1,4 +1,3 @@
-import './inputZeroFix.js';
 import './rangeBackground.js';
 
 export const createBtn = document.querySelector('#size-input-wrap .btn');
