@@ -174,14 +174,7 @@ function createNewMeshFromPath(chokokuHole, pathShape) {
   );
   nowPath3d.position.copy(camera.position.clone().setLength(nowPath3dLen / 2).negate());
   nowPath3d.lookAt(camera.position);
-  if (chokokuHole === undefined) {
-    chokokuHole = nowPath3d;
-  } else {
-    let chokokuHoleBSP = new ThreeBSP(chokokuHole);
-    let nowPath3dBSP = new ThreeBSP(nowPath3d);
-    chokokuHoleBSP = chokokuHoleBSP.union(nowPath3dBSP);
-    chokokuHole = chokokuHoleBSP.toMesh();
-  }
+  chokokuHole = nowPath3d;
   return chokokuHole;
 }
 

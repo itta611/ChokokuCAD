@@ -1,4 +1,4 @@
-import {createBtn, isSnapCheck, fileUploadAdd, uploadBtn, exportBtn, updateScreenSize, undoBtn, redoBtn, hideStartModal} from './gui.js';
+import {createBtn, isSnapCheck, fileUploadAdd, uploadBtn, exportBtn, updateScreenSize, undoBtn, redoBtn, hideStartModal, gridSizeInput} from './gui.js';
 import {setModelFromChokoku} from './chokokuTool.js';
 import {exportFile} from './export.js';
 import {transformUploadModel, unionToModel, loader, setUploadModel} from './loader.js';
@@ -6,6 +6,7 @@ import {i18n} from './i18n.js';
 import {undo, redo} from './undo.js';
 import {status, statuses} from './status.js';
 import {createModel} from './renderer.js';
+import {updateGrid, getNearGridPoint, removeGrid} from './grid.js';
 export let mouseX, mouseY;
 let notSaved = false;
 
@@ -15,8 +16,7 @@ export function flagNotSaved(bool) {
 
 function setMousePos(x, y) {
   if (isSnapCheck.checked && statuses[status].group === 'setpath') {
-    mouseX = (x + 25) - x % 50;
-    mouseY = (y + 25) - y % 50;
+    [mouseX, mouseY] = getNearGridPoint(x, y);
   } else {
     mouseX = x;
     mouseY = y;
@@ -52,14 +52,34 @@ window.addEventListener('load', function() {
   window.mainCanvas.addEventListener('click', function(e) {
     setMousePos(e.clientX, e.clientY);
   });
+
+  window.mainCanvas.addEventListener('wheel', function() {
+    updateScreenSize();
+    if (isSnapCheck.checked) updateGrid();
+  }, false);
 });
 
-window.addEventListener('resize', updateScreenSize);
+window.addEventListener('resize', function() {
+  updateScreenSize();
+  if (isSnapCheck.checked) updateGrid();
+});
 
 createBtn.addEventListener('click', function() {
   hideStartModal();
   createModel();
 }, {once: true});
+
+isSnapCheck.addEventListener('change', function() {
+  if (isSnapCheck.checked) {
+    gridSizeInput.disabled = false;
+    gridSizeInput.parentElement.classList.remove('disabled');
+    updateGrid();
+  } else {
+    gridSizeInput.disabled = true;
+    gridSizeInput.parentElement.classList.add('disabled');
+    removeGrid();
+  }
+});
 
 exportBtn.addEventListener('click', function() {
   const fileName = document.querySelector('#export-file-name').value;

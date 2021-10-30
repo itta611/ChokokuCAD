@@ -139,6 +139,10 @@ label:hover input[type="checkbox"] {
   border: 1px solid #888;
 }
 
+.disabled, input[type="number"]:disabled, input[type="number"]:disabled {
+  color: #777777;
+}
+
 input[type="checkbox"]:checked {
   background: #efab00;
 }

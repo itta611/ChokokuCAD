@@ -3,7 +3,6 @@ import {mouseX, mouseY} from './domEvents.js';
 import {renderer} from './renderer.js';
 import {status, statuses} from './status.js';
 import {modifyRemoveCursorPath} from './render.js';
-import {initGrid} from './grid.js';
 import {i18n} from './i18n.js';
 
 let nowPath;
@@ -37,7 +36,6 @@ window.addEventListener('load', function() {
   chokokuPath.dashArray = [2, 2];
   chokokuPath.strokeColor = '#000';
   chokokuPath.sendToBack();
-  initGrid();
 
   renderer.domElement.addEventListener('mousedown', function() {
     isMouseClicking = true;

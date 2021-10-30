@@ -12,6 +12,7 @@ export const pathCanvas = document.querySelector('#path-canvas');
 export const fileUploadAdd = document.querySelector('#file-upload-add');
 export const exportBtn = document.querySelector('#export-setting .btn');
 export const isSnapCheck = document.querySelector('#chokoku-setting-issnap');
+export const gridSizeInput = document.querySelector('#grid-size');
 export let screenWidth;
 export let screenHeight;
 updateScreenSize();
@@ -28,5 +29,3 @@ export function hideStartModal() {
   mask.classList.add('hidden');
   startModal.classList.add('hidden');
 }
-
-// export {createBtn, uploadBtn, mask, startModal, statusBar, undoBtn, redoBtn, pathCanvas, fileUploadAdd, screenWidth, screenHeight, mouseX, mouseY};
