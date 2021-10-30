@@ -29,7 +29,7 @@ export function render() {
         removeCursorPath = true;
       }
       nowPath.lineTo(mouseX, mouseY);
-      renderer.domElement.style.cursor = "url('img/chokoku-cursor.svg') 5 5, auto";
+      renderer.domElement.style.cursor = "url('./static/img/chokoku-cursor.svg') 5 5, auto";
       if (
         nowPath.segments[0].point.x - 5 < mouseX &&
         nowPath.segments[0].point.x + 5 > mouseX &&
