@@ -50,7 +50,7 @@ export function getNearGridPoint(mouseX, mouseY) {
   let canvasWidth = window.mainCanvas.width / 2; // Screen width in pixels
   let cameraHeight = window.mainCanvas.height / 7; // THREE.js camera height
   let screenGridSize = gridSize / cameraHeight * screenHeight * camera.zoom; // grid size in screen pixels at the current camera zoom
-  let gridX = Math.floor((mouseX - canvasWidth / 2 + gridSize / 2) / screenGridSize);
-  let gridY = Math.floor((mouseY - screenHeight / 2 + gridSize / 2) / screenGridSize);
+  let gridX = Math.floor((mouseX - canvasWidth / 2 + screenGridSize / 2) / screenGridSize);
+  let gridY = Math.floor((mouseY - screenHeight / 2 + screenGridSize / 2) / screenGridSize);
   return [gridX * screenGridSize + canvasWidth / 2, gridY * screenGridSize + screenHeight / 2];
 }
