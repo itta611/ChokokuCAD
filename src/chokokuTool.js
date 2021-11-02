@@ -84,15 +84,14 @@ export function setModelFromChokoku() {
     chokokuHoleBSP = new ThreeBSP(chokokuHole) // ThreeBSPインスタンス
     modelBSP = new ThreeBSP(model) // ThreeBSPインスタンス
     const isEraser = document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected');
+    const isLock = lockObject === undefined || lockObject.geometry.faces.length == 0;
     if (document.querySelector('#chokoku-setting-lock-btn').classList.contains('selected')) { // Lock tool
       let lockObjectBSP;
-      if (lockObject === undefined || lockObject.geometry.faces.length == 0) { // If first lock
+      if (isLock) { // If first lock
         if (!isEraser) {
-          console.log('Lock tool: No lock object');
           lockObjectBSP = modelBSP.intersect(chokokuHoleBSP);
         }
       } else {
-        console.log('Lock tool: Lock object exists');
         lockObjectBSP = new ThreeBSP(lockObject);
         if (isEraser) {
           lockObjectBSP = lockObjectBSP.subtract(chokokuHoleBSP);
@@ -115,16 +114,14 @@ export function setModelFromChokoku() {
       } else {
         resultModelBSP = modelBSP.intersect(chokokuHoleBSP);
       }
-      console.log(lockObject.geometry.faces.length)
-      if (lockObject !== undefined && lockObject.geometry.faces.length != 0) { // if lock was setted
-        console.log('lockObject is defined');
-        console.log(lockObject);
-        console.log(resultModelBSP);
-        let lockObjectBSP = new ThreeBSP(lockObject);
-        resultModelBSP = resultModelBSP.union(lockObjectBSP);
-      }
       resultModel = resultModelBSP.toMesh(model.material);
+      if (!isLock) {
+        let lockObjectBSP = new ThreeBSP(lockObject);
+        let resultModelBSP = new ThreeBSP(resultModel);
+        resultModel = resultModelBSP.union(lockObjectBSP).toMesh(model.material);
+      }
     }
+    recordModel();
 
     // Set model
     if (document.querySelector('#chokoku-setting-chokoku-btn').classList.contains('selected')) { // Chokoku tool
@@ -148,10 +145,7 @@ export function setModelFromChokoku() {
         resultModel.geometry.faces[i].materialIndex = materialIndex;
         resultModel.geometry.faces[i].color.set(faceColors[materialIndex]);
       }
-    }
-    if (resultModel !== undefined) {
       updateModel(resultModel);
-      recordModel();
     }
   } catch (error) {
     statusBar.innerHTML = `<span style='color: #ff0000;'>${i18n('エラーが発生しました。', 'An error has occurred.')}</span>`;
