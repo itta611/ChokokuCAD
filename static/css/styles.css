@@ -229,13 +229,14 @@ input[type="number"]:focus, input[type="text"]:focus, #model-color-btn:focus {
   margin-bottom: 10px;
 }
 
-#view-source {
+#view-source a {
   position: absolute;
-  margin: auto;
+  margin-right: 10px;
   bottom: 7px;
   left: 0;
   right: 0;
-  text-align: center;
+  text-decoration: none!important;
+  text-align: right;
 }
 
 a {
@@ -393,7 +394,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff8e8', end
 
 .tool-item.selected, .tool-item:active,
 .tool-item-mini.selected, .tool-item-mini:not(.disabled):active {
-  background: #eee!important; /* .tool-item-miniは:notがついていて優先順位が低くなるのでそのままでは反映されない */
+  background: #eee!important;
   border: 1px solid #aaa;
   cursor: default;
 }
