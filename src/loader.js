@@ -1,6 +1,7 @@
 import {model, scene, updateModel, startRender, removeMesh} from './renderer.js'
 import {hideStartModal} from './gui.js';
 import {statuses} from './status.js';
+import 'three/GLTFLoader';
 
 let uploadModel;
 function onReaderLoad(reader, fileName) {

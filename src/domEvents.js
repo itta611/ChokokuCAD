@@ -7,6 +7,7 @@ import {undo, redo} from './undo.js';
 import {status, statuses} from './status.js';
 import {createModel} from './renderer.js';
 import {updateGrid, getNearGridPoint, removeGrid} from './grid.js';
+import {endParallax} from './parallax.js';
 export let mouseX, mouseY;
 let notSaved = false;
 

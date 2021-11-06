@@ -1,5 +1,6 @@
 import {model} from './renderer.js';
 import {flagNotSaved} from './domEvents.js';
+import 'three/GLTFExporter';
 
 export function exportFile(fileName) {
   if (fileName !== '') {

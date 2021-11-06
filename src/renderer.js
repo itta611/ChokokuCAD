@@ -6,6 +6,7 @@ import './chokokuTool.js';
 import './paint.js';
 import {recordModel} from './undo.js';
 import {flagNotSaved} from './domEvents.js';
+import 'three/OrbitControls';
 let scene = new THREE.Scene();
 let raycaster = new THREE.Raycaster();
 let model;

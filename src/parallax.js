@@ -15,7 +15,6 @@ function onMouseMove(e) {
 
 document.addEventListener('mousemove', onMouseMove);
 
-// documentじゃなくてwindow
-function endParallax() {
+export function endParallax() {
   document.removeEventListener('mousemove', onMouseMove, false);
 };
