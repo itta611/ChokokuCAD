@@ -13,9 +13,9 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'three/OrbitControls': path.join(__dirname, 'node_modules/three/examples/js/controls/OrbitControls.js'),
-      'three/GLTFLoader': path.join(__dirname, 'node_modules/three/examples/js/loaders/GLTFLoader.js'),
-      'three/GLTFExporter': path.join(__dirname, 'node_modules/three/examples/js/exporters/GLTFExporter.js')
+      'three/OrbitControls': path.join(__dirname, '/node_modules/three/examples/js/controls/OrbitControls.js'),
+      'three/GLTFLoader': path.join(__dirname, '/node_modules/three/examples/js/loaders/GLTFLoader.js'),
+      'three/GLTFExporter': path.join(__dirname, '/node_modules/three/examples/js/exporters/GLTFExporter.js')
     }
   },
   plugins: [
