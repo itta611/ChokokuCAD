@@ -65,11 +65,11 @@ export function removeMesh(mesh) {
 }
 
 //lights
-let light1 = new THREE.PointLight(0x808080, 1.5);
+let light1 = new THREE.PointLight(0xaaaaaa, 1);
 light1.position.set(100, 150, 70);
 scene.add(light1)
 
-let light2 = new THREE.PointLight(0x808080, 1.5);
+let light2 = new THREE.PointLight(0xaaaaaa, 1);
 light2.position.set(-100, -150, -70);
 scene.add(light2)
 
@@ -123,7 +123,7 @@ export function createModel() {
   modelHeight = document.querySelector('#height').value * 1;
   model = new THREE.Mesh(
     new THREE.BoxGeometry(modelWidth, modelHeight, modelDepth),
-    new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 0.5, vertexColors: THREE.FaceColors})
+    new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 1, vertexColors: THREE.FaceColors})
     // new THREE.MeshStandardMaterial({wireframe: true})
   );
   for (let i = 0; i < 6; i++) {

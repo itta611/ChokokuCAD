@@ -1,3 +1,3 @@
 import './renderer.js';
 import './domEvents.js';
-import 'ThreeBSP';
+import '../node_modules/ThreeBSP/index.js';
