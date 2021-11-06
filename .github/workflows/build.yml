@@ -20,7 +20,7 @@ jobs:
       with:
         node-version: '14'
     - run: npm install
-    - run: npm build
+    - run: npm run build
 
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
