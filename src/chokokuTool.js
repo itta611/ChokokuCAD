@@ -5,6 +5,7 @@ import {camera, toScreenXY, model, faceNormals, faceColors, initFaceBuffer, scen
 import {screenWidth, screenHeight, statusBar} from './gui.js';
 import {i18n, language} from './i18n.js';
 import {recordModel} from './undo.js';
+import 'ThreeBSP';
 let lockObject;
 let chokokuHole;
 

@@ -7,6 +7,7 @@ import './paint.js';
 import {recordModel} from './undo.js';
 import {flagNotSaved} from './domEvents.js';
 import 'three/OrbitControls';
+import 'ThreeBSP';
 let scene = new THREE.Scene();
 let raycaster = new THREE.Raycaster();
 let model;

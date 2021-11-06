@@ -15,7 +15,8 @@ module.exports = {
     alias: {
       'three/OrbitControls': path.join(__dirname, '/node_modules/three/examples/js/controls/OrbitControls.js'),
       'three/GLTFLoader': path.join(__dirname, '/node_modules/three/examples/js/loaders/GLTFLoader.js'),
-      'three/GLTFExporter': path.join(__dirname, '/node_modules/three/examples/js/exporters/GLTFExporter.js')
+      'three/GLTFExporter': path.join(__dirname, '/node_modules/three/examples/js/exporters/GLTFExporter.js'),
+      'ThreeBSP': path.join(__dirname, '/node_modules/threebsp/index.js')
     }
   },
   plugins: [
