@@ -1,4 +1,4 @@
-name: ftp deploy with webpack build
+name: build
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       with:
         node-version: '14'
     - run: npm install
-    - run: ls ./node_modules
+    - run: pwd
     - run: npx webpack
 
     - name: FTP-Deploy-Action
