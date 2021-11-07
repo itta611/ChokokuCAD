@@ -57,13 +57,13 @@ window.addEventListener('load', function() {
 
   window.mainCanvas.addEventListener('wheel', function() {
     updateScreenSize();
-    if (isSnapCheck.checked) updateGrid();
+    if (gui.isSnapCheck.checked) updateGrid();
   }, false);
 });
 
 window.addEventListener('resize', function() {
-  updateScreenSize();
-  if (isSnapCheck.checked) updateGrid();
+  gui.updateScreenSize();
+  if (gui.isSnapCheck.checked) updateGrid();
 });
 
 gui.createBtn.addEventListener('click', function() {

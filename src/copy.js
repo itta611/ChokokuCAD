@@ -3,6 +3,7 @@ let copyMesh;
 
 export function addCopyPreviewMesh() {
   copyMesh = model.clone();
+  // copyMesh.material.
   scene.add(copyMesh);
 }
 
