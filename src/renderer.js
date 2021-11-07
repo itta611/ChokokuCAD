@@ -65,6 +65,24 @@ export function removeMesh(mesh) {
   }
 }
 
+export function transformMesh(mesh, name) {
+  mesh.position.set(
+    document.querySelector(`#${name}-model-position-x`).value * 1,
+    document.querySelector(`#${name}-model-position-y`).value * 1,
+    document.querySelector(`#${name}-model-position-z`).value * 1
+  );
+  mesh.rotation.set(
+    THREE.Math.degToRad(document.querySelector(`#${name}-model-rotation-x`).value * 1),
+    THREE.Math.degToRad(document.querySelector(`#${name}-model-rotation-y`).value * 1),
+    THREE.Math.degToRad(document.querySelector(`#${name}-model-rotation-z`).value * 1)
+  );
+  mesh.scale.set(
+    document.querySelector(`#${name}-model-scale-x`).value * 1,
+    document.querySelector(`#${name}-model-scale-y`).value * 1,
+    document.querySelector(`#${name}-model-scale-z`).value * 1
+  );
+}
+
 //lights
 let light1 = new THREE.PointLight(0xaaaaaa, 1);
 light1.position.set(100, 150, 70);

@@ -1,4 +1,4 @@
-import {model, scene, updateModel, startRender, removeMesh} from './renderer.js'
+import {model, scene, updateModel, startRender, removeMesh, transformMesh} from './renderer.js'
 import {hideStartModal} from './gui.js';
 import {statuses} from './status.js';
 import 'three/GLTFLoader';
@@ -50,21 +50,7 @@ export function loader(element, fileName) {
 }
 
 export function transformUploadModel() {
-  uploadModel.position.set(
-    document.querySelector('#new-model-position-x').value,
-    document.querySelector('#new-model-position-y').value,
-    document.querySelector('#new-model-position-z').value
-  );
-  uploadModel.rotation.set(
-    THREE.Math.degToRad(document.querySelector('#new-model-rotation-x').value),
-    THREE.Math.degToRad(document.querySelector('#new-model-rotation-y').value),
-    THREE.Math.degToRad(document.querySelector('#new-model-rotation-z').value)
-  );
-  uploadModel.scale.set(
-    document.querySelector('#new-model-scale-x').value,
-    document.querySelector('#new-model-scale-y').value,
-    document.querySelector('#new-model-scale-z').value
-  );
+  transformMesh(uploadModel, 'new');
 }
 
 export function setUploadModel(JSONData, isAdd = false) {
@@ -96,8 +82,6 @@ export function setUploadModel(JSONData, isAdd = false) {
       uploadModel.position.set(...uploadModelPosition.toArray());
       uploadModel.rotation.set(...uploadModelRotation.toArray());
       scene.add(uploadModel);
-      document.querySelector('#file-upload-add-step1').classList.add('hidden');
-      document.querySelector('#file-upload-add-step2').classList.remove('hidden');
       statuses['modelAdd2'].change();
     } else {
       updateModel(mesh.clone());
@@ -119,14 +103,15 @@ export function setUploadModel(JSONData, isAdd = false) {
   });
 }
 
-export function unionToModel() {
+export function unionUploadMeshToModel() {
   let uploadModelBSP = new ThreeBSP(uploadModel);
   let modelBSP = new ThreeBSP(model);
   let newModelBSP = modelBSP.union(uploadModelBSP);
   let newModel = newModelBSP.toMesh(model.material);
+  uploadModel.visible = false;
   removeMesh(model);
   model.visible = false;
-  updateModel(newModel.clone());
+  updateModel(newModel.clone(), true);
 
   model.material.vertexColors = THREE.FaceColors;
 }

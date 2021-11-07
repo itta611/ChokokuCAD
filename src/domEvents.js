@@ -1,13 +1,14 @@
-import {createBtn, isSnapCheck, fileUploadAdd, uploadBtn, exportBtn, updateScreenSize, undoBtn, redoBtn, hideStartModal, gridSizeInput} from './gui.js';
+import * as gui from './gui.js';
 import {setModelFromChokoku} from './chokokuTool.js';
 import {exportFile} from './export.js';
-import {transformUploadModel, unionToModel, loader, setUploadModel} from './loader.js';
+import {transformUploadModel, unionUploadMeshToModel, loader, setUploadModel} from './loader.js';
 import {i18n} from './i18n.js';
 import {undo, redo} from './undo.js';
 import {status, statuses} from './status.js';
 import {createModel} from './renderer.js';
 import {updateGrid, getNearGridPoint, removeGrid} from './grid.js';
 import {endParallax} from './parallax.js';
+import {addCopyPreviewMesh, transformCopyMesh, unionCopyMeshToModel} from './copy.js';
 export let mouseX, mouseY;
 let notSaved = false;
 
@@ -16,7 +17,7 @@ export function flagNotSaved(bool) {
 }
 
 function setMousePos(x, y) {
-  if (isSnapCheck.checked && statuses[status].group === 'setpath') {
+  if (gui.isSnapCheck.checked && statuses[status].group === 'setpath') {
     [mouseX, mouseY] = getNearGridPoint(x, y);
   } else {
     mouseX = x;
@@ -65,12 +66,12 @@ window.addEventListener('resize', function() {
   if (isSnapCheck.checked) updateGrid();
 });
 
-createBtn.addEventListener('click', function() {
-  hideStartModal();
+gui.createBtn.addEventListener('click', function() {
+  gui.hideStartModal();
   createModel();
 }, {once: true});
 
-isSnapCheck.addEventListener('change', function() {
+gui.isSnapCheck.addEventListener('change', function() {
   if (isSnapCheck.checked) {
     gridSizeInput.disabled = false;
     gridSizeInput.parentElement.classList.remove('disabled');
@@ -82,38 +83,41 @@ isSnapCheck.addEventListener('change', function() {
   }
 });
 
-gridSizeInput.addEventListener('change', function() {
+gui.gridSizeInput.addEventListener('change', function() {
   updateGrid();
 });
 
-exportBtn.addEventListener('click', function() {
-  const fileName = document.querySelector('#export-file-name').value;
+gui.exportBtn.addEventListener('click', function() {
+  const fileName = gui.exportFileNameInput.value;
   exportFile(fileName);
 });
 
-fileUploadAdd.addEventListener('change', async function(e) {
-  setUploadModel(await loader(fileUploadAdd, e.target.files[0].name), true);
-  fileUploadAdd.value = '';
+gui.fileUploadAdd.addEventListener('change', async function(e) {
+  setUploadModel(await loader(gui.fileUploadAdd, e.target.files[0].name), true);
+  gui.settingUploadStep1.classList.add('hidden');
+  gui.settingUploadStep2.classList.remove('hidden');
+  gui.fileUploadAdd.value = '';
 });
 
-uploadBtn.addEventListener('change', async function(e) {
-  setUploadModel(await loader(uploadBtn, e.target.files[0].name));
-  uploadBtn.value = '';
+gui.uploadBtn.addEventListener('change', async function(e) {
+  setUploadModel(await loader(gui.uploadBtn, e.target.files[0].name));
+  gui.uploadBtn.value = '';
 });
 
 ['position', 'rotation', 'scale'].forEach(element => {
   ['x', 'y', 'z'].forEach(xyz => {
     document.querySelector(`#new-model-${element}-${xyz}`).addEventListener('input', transformUploadModel);
+    document.querySelector(`#copy-model-${element}-${xyz}`).addEventListener('input', transformCopyMesh);
     // document.querySelector(`#model-${element}-${xyz}`).addEventListener('input', transformModel);
   });
 });
 
-document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', function() {
+gui.fileUploadApplyBtn.addEventListener('click', function() {
   setTimeout(function() {
-    unionToModel();
-    document.querySelector('#file-upload-add-step1').classList.remove('hidden');
-    document.querySelector('#file-upload-add-step2').classList.add('hidden');
-    // 初期化
+    unionUploadMeshToModel();
+    gui.settingUploadStep1.classList.remove('hidden');
+    gui.settingUploadStep2.classList.add('hidden');
+    // init
     ['position', 'rotation', 'scale'].forEach(element => {
       ['x', 'y', 'z'].forEach(xyz => {
         document.querySelector(`#new-model-${element}-${xyz}`).value = (element === 'scale') * 1;
@@ -122,10 +126,28 @@ document.querySelector('#file-upload-add-step2 .btn').addEventListener('click', 
   }, 10);
 });
 
-undoBtn.addEventListener('click', function() {
-  if (!undoBtn.classList.contains('disabled')) undo();
+gui.copyBtn.addEventListener('click', function() {
+  addCopyPreviewMesh();
+  gui.settingCopyStep1.classList.add('hidden');
+  gui.settingCopyStep2.classList.remove('hidden');
 });
 
-redoBtn.addEventListener('click', function() {
-  if (!redoBtn.classList.contains('disabled')) redo();
+gui.copyApplyBtn.addEventListener('click', function() {
+  unionCopyMeshToModel();
+  gui.settingCopyStep1.classList.remove('hidden');
+  gui.settingCopyStep2.classList.add('hidden');
+  // init
+  ['position', 'rotation', 'scale'].forEach(element => {
+    ['x', 'y', 'z'].forEach(xyz => {
+      document.querySelector(`#copy-model-${element}-${xyz}`).value = (element === 'scale') * 1;
+    });
+  });
+});
+
+gui.undoBtn.addEventListener('click', function() {
+  if (!gui.undoBtn.classList.contains('disabled')) undo();
+});
+
+gui.redoBtn.addEventListener('click', function() {
+  if (!gui.redoBtn.classList.contains('disabled')) redo();
 });
