@@ -3,7 +3,9 @@ let copyMesh;
 
 export function addCopyPreviewMesh() {
   copyMesh = model.clone();
-  copyMesh.material.color.set(0xefab00);
+  copyMesh.material = new THREE.MeshBasicMaterial({
+    color: 0xefab00
+  });
   scene.add(copyMesh);
 }
 
@@ -12,7 +14,6 @@ export function transformCopyMesh() {
 }
 
 export function unionCopyMeshToModel() {
-  console.log(copyMesh.scale);
   let copyMeshBSP = new ThreeBSP(copyMesh);
   let modelBSP = new ThreeBSP(model);
   let newModelBSP = modelBSP.union(copyMeshBSP);
