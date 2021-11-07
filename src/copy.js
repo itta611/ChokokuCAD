@@ -3,7 +3,7 @@ let copyMesh;
 
 export function addCopyPreviewMesh() {
   copyMesh = model.clone();
-  // copyMesh.material.
+  copyMesh.material.color.set(0xefab00);
   scene.add(copyMesh);
 }
 

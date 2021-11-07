@@ -56,14 +56,12 @@ window.addEventListener('load', function() {
   });
 
   window.mainCanvas.addEventListener('wheel', function() {
-    updateScreenSize();
-    if (gui.isSnapCheck.checked) updateGrid();
+    gui.updateScreenSize();
   }, false);
 });
 
 window.addEventListener('resize', function() {
   gui.updateScreenSize();
-  if (gui.isSnapCheck.checked) updateGrid();
 });
 
 gui.createBtn.addEventListener('click', function() {
@@ -72,13 +70,13 @@ gui.createBtn.addEventListener('click', function() {
 }, {once: true});
 
 gui.isSnapCheck.addEventListener('change', function() {
-  if (isSnapCheck.checked) {
-    gridSizeInput.disabled = false;
-    gridSizeInput.parentElement.classList.remove('disabled');
+  if (gui.isSnapCheck.checked) {
+    gui.gridSizeInput.disabled = false;
+    gui.gridSizeInput.parentElement.classList.remove('disabled');
     updateGrid();
   } else {
-    gridSizeInput.disabled = true;
-    gridSizeInput.parentElement.classList.add('disabled');
+    gui.gridSizeInput.disabled = true;
+    gui.gridSizeInput.parentElement.classList.add('disabled');
     removeGrid();
   }
 });
