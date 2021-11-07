@@ -1,3 +1,4 @@
+[![build](https://github.com/itta611/ChokokuCAD/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/itta611/ChokokuCAD/actions/workflows/build.yml)
 <img src="./static/img/logo.svg" height="300">
 
 ```
