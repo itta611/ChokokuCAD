@@ -146,7 +146,7 @@ export function setModelFromChokoku() {
         resultModel.geometry.faces[i].materialIndex = materialIndex;
         resultModel.geometry.faces[i].color.set(faceColors[materialIndex]);
       }
-      updateModel(resultModel);
+      updateModel(resultModel, true);
     }
   } catch (error) {
     statusBar.innerHTML = `<span style='color: #ff0000;'>${i18n('エラーが発生しました。', 'An error has occurred.')}</span>`;
