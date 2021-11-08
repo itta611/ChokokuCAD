@@ -78,6 +78,8 @@ export function setUploadModel(JSONData, isAdd = false) {
           modelMaterial
         );
       }
+      model.material.opacity = 0.3;
+      model.material.transform = true;
       uploadModel.scale.set(...uploadModelScale.toArray());
       uploadModel.position.set(...uploadModelPosition.toArray());
       uploadModel.rotation.set(...uploadModelRotation.toArray());
@@ -109,8 +111,9 @@ export function unionUploadMeshToModel() {
   let newModelBSP = modelBSP.union(uploadModelBSP);
   let newModel = newModelBSP.toMesh(model.material);
   uploadModel.visible = false;
-  removeMesh(model);
   model.visible = false;
+  model.material.opacity = 1;
+  model.material.transform = false;
   updateModel(newModel.clone(), true);
 
   model.material.vertexColors = THREE.FaceColors;

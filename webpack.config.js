@@ -6,10 +6,13 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  entry: path.join(__dirname, 'src/main.js'),
+  entry: {
+    app: path.join(__dirname, 'src/main.js'),
+    parallax: path.join(__dirname, 'src/parallax.js'),
+  },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'js/app.bundle.js',
+    filename: 'js/[name].bundle.js',
   },
   resolve: {
     alias: {

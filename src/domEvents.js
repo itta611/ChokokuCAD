@@ -7,7 +7,6 @@ import {undo, redo} from './undo.js';
 import {status, statuses} from './status.js';
 import {createModel} from './renderer.js';
 import {updateGrid, getNearGridPoint, removeGrid} from './grid.js';
-import {endParallax} from './parallax.js';
 import {addCopyPreviewMesh, transformCopyMesh, unionCopyMeshToModel} from './copy.js';
 export let mouseX, mouseY;
 let notSaved = false;
@@ -62,6 +61,7 @@ window.addEventListener('load', function() {
 
 window.addEventListener('resize', function() {
   gui.updateScreenSize();
+  if (isSnapCheck.checked) updateGrid();
 });
 
 gui.createBtn.addEventListener('click', function() {
@@ -74,6 +74,7 @@ gui.isSnapCheck.addEventListener('change', function() {
     gui.gridSizeInput.disabled = false;
     gui.gridSizeInput.parentElement.classList.remove('disabled');
     updateGrid();
+    if (isSnapCheck.checked) updateGrid();
   } else {
     gui.gridSizeInput.disabled = true;
     gui.gridSizeInput.parentElement.classList.add('disabled');

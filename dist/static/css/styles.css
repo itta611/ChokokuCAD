@@ -225,7 +225,7 @@ input[type="number"]:focus, input[type="text"]:focus, #model-color-btn:focus {
   font-size: 18px;
 }
 
-#size-input-wrap label > input, #file-upload-add-step2 input {
+#size-input-wrap label > input, #file-upload-add-step2 input, #copy-step2 input {
   margin-bottom: 10px;
 }
 

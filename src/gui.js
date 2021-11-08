@@ -30,7 +30,6 @@ export function updateScreenSize() {
   // For retina display
   pathCanvas.style.width = `${screenWidth}px`;
   pathCanvas.style.height = `${screenHeight}px`;
-  if (isSnapCheck.checked) updateGrid();
 }
 
 export function hideStartModal() {
