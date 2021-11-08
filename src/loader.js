@@ -80,9 +80,9 @@ export function setUploadModel(JSONData, isAdd = false) {
       }
       model.material.opacity = 0.3;
       model.material.transform = true;
-      uploadModel.scale.set(...uploadModelScale.toArray());
-      uploadModel.position.set(...uploadModelPosition.toArray());
-      uploadModel.rotation.set(...uploadModelRotation.toArray());
+      uploadModel.scale.copy(uploadModelScale);
+      uploadModel.position.copy(uploadModelPosition);
+      uploadModel.rotation.copy(uploadModelRotation);
       scene.add(uploadModel);
       statuses['modelAdd2'].change();
     } else {
