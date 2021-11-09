@@ -29,5 +29,5 @@ jobs:
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         LOCAL_DIR: dist
-        REMOTE_DIR: home/ittakun/www/chokokucad
+        REMOTE_DIR: /home/ittakun/www/chokokucad
         ARGS: --delete
