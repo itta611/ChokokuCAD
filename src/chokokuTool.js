@@ -184,13 +184,11 @@ function findSameGroup(faces, face) {
   for (let i = 0; i < faces.length; i++) {
     const newestModel = resultModel || model;
     const degToPoint = THREE.Math.radToDeg(face.normal.clone().angleTo(newestModel.geometry.vertices[face.a].clone().sub(newestModel.geometry.vertices[faces[i].a]))).toFixed(3);
-    if (isSameNormal(face.normal, faces[i].normal)) console.log(degToPoint)
     if (
       isSameNormal(faces[i].normal, face.normal) &&
-      (+degToPoint === 90 ||
+        (+degToPoint === 90 ||
         Number.isNaN(+degToPoint))
     ) {
-      console.log(true)
       return i;
     }
   }
