@@ -56,12 +56,13 @@ window.addEventListener('load', function() {
 
   window.mainCanvas.addEventListener('wheel', function() {
     gui.updateScreenSize();
+    if (gui.isSnapCheck.checked) updateGrid();
   }, false);
 });
 
 window.addEventListener('resize', function() {
   gui.updateScreenSize();
-  if (isSnapCheck.checked) updateGrid();
+  if (gui.isSnapCheck.checked) updateGrid();
 });
 
 gui.createBtn.addEventListener('click', function() {
@@ -74,7 +75,7 @@ gui.isSnapCheck.addEventListener('change', function() {
     gui.gridSizeInput.disabled = false;
     gui.gridSizeInput.parentElement.classList.remove('disabled');
     updateGrid();
-    if (isSnapCheck.checked) updateGrid();
+    if (gui.isSnapCheck.checked) updateGrid();
   } else {
     gui.gridSizeInput.disabled = true;
     gui.gridSizeInput.parentElement.classList.add('disabled');

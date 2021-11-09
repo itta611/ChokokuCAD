@@ -14,11 +14,11 @@ let model;
 let modelDepth = 50;
 let modelWidth = 50;
 let modelHeight = 50;
-let faceNormals = [];
+let faces = [];
 let faceColors = [];
 
 export function initFaceBuffer() {
-  faceNormals = [];
+  faces = [];
   faceColors = [];
 }
 
@@ -26,27 +26,6 @@ export function toScreenXY(point, width = screenWidth - 330, height = screenHeig
   point.x = (point.x / width) * 2 - 1;
   point.y = -(point.y / height) * 2 + 1;
   return point;
-}
-
-export function computeFaceNormalGroup() {
-  let oldFaceNormals = [...faceNormals];
-  let oldFaceColors = [...faceColors];
-  initFaceBuffer();
-  for (let i = 0;i < resultModel.geometry.faces.length;i++) {
-    let faceNormal = resultModel.geometry.faces[i].normal;
-    let materialIndex;
-    let sameNormalIndex = findSameNormal(faceNormals, faceNormal);
-    if (sameNormalIndex !== null) {
-      materialIndex = sameNormalIndex;
-    } else {
-      let oldNormalIndex = findSameNormal(oldFaceNormals, faceNormal);
-      faceNormals.push(faceNormal);
-      faceColors.push(oldNormalIndex === null ? '#ffffff' : oldFaceColors[oldNormalIndex]);
-      materialIndex = faceNormals.length - 1;
-    }
-    resultModel.geometry.faces[i].materialIndex = materialIndex;
-    resultModel.geometry.faces[i].color.set(faceColors[materialIndex]);
-  }
 }
 
 export function updateModel(mesh, record) {
@@ -146,8 +125,8 @@ export function createModel() {
     // new THREE.MeshStandardMaterial({wireframe: true})
   );
   for (let i = 0; i < 6; i++) {
-    let faceNormal = model.geometry.faces[i * 2].normal;
-    faceNormals.push(faceNormal);
+    let currentFace = model.geometry.faces[i * 2];
+    faces.push(currentFace);
     faceColors.push("#ffffff");
   }
   startRender();
@@ -160,4 +139,4 @@ export function startRender() {
   render();
 }
 
-export {camera, renderer, controls, defaultCameraPosition, scene, raycaster, model, faceNormals, faceColors};
+export {camera, renderer, controls, defaultCameraPosition, scene, raycaster, model, faces, faceColors};

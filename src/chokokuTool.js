@@ -1,13 +1,14 @@
 import {chokokuPath, setPrevPathFromChokokuPath} from './pathCanvas.js';
 import {flagNotSaved} from './domEvents.js';
 import {statuses} from './status.js';
-import {camera, toScreenXY, model, faceNormals, faceColors, initFaceBuffer, scene, updateModel} from './renderer.js';
+import {camera, toScreenXY, model, faces, faceColors, initFaceBuffer, scene, updateModel} from './renderer.js';
 import {screenWidth, screenHeight, statusBar} from './gui.js';
 import {i18n, language} from './i18n.js';
 import {recordModel} from './undo.js';
 import 'ThreeBSP';
 let lockObject;
 let chokokuHole;
+let resultModel;
 
 export function updateLockObject(mesh) {
   scene.remove(lockObject);
@@ -80,7 +81,6 @@ export function setModelFromChokoku() {
   chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
   let chokokuHoleBSP; // ThreeBSPインスタンス
   let modelBSP; // ThreeBSPインスタンス
-  let resultModel;
   try {
     chokokuHoleBSP = new ThreeBSP(chokokuHole) // ThreeBSPインスタンス
     modelBSP = new ThreeBSP(model) // ThreeBSPインスタンス
@@ -128,20 +128,20 @@ export function setModelFromChokoku() {
     if (document.querySelector('#chokoku-setting-chokoku-btn').classList.contains('selected')) { // Chokoku tool
       // ------- create face group by finding same fame normals -------
 
-      let oldFaceNormals = [...faceNormals];
+      let oldFaces = [...faces];
       let oldFaceColors = [...faceColors];
       initFaceBuffer();
       for (let i = 0;i < resultModel.geometry.faces.length;i++) {
-        let faceNormal = resultModel.geometry.faces[i].normal;
+        let currentFace = resultModel.geometry.faces[i];
         let materialIndex;
-        let sameNormalIndex = findSameNormal(faceNormals, faceNormal);
+        let sameNormalIndex = findSameGroup(faces, currentFace);
         if (sameNormalIndex !== null) {
           materialIndex = sameNormalIndex;
         } else {
-          let oldNormalIndex = findSameNormal(oldFaceNormals, faceNormal);
-          faceNormals.push(faceNormal);
+          let oldNormalIndex = findSameGroup(oldFaces, currentFace);
+          faces.push(currentFace);
           faceColors.push(oldNormalIndex === null ? '#ffffff' : oldFaceColors[oldNormalIndex]);
-          materialIndex = faceNormals.length - 1;
+          materialIndex = faces.length - 1;
         }
         resultModel.geometry.faces[i].materialIndex = materialIndex;
         resultModel.geometry.faces[i].color.set(faceColors[materialIndex]);
@@ -180,9 +180,19 @@ function createNewMeshFromPath(chokokuHole, pathShape) {
   return chokokuHole;
 }
 
-function findSameNormal(normals, normal) {
-  for (let i = 0; i < normals.length; i++) {
-    if (isSameNormal(normals[i], normal)) return i;
+function findSameGroup(faces, face) {
+  for (let i = 0; i < faces.length; i++) {
+    const newestModel = resultModel || model;
+    const degToPoint = THREE.Math.radToDeg(face.normal.clone().angleTo(newestModel.geometry.vertices[face.a].clone().sub(newestModel.geometry.vertices[faces[i].a]))).toFixed(3);
+    if (isSameNormal(face.normal, faces[i].normal)) console.log(degToPoint)
+    if (
+      isSameNormal(faces[i].normal, face.normal) &&
+      (+degToPoint === 90 ||
+        Number.isNaN(+degToPoint))
+    ) {
+      console.log(true)
+      return i;
+    }
   }
   return null;
 }
