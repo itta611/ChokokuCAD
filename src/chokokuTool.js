@@ -122,7 +122,6 @@ export function setModelFromChokoku() {
         resultModel = resultModelBSP.union(lockObjectBSP).toMesh(model.material);
       }
     }
-    recordModel();
 
     // Set model
     if (document.querySelector('#chokoku-setting-chokoku-btn').classList.contains('selected')) { // Chokoku tool
