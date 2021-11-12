@@ -1,7 +1,7 @@
 import * as gui from './gui.js';
 import {setModelFromChokoku} from './chokokuTool.js';
 import {exportFile} from './export.js';
-import {transformUploadModel, unionUploadMeshToModel, loader, setUploadModel} from './loader.js';
+import {transformUploadModel, unionUploadMeshToModel, loader, setUploadModel} from './modelLoader.js';
 import {i18n} from './i18n.js';
 import {undo, redo} from './undo.js';
 import {status, statuses} from './status.js';
