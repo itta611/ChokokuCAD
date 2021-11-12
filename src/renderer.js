@@ -3,7 +3,7 @@ import {statuses} from './status.js';
 import {render} from './render.js';
 import {defaultCameraPosition} from './viewBox.js';
 import './chokokuTool.js';
-import './paint.js';
+import './paintTool.js';
 import {recordModel} from './undo.js';
 import {flagNotSaved} from './domEvents.js';
 import 'three/OrbitControls';
