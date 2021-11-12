@@ -18,7 +18,7 @@ export const isSnapCheck = document.querySelector('#chokoku-setting-issnap');
 export const gridSizeInput = document.querySelector('#grid-size');
 export const startAddBtn = document.querySelector('#add-step1 .btn');
 export const applyAddModelBtn = document.querySelector('#add-step2 #add-btn');
-export const settingAddCanselBtn = document.querySelector('#add-step2 #add-cansel-btn');
+export const settingAddCancelBtn = document.querySelector('#add-step2 #add-cancel-btn');
 export const settingAddStep1 = document.querySelector('#add-step1');
 export const settingAddStep2 = document.querySelector('#add-step2');
 export let screenWidth;

@@ -138,6 +138,9 @@ gui.applyAddModelBtn.addEventListener('click', function() {
   gui.settingAddStep2.classList.add('hidden');
 });
 
+// gui.settingAddCancelBtn.addEventListener('click', function() {
+// });
+
 gui.undoBtn.addEventListener('click', function() {
   if (!gui.undoBtn.classList.contains('disabled')) undo();
 });

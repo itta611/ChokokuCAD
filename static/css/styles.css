@@ -251,7 +251,6 @@ a {
   display: inline-block;
   background: #007bff;
   cursor: pointer;
-  color: #fff;
   padding: 8px 13px;
   user-select: none;
   -moz-user-select: none;
@@ -262,8 +261,21 @@ a {
   -webkit-user-select: none;
 }
 
-.btn:hover {
+.btn:not(.cancel) {
+  color: #fff;
+}
+
+.btn.cancel {
+  background: #fff;
+  border: 1px solid #aaa;
+}
+
+.btn:not(.cancel):hover {
   background: #00448d;
+}
+
+.btn.cancel:hover {
+  background: #eee;
 }
 
 .btn + .btn {
