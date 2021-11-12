@@ -164,9 +164,8 @@ export function setModelFromChokoku() {
   document.querySelector('#reuse-btn').classList.remove('disabled');
 }
 
-export function initResultModel() {
+export function initBufferModel() {
   resultModel = undefined;
-  console.log('reset!')
 }
 
 function createNewMeshFromPath(chokokuHole, pathShape) {

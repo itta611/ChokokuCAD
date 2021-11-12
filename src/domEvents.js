@@ -7,7 +7,7 @@ import {undo, redo} from './undo.js';
 import {status, statuses} from './status.js';
 import {createModel} from './renderer.js';
 import {updateGrid, getNearGridPoint, removeGrid} from './grid.js';
-import {addCopyPreviewMesh, transformCopyMesh, unionCopyMeshToModel} from './copy.js';
+import {addPreviewMesh, unionCopyMeshToModel} from './copy.js';
 export let mouseX, mouseY;
 let notSaved = false;
 
@@ -107,7 +107,7 @@ gui.uploadBtn.addEventListener('change', async function(e) {
 ['position', 'rotation', 'scale'].forEach(element => {
   ['x', 'y', 'z'].forEach(xyz => {
     document.querySelector(`#new-model-${element}-${xyz}`).addEventListener('input', transformUploadModel);
-    document.querySelector(`#copy-model-${element}-${xyz}`).addEventListener('input', transformCopyMesh);
+    // document.querySelector(`#copy-model-${element}-${xyz}`).addEventListener('input', transformCopyMesh);
     // document.querySelector(`#model-${element}-${xyz}`).addEventListener('input', transformModel);
   });
 });
@@ -126,22 +126,22 @@ gui.fileUploadApplyBtn.addEventListener('click', function() {
   }, 10);
 });
 
-gui.copyBtn.addEventListener('click', function() {
-  addCopyPreviewMesh();
-  gui.settingCopyStep1.classList.add('hidden');
-  gui.settingCopyStep2.classList.remove('hidden');
+gui.startAddBtn.addEventListener('click', function() {
+  addPreviewMesh();
+  gui.settingAddStep1.classList.add('hidden');
+  gui.settingAddStep2.classList.remove('hidden');
 });
 
-gui.copyApplyBtn.addEventListener('click', function() {
+gui.applyCopyModelBtn.addEventListener('click', function() {
   unionCopyMeshToModel();
-  gui.settingCopyStep1.classList.remove('hidden');
-  gui.settingCopyStep2.classList.add('hidden');
+  gui.settingAddStep1.classList.remove('hidden');
+  gui.settingAddStep2.classList.add('hidden');
   // init
-  ['position', 'rotation', 'scale'].forEach(element => {
-    ['x', 'y', 'z'].forEach(xyz => {
-      document.querySelector(`#copy-model-${element}-${xyz}`).value = (element === 'scale') * 1;
-    });
-  });
+  // ['position', 'rotation', 'scale'].forEach(element => {
+  //   ['x', 'y', 'z'].forEach(xyz => {
+  //     document.querySelector(`#copy-model-${element}-${xyz}`).value = (element === 'scale') * 1;
+  //   });
+  // });
 });
 
 gui.undoBtn.addEventListener('click', function() {

@@ -8,14 +8,14 @@ import {recordModel} from './undo.js';
 import {flagNotSaved} from './domEvents.js';
 import 'three/OrbitControls';
 import 'ThreeBSP';
-let scene = new THREE.Scene();
-let raycaster = new THREE.Raycaster();
-let model;
-let modelDepth = 50;
-let modelWidth = 50;
-let modelHeight = 50;
-let faces = [];
-let faceColors = [];
+export let scene = new THREE.Scene();
+export let raycaster = new THREE.Raycaster();
+export let model;
+export let modelDepth = 50;
+export let modelWidth = 50;
+export let modelHeight = 50;
+export let faces = [];
+export let faceColors = [];
 
 export function initFaceBuffer() {
   faces = [];
@@ -77,14 +77,14 @@ scene.add(ambientLight)
 
 // camera
 // camera = new THREE.PerspectiveCamera(45, screenWidth / screenHeight, 1, 1000);
-let camera = new THREE.OrthographicCamera(
+export let camera = new THREE.OrthographicCamera(
   (screenWidth - 330) / -7, (screenWidth - 330) / 7, screenHeight / 7, screenHeight / -7, 1, 1000
 );
 camera.position.copy(defaultCameraPosition);
 camera.lookAt(scene.position);
 
 // renderer
-let renderer = new THREE.WebGLRenderer({
+export let renderer = new THREE.WebGLRenderer({
   antialias: true,
   alpha: true
 });
@@ -94,7 +94,7 @@ document.querySelector('#main-canvas-wrap').appendChild(renderer.domElement);
 window.mainCanvas = renderer.domElement;
 
 // controls
-let controls = new THREE.OrbitControls(camera, renderer.domElement);
+export let controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enablePan = false;
 controls.zoomSpeed = 0.7;
 controls.mouseButtons.ORBIT = THREE.MOUSE.RIGHT;
@@ -138,5 +138,3 @@ export function startRender() {
   statuses['setpath'].change();
   render();
 }
-
-export {camera, renderer, controls, defaultCameraPosition, scene, raycaster, model, faces, faceColors};
