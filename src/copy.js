@@ -19,9 +19,11 @@ export function addPreviewMesh() {
   scene.add(model);
 }
 
-// export function transformCopyMesh() {
-//   transformMesh(previewMesh, 'copy');
-// }
+export function cancelAddModel() {
+  removeMesh(model);
+  removeMesh(modelBuffer);
+  updateModel(modelBuffer);
+}
 
 export function unionCopyMeshToModel() {
   let newMeshBSP = new ThreeBSP(model);

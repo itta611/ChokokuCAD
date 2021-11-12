@@ -7,7 +7,7 @@ import {undo, redo} from './undo.js';
 import {status, statuses} from './status.js';
 import {createModel} from './renderer.js';
 import {updateGrid, getNearGridPoint, removeGrid} from './grid.js';
-import {addPreviewMesh, unionCopyMeshToModel} from './copy.js';
+import {addPreviewMesh, cancelAddModel} from './copy.js';
 export let mouseX, mouseY;
 let notSaved = false;
 
@@ -133,13 +133,16 @@ gui.startAddBtn.addEventListener('click', function() {
 });
 
 gui.applyAddModelBtn.addEventListener('click', function() {
-  unionCopyMeshToModel();
+  unionAddMeshToModel();
   gui.settingAddStep1.classList.remove('hidden');
   gui.settingAddStep2.classList.add('hidden');
 });
 
-// gui.settingAddCancelBtn.addEventListener('click', function() {
-// });
+gui.settingAddCancelBtn.addEventListener('click', function() {
+  cancelAddModel();
+  gui.settingAddStep1.classList.remove('hidden');
+  gui.settingAddStep2.classList.add('hidden');
+});
 
 gui.undoBtn.addEventListener('click', function() {
   if (!gui.undoBtn.classList.contains('disabled')) undo();
