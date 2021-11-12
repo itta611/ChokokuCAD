@@ -1,15 +1,26 @@
 [![build](https://github.com/itta611/ChokokuCAD/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/itta611/ChokokuCAD/actions/workflows/build.yml)
 <img src="./static/img/logo.svg" height="300">
 
-```
-A breakthrough CAD software on your browser
-```
-
 Chokoku CAD can create complex shapes with few and simple controls.
 
 https://ittakun.sakura.ne.jp/chokokucad/
 
 <img src="./static/img/sample1.png" height="300"> <img src="./static/img/video.gif" height="300">
+## Installation
+This requires node.js and npm to be installed.
+
+```
+git clone https://github.com/itta611/ChokokuCAD.git
+cd ChokokuCAD
+npm install
+```
+
+## Running
+run:
+```
+npm run start
+```
+Then go to [localhost:8603](localhost:8603)
 
 ## How to use Chokoku tool
 ### Make path
