@@ -20,7 +20,7 @@ run:
 ```
 npm run start
 ```
-Then go to [localhost:8603](localhost:8603)
+Then go to [http://localhost:8603/](http://localhost:8603/)
 
 ## How to use Chokoku tool
 ### Make path
