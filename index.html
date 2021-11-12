@@ -79,7 +79,7 @@
     <img src="./static/img/paint-tool.svg" id="paint-tool" class="tool-item">
     <img src="./static/img/upload-tool.svg" id="upload-tool" class="tool-item">
     <img src="./static/img/export-tool.svg" id="export-tool" class="tool-item">
-    <img src="./static/img/copy-tool.svg" id="copy-tool" class="tool-item">
+    <img src="./static/img/add-tool.svg" id="add-tool" class="tool-item">
   </div>
   <div id="setting">
     <div class="setting-item" id="chokoku-setting">
@@ -178,8 +178,8 @@
       </div>
       <div class="param-group setting-center"><div class="btn" data-en="Export">エクスポート</div></div>
     </div>
-    <div class="setting-item hidden" id="copy-setting">
-      <div id="copy-step1">
+    <div class="setting-item hidden" id="add-setting">
+      <div id="add-step1">
         <p data-en="Create a new model and merge it.">新しくモデルを作成して結合します。</p>
         <div class="param-group">
           <div class="btn-wrap">
@@ -187,11 +187,12 @@
           </div>
         </div>
       </div>
-      <div id="copy-step2" class="hidden">
+      <div id="add-step2" class="hidden">
         <p data-en="You are now in the add mode. You can now edit the additional model with the chokoku tool.">現在追加モードになっています。このまま彫刻ツールなどでで追加モデルを編集できます。</p>
         <br>
         <div class="btn-wrap">
-          <div class="btn" data-en="Union">結合</div>
+          <div class="btn" data-en="Cansel" id="add-cansel-btn">キャンセル</div>
+          <div class="btn" data-en="Union" id="add-btn">結合</div>
         </div>
       </div>
     </div>

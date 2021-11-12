@@ -53,12 +53,12 @@ statuses['export'] = new Status(
   {name: 'モデル出力', statusName: 'export', group: 'export', desc: 'モデルをglb(gltf)形式でエクスポートしダウンロードします。', descEn: 'Export the model with glb(gltf) format file.'}
 );
 
-statuses['copy'] = new Status(
-  {name: 'コピー', statusName: 'copy', group: 'copy', desc: 'モデルをコピーして配置します。', descEn: 'Copy the model and palce it.'}
+statuses['add'] = new Status(
+  {name: '追加', statusName: 'add', group: 'add', desc: '新しくモデルを作成して結合します。', descEn: 'Create a new model and merge it.'}
 );
 
-statuses['copyMove'] = new Status(
-  {name: 'コピー', statusName: 'copyMove', group: 'copy', desc: 'コピーしたモデルを配置します。', descEn: 'Palce the copied model.'}
+statuses['addStep2'] = new Status(
+  {name: '追加', statusName: 'addStep2', group: 'add', desc: '新しくモデルを作成して結合します。', descEn: 'Create a new model and merge it.'}
 );
 
 statuses['start'].change();

@@ -88,6 +88,6 @@ toolItems['upload'] = new ToolItem(
   {domName: 'upload', status: 'modelAdd1', statuses: ['modelAdd1', 'modelAdd2']}
 );
 toolItems['export'] = new ToolItem({domName: 'export', status: 'export'});
-toolItems['copy'] = new ToolItem({domName: 'copy', status: 'copy'});
+toolItems['add'] = new ToolItem({domName: 'add', status: 'add'});
 
 export {toolItems};

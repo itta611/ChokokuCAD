@@ -132,16 +132,10 @@ gui.startAddBtn.addEventListener('click', function() {
   gui.settingAddStep2.classList.remove('hidden');
 });
 
-gui.applyCopyModelBtn.addEventListener('click', function() {
+gui.applyAddModelBtn.addEventListener('click', function() {
   unionCopyMeshToModel();
   gui.settingAddStep1.classList.remove('hidden');
   gui.settingAddStep2.classList.add('hidden');
-  // init
-  // ['position', 'rotation', 'scale'].forEach(element => {
-  //   ['x', 'y', 'z'].forEach(xyz => {
-  //     document.querySelector(`#copy-model-${element}-${xyz}`).value = (element === 'scale') * 1;
-  //   });
-  // });
 });
 
 gui.undoBtn.addEventListener('click', function() {
