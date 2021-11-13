@@ -1,5 +1,5 @@
 import {model, scene, removeMesh, updateModel, modelWidth, modelHeight, modelDepth} from './renderer.js';
-import {initBufferModel as initModelBuffer} from './chokokuTool.js';
+import {initBufferModel} from './chokokuTool.js';
 let modelBuffer;
 
 export function addPreviewMesh() {
@@ -30,7 +30,7 @@ export function unionCopyMeshToModel() {
   let modelBSP = new ThreeBSP(modelBuffer);
   let newModelBSP = modelBSP.union(newMeshBSP);
   let newModel = newModelBSP.toMesh(modelBuffer.material);
-  initModelBuffer();
+  initBufferModel();
   removeMesh(model);
   removeMesh(modelBuffer);
   updateModel(newModel.clone(), true);
