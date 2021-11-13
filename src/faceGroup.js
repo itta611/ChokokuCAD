@@ -7,11 +7,11 @@ export function groupFace(resultModel) {
   for (let i = 0;i < resultModel.geometry.faces.length;i++) {
     let currentFace = resultModel.geometry.faces[i];
     let materialIndex;
-    let sameNormalIndex = findSameGroup(faces, currentFace, resultModel);
+    let sameNormalIndex = findSameGroup(faces, currentFace, resultModel, resultModel.geometry.vertices);
     if (sameNormalIndex !== null) {
       materialIndex = sameNormalIndex;
     } else {
-      let oldNormalIndex = findSameGroup(oldFaces, currentFace, resultModel);
+      let oldNormalIndex = findSameGroup(oldFaces, currentFace, resultModel, model.geometry.vertices);
       faces.push(currentFace);
       faceColors.push(oldNormalIndex === null ? '#ffffff' : oldFaceColors[oldNormalIndex]);
       materialIndex = faces.length - 1;
@@ -21,10 +21,9 @@ export function groupFace(resultModel) {
   }
 }
 
-function findSameGroup(faces, face, resultModel) {
+function findSameGroup(faces, face, resultModel, vertices) {
   for (let i = 0; i < faces.length; i++) {
-    const newestModel = resultModel || model;
-    const degToPoint = THREE.Math.radToDeg(face.normal.clone().angleTo(newestModel.geometry.vertices[face.a].clone().sub(newestModel.geometry.vertices[faces[i].a]))).toFixed(3);
+    const degToPoint = THREE.Math.radToDeg(face.normal.clone().angleTo(resultModel.geometry.vertices[face.a].clone().sub(vertices[faces[i].a]))).toFixed(3);
     if (
       isSameNormal(faces[i].normal, face.normal) &&
         (+degToPoint === 90 ||

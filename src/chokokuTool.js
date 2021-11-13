@@ -81,7 +81,7 @@ export function setModelFromChokoku() {
   chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
   let chokokuHoleBSP; // ThreeBSPインスタンス
   let modelBSP; // ThreeBSPインスタンス
-  try {
+  // try {
     chokokuHoleBSP = new ThreeBSP(chokokuHole) // ThreeBSPインスタンス
     modelBSP = new ThreeBSP(model) // ThreeBSPインスタンス
     const isEraser = document.querySelector('#chokoku-setting-eraser-btn').classList.contains('selected');
@@ -129,17 +129,17 @@ export function setModelFromChokoku() {
       groupFace(resultModel);
       updateModel(resultModel, true);
     }
-  } catch (error) {
-    statusBar.innerHTML = `<span style='color: #ff0000;'>${i18n('エラーが発生しました。', 'An error has occurred.')}</span>`;
-    setTimeout(function() {
-      if (language === 'ja') {
-        statusBar.textContent = `[${statuses[status].name}] ${statuses[status].desc}`;
-      } else {
-        statusBar.textContent = `[${status}] ${statuses[status].descEn}`;
-      }
-    }, 1000);
-    console.log(error);
-  }
+  // } catch (error) {
+    // statusBar.innerHTML = `<span style='color: #ff0000;'>${i18n('エラーが発生しました。', 'An error has occurred.')}</span>`;
+    // setTimeout(function() {
+    //   if (language === 'ja') {
+    //     statusBar.textContent = `[${statuses[status].name}] ${statuses[status].desc}`;
+    //   } else {
+    //     statusBar.textContent = `[${status}] ${statuses[status].descEn}`;
+    //   }
+    // }, 1000);
+    // console.log(error);
+  // }
   chokokuHole = undefined;
   setPrevPathFromChokokuPath();
   document.querySelector('#reuse-btn').textContent = i18n('一つ前のパスを使用', 'Use previous path');
