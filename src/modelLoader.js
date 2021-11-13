@@ -9,20 +9,20 @@ function onReaderLoad(reader, fileName, isAdd) {
   if (new RegExp('([^\s]+(\\.stl)$)', 'i').test(fileName)) {
     let stlBlob = reader.result;
     let STLLoader = new THREE.STLLoader();
-    STLLoader.load(stlBlob, function (modelGeometry) {
+    STLLoader.load(stlBlob, function(modelGeometry) {
       uploadModel = new THREE.Mesh(
         modelGeometry,
         new THREE.MeshStandardMaterial(model.material)
       );
       uploadModel.material.vertexColors = false;
       setUploadModel(isAdd)
-    }, function () { }, function () {
+    }, function() {}, function() {
       alert(i18n('エラーが発生しました。', 'An error has occurred.'));
     });
   } else if (new RegExp('([^\s]+(\\.(glb|gltf))$)', 'i').test(fileName)) {
     let GLTFLoader = new THREE.GLTFLoader();
     let gltfBlob = reader.result;
-    GLTFLoader.load(gltfBlob, function (arg) {
+    GLTFLoader.load(gltfBlob, function(arg) {
       uploadModel = arg.scene.children[0];
       if (uploadModel.geometry === undefined) {
         alert(i18n('申し訳ありませんが、このファイルには対応していません。\n代わりにSTL形式でアップロードしてみてください。', 'Sorry, this file format is not supported. \nPlease uploading in STL format instead.'));
@@ -30,7 +30,7 @@ function onReaderLoad(reader, fileName, isAdd) {
         uploadModel.material.vertexColors = false;
       }
       setUploadModel(isAdd)
-    }, function () { }, function (uploadError) {
+    }, function() {}, function (uploadError) {
       alert(i18n('エラーが発生しました。', 'An error has occurred.'));
       console.log(uploadError);
     })
@@ -42,7 +42,7 @@ function onReaderLoad(reader, fileName, isAdd) {
 export function loader(element, fileName, isAdd) {
   let reader = new FileReader();
   reader.readAsDataURL(element.files[0]);
-  reader.addEventListener('load', function () {
+  reader.addEventListener('load', function() {
     onReaderLoad(reader, fileName, isAdd);
   });
 }
