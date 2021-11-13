@@ -111,12 +111,9 @@ export function unionUploadMeshToModel() {
   let modelBSP = new ThreeBSP(model);
   let newModelBSP = modelBSP.union(uploadModelBSP);
   let newModel = newModelBSP.toMesh(model.material);
-  uploadModel.visible = false;
+  scene.remove(uploadModel);
   model.material.opacity = 1;
   model.material.transparent = false;
-  // groupFace(newModel);
+  groupFace(newModel);
   updateModel(newModel.clone(), true);
-
-
-  model.material.vertexColors = THREE.FaceColors;
 }
