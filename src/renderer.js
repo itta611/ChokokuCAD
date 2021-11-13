@@ -44,6 +44,11 @@ export function removeMesh(mesh) {
   }
 }
 
+export function updateFaceBuffer(faceBuffers, faceColorBuffers) {
+  faces = faceBuffers;
+  faceColors = faceColorBuffers;
+}
+
 export function transformMesh(mesh, name) {
   mesh.position.set(
     document.querySelector(`#${name}-model-position-x`).value * 1,

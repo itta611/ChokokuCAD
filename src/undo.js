@@ -1,14 +1,14 @@
 import {undoBtn, redoBtn} from './gui.js';
-import {model, removeMesh, updateModel} from './renderer.js';
+import {model, updateModel, updateFaceBuffer, faces, faceColors} from './renderer.js';
 import {updateLockObject, lockObject, initBufferModel} from './chokokuTool.js';
 let undoBuffer = [];
 let currentModelId = 0;
 
 export function recordModel() {
-  if (undoBuffer.length >= 3) {
+  if (undoBuffer.length >= 5) {
     undoBuffer.shift(); // 最初の要素を削除
   }
-  undoBuffer.push([model, lockObject]);
+  undoBuffer.push([model, lockObject, faces, faceColors]);
   currentModelId = undoBuffer.length - 1;
   if (currentModelId >= 1) {
     undoBtn.classList.remove('disabled');
@@ -21,12 +21,9 @@ function applyModel() {
   if (typeof undoBuffer[currentModelId][1] !== 'undefined') {
     updateLockObject(undoBuffer[currentModelId][1]);
   } else {
-    if (typeof lockObject !== 'undefined') {
-      lockObject.visible = false;
-      removeMesh(lockObject);
-      updateLockObject(undefined);
-    }
+    if (typeof lockObject !== 'undefined') updateLockObject(undefined);
     updateModel(undoBuffer[currentModelId][0], false);
+    updateFaceBuffer(undoBuffer[currentModelId][2], undoBuffer[currentModelId][3]);
   }
 }
 
