@@ -17,6 +17,7 @@ function onReaderLoad(reader, fileName) {
             modelGeometry,
             new THREE.MeshStandardMaterial(model.material)
           );
+          uploadModel.material.vertexColors = false;
           uploadModelJSON = uploadModel.toJSON();
           resolve(uploadModelJSON);
         }, function () { }, function () {
@@ -30,11 +31,12 @@ function onReaderLoad(reader, fileName) {
           if (uploadModel.geometry === undefined) {
             alert(i18n('申し訳ありませんが、このファイルには対応していません。\n代わりにSTL形式でアップロードしてみてください。', 'Sorry, this file format is not supported. \nPlease uploading in STL format instead.'));
           } else {
+            uploadModel.material.vertexColors = false;
             uploadModelJSON = uploadModel.toJSON();
           }
           resolve(uploadModelJSON);
         }, function () { }, function (uploadError) {
-          alert(i18n('エラーが発生しました。', 'An error has occurred'));
+          alert(i18n('エラーが発生しました。', 'An error has occurred.'));
           console.log(uploadError);
         })
       } else {
