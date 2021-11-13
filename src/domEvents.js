@@ -93,14 +93,14 @@ gui.exportBtn.addEventListener('click', function() {
 });
 
 gui.fileUploadAdd.addEventListener('change', async function(e) {
-  setUploadModel(await loader(gui.fileUploadAdd, e.target.files[0].name), true);
+  loader(gui.fileUploadAdd, e.target.files[0].name, true);
   gui.settingUploadStep1.classList.add('hidden');
   gui.settingUploadStep2.classList.remove('hidden');
   gui.fileUploadAdd.value = '';
 });
 
 gui.uploadBtn.addEventListener('change', async function(e) {
-  setUploadModel(await loader(gui.uploadBtn, e.target.files[0].name));
+  loader(gui.uploadBtn, e.target.files[0].name);
   gui.uploadBtn.value = '';
 });
 
