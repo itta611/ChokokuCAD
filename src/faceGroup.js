@@ -1,7 +1,6 @@
 import {faces, faceColors, initFaceBuffer, model} from './renderer.js';
 
 export function groupFace(resultModel) {
-  console.log(resultModel)
   let oldFaces = [...faces];
   let oldFaceColors = [...faceColors];
   initFaceBuffer();

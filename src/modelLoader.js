@@ -1,6 +1,7 @@
-import {model, scene, updateModel, startRender, removeMesh, transformMesh} from './renderer.js'
+import {model, scene, updateModel, startRender, transformMesh} from './renderer.js'
 import {hideStartModal} from './gui.js';
 import {statuses} from './status.js';
+import {groupFace} from './faceGroup.js';
 import 'three/GLTFLoader';
 
 let uploadModel;
@@ -78,8 +79,8 @@ export function setUploadModel(JSONData, isAdd = false) {
           modelMaterial
         );
       }
-      model.material.opacity = 0.3;
-      model.material.transform = true;
+      model.material.opacity = 0.7;
+      model.material.transparent = true;
       uploadModel.scale.copy(uploadModelScale);
       uploadModel.position.copy(uploadModelPosition);
       uploadModel.rotation.copy(uploadModelRotation);
@@ -111,10 +112,11 @@ export function unionUploadMeshToModel() {
   let newModelBSP = modelBSP.union(uploadModelBSP);
   let newModel = newModelBSP.toMesh(model.material);
   uploadModel.visible = false;
-  model.visible = false;
   model.material.opacity = 1;
-  model.material.transform = false;
+  model.material.transparent = false;
+  // groupFace(newModel);
   updateModel(newModel.clone(), true);
+
 
   model.material.vertexColors = THREE.FaceColors;
 }

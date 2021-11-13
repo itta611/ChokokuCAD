@@ -10,7 +10,6 @@ export function recordModel() {
   }
   undoBuffer.push([model, lockObject]);
   currentModelId = undoBuffer.length - 1;
-  console.log(currentModelId)
   if (currentModelId >= 1) {
     undoBtn.classList.remove('disabled');
     redoBtn.classList.add('disabled');
