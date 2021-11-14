@@ -7,12 +7,12 @@ const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
-    app: path.join(__dirname, 'src/main.js'),
     parallax: path.join(__dirname, 'src/parallax.js'),
+    app: path.join(__dirname, 'src/main.js'),
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'js/[name].bundle.js',
+    filename: 'js/[name]-[hash].bundle.js',
   },
   resolve: {
     alias: {
