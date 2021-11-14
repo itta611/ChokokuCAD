@@ -19,7 +19,6 @@ export function addPreviewMesh() {
   scene.add(model);
   initFaceBuffer();
   initFaceBufferByCube();
-  console.log(faces)
 }
 
 export function cancelAddModel() {
