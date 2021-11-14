@@ -22,6 +22,14 @@ export function initFaceBuffer() {
   faceColors = [];
 }
 
+export function initFaceBufferByCube() {
+  for (let i = 0; i < 6; i++) {
+    let currentFace = model.geometry.faces[i * 2];
+    faces.push(currentFace);
+    faceColors.push("#ffffff");
+  }
+}
+
 export function toScreenXY(point, width = screenWidth - 330, height = screenHeight) {
   point.x = (point.x / width) * 2 - 1;
   point.y = -(point.y / height) * 2 + 1;
@@ -129,11 +137,7 @@ export function createModel() {
     new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 1, vertexColors: THREE.FaceColors})
     // new THREE.MeshStandardMaterial({wireframe: true})
   );
-  for (let i = 0; i < 6; i++) {
-    let currentFace = model.geometry.faces[i * 2];
-    faces.push(currentFace);
-    faceColors.push("#ffffff");
-  }
+  initFaceBufferByCube()
   startRender();
 }
 

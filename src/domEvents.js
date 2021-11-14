@@ -1,13 +1,13 @@
 import * as gui from './gui.js';
 import {setModelFromChokoku} from './chokokuTool.js';
 import {exportFile} from './export.js';
-import {transformUploadModel, unionUploadMeshToModel, loader, setUploadModel} from './modelLoader.js';
+import {transformUploadModel, unionUploadMeshToModel, loader} from './modelLoader.js';
 import {i18n} from './i18n.js';
 import {undo, redo} from './undo.js';
 import {status, statuses} from './status.js';
 import {createModel} from './renderer.js';
 import {updateGrid, getNearGridPoint, removeGrid} from './grid.js';
-import {addPreviewMesh, cancelAddModel} from './addTool.js';
+import {addPreviewMesh, cancelAddModel, unionAddMeshToModel} from './addTool.js';
 export let mouseX, mouseY;
 let notSaved = false;
 
