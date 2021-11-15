@@ -1,7 +1,6 @@
 import {faces, faceColors, initFaceBuffer, model} from './renderer.js';
 
 export function groupFace(resultModel) {
-  console.log(faces)
   let oldFaces = [...faces];
   let oldFaceColors = [...faceColors];
   initFaceBuffer();
@@ -10,10 +9,8 @@ export function groupFace(resultModel) {
     let materialIndex;
     let sameGroupID = findSameGroup(faces, currentFace, resultModel, resultModel.geometry.vertices);
     if (sameGroupID !== null) {
-      console.log('same normal');
       materialIndex = sameGroupID;
     } else {
-      console.log('new face');
       let oldGroupID = findSameGroup(oldFaces, currentFace, resultModel, model.geometry.vertices);
       faces.push(currentFace);
       faceColors.push(oldGroupID === null ? '#ffffff' : oldFaceColors[oldGroupID]);

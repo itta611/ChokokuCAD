@@ -146,10 +146,6 @@ export function setModelFromChokoku() {
   document.querySelector('#reuse-btn').classList.remove('disabled');
 }
 
-export function initBufferModel() {
-  resultModel = undefined;
-}
-
 function createNewMeshFromPath(chokokuHole, pathShape) {
   const nowPath3dLen = 300;
   let nowPath3d = new THREE.Mesh(

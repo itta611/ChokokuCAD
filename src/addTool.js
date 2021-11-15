@@ -1,5 +1,5 @@
-import {model, scene, removeMesh, updateModel, modelWidth, modelHeight, modelDepth, initFaceBuffer, initFaceBufferByCube, faces} from './renderer.js';
-import {initBufferModel} from './chokokuTool.js';
+import {model, scene, removeMesh, updateModel, modelWidth, modelHeight, modelDepth, initFaceBuffer, initFaceBufferByCube} from './renderer.js';
+import {groupFace} from './faceGroup.js';
 let modelBuffer;
 
 export function addPreviewMesh() {
@@ -32,7 +32,7 @@ export function unionAddMeshToModel() {
   let modelBSP = new ThreeBSP(modelBuffer);
   let newModelBSP = modelBSP.union(newMeshBSP);
   let newModel = newModelBSP.toMesh(modelBuffer.material);
-  initBufferModel();
+  groupFace(newModel);
   removeMesh(model);
   removeMesh(modelBuffer);
   updateModel(newModel.clone(), true);

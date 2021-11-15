@@ -1,6 +1,6 @@
 import {undoBtn, redoBtn} from './gui.js';
 import {model, updateModel, updateFaceBuffer, faces, faceColors} from './renderer.js';
-import {updateLockObject, lockObject, initBufferModel} from './chokokuTool.js';
+import {updateLockObject, lockObject} from './chokokuTool.js';
 let undoBuffer = [];
 let currentModelId = 0;
 
@@ -29,7 +29,6 @@ function applyModel() {
 
 export function undo() {
   currentModelId--;
-  initBufferModel();
   if (currentModelId === 0) undoBtn.classList.add('disabled');
   redoBtn.classList.remove('disabled');
   applyModel();
