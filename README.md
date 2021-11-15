@@ -3,7 +3,7 @@
 
 Chokoku CAD can create complex shapes with few and simple controls.
 
-https://ittakun.sakura.ne.jp/chokokucad/
+https://chokokucad.itta.dev
 
 <img src="./static/img/sample1.png" height="300"> <img src="./static/img/video.gif" height="300">
 ## Installation
