@@ -198,7 +198,7 @@ input[type="range"]:hover::-moz-slider-thumb {
   background: #bb8600;
 }
 
-input[type="number"], input[type="text"], #model-color-btn {
+input[type="number"], input:not([type]), #model-color-btn {
   padding: 7px 5px;
   border: none;
   background: transparent;
@@ -207,11 +207,11 @@ input[type="number"], input[type="text"], #model-color-btn {
   transition-duration: 0.2s;
 }
 
-input[type="number"]:hover, input[type="text"]:hover, #model-color-btn:hover {
+input[type="number"]:hover, input:not([type]):hover, #model-color-btn:hover {
   border-bottom: 2px solid #949494;
 }
 
-input[type="number"]:focus, input[type="text"]:focus, #model-color-btn:focus {
+input[type="number"]:focus, input:not([type]):focus, #model-color-btn:focus {
   border-bottom: 3px solid #007bff;
   padding-bottom: 6px; /* 下が太くなったときのために１px減らす */
 }
