@@ -11,7 +11,7 @@ export function exportFile(fileName) {
       fileContent = JSON.stringify(arg);
       let a = document.createElement('a');
       a.href = 'data:application/octet-stream,' + encodeURIComponent(fileContent);
-      a.download = `${fileName}.glb`;
+      a.download = `${fileName}.gltf`;
       a.click();
     });
   } else {
