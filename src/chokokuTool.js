@@ -35,68 +35,52 @@ export function setModelFromChokoku() {
   }
   statuses['setpath'].change();
   let pathShape = new THREE.Shape();
-  let originIndex = 0;
-  console.log(chokokuPath)
-  for (let i = 0;i < chokokuPath.curves.length;i++) {
-    // if (pathShape.currentPoint.x === 0 &&
-    //   pathShape.currentPoint.y === 0) continue;
-    let screenVec;
+  let originI = 0;
+  for (let i = 0; i < chokokuPath.curves.length; i++) {
+    let screenVec = toScreenXY(new THREE.Vector2(
+      chokokuPath.curves[i].point1.x, chokokuPath.curves[i].point1.y
+    ));
     if (
       i === 0 ||
-      (chokokuPath.curves[i].point1.x !== chokokuPath.curves[i - 1].point2.x &&
-      chokokuPath.curves[i].point1.y !== chokokuPath.curves[i - 1].point2.y)
-      // pathShape.currentPoint.x === 0 &&
-      // pathShape.currentPoint.y === 0
+      (chokokuPath.curves[i].point1.x === chokokuPath.curves[i - 1].point2.x &&
+      chokokuPath.curves[i].point1.y === chokokuPath.curves[i - 1].point2.y)
     ) {
-      if (i !== 0) {
-        screenVec = toScreenXY(new THREE.Vector2(
-          chokokuPath.curves[0].point1.x, chokokuPath.curves[0].point1.y
-        ));
-        console.log('lineto (last)', screenVec)
+      if (pathShape.currentPoint.x === 0 && pathShape.currentPoint.y === 0) {
+        pathShape.moveTo(
+          screenVec.x * ((screenWidth - 330) / 7) / camera.zoom,
+          screenVec.y * (screenHeight / 7) / camera.zoom
+        );
+      } else {
         pathShape.lineTo(
           screenVec.x * ((screenWidth - 330) / 7) / camera.zoom,
           screenVec.y * (screenHeight / 7) / camera.zoom
         );
       }
-
-      screenVec = toScreenXY(new THREE.Vector2(
-        chokokuPath.curves[originIndex].point1.x, chokokuPath.curves[originIndex].point1.y
-      ));
-      console.log('moveto', screenVec)
-      // console.log(pathShape.currentPoint.y);
-      pathShape.moveTo(
-        screenVec.x * ((screenWidth - 330) / 7) / camera.zoom,
-        screenVec.y * (screenHeight / 7) / camera.zoom
-      );
-      console.log(pathShape.curves);
-
-      originIndex = i;
-      chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
     } else {
+      // moveTo (Three.jsのmoveToはうまく行かなかったので、その代わりにunion)
       screenVec = toScreenXY(new THREE.Vector2(
-        chokokuPath.curves[i].point1.x, chokokuPath.curves[i].point1.y
+        chokokuPath.curves[originI].point1.x, chokokuPath.curves[originI].point1.y
       ));
-      console.log('lineto ', screenVec);
       pathShape.lineTo(
         screenVec.x * ((screenWidth - 330) / 7) / camera.zoom,
         screenVec.y * (screenHeight / 7) / camera.zoom
       );
+      originI = i;
+      chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
       pathShape = new THREE.Shape();
     }
   }
+  // moveTo (Three.jsのmoveToはうまく行かなかったので、その代わりにunion)
   let screenVec = toScreenXY(new THREE.Vector2(
-    chokokuPath.curves[originIndex].point1.x, chokokuPath.curves[originIndex].point1.y
+    chokokuPath.curves[originI].point1.x, chokokuPath.curves[originI].point1.y
   ));
-  console.log('lineto', screenVec)
   pathShape.lineTo(
     screenVec.x * ((screenWidth - 330) / 7) / camera.zoom,
     screenVec.y * (screenHeight / 7) / camera.zoom
   );
-  console.log(pathShape)
-
   chokokuHole = createNewMeshFromPath(chokokuHole, pathShape);
-  let chokokuHoleBSP;
-  let modelBSP;
+  let chokokuHoleBSP; // ThreeBSPインスタンス
+  let modelBSP; // ThreeBSPインスタンス
   // try {
     chokokuHoleBSP = new ThreeBSP(chokokuHole) // ThreeBSPインスタンス
     modelBSP = new ThreeBSP(model) // ThreeBSPインスタンス
@@ -169,12 +153,11 @@ function createNewMeshFromPath(chokokuHole, pathShape) {
       bevelEnabled: false,
       amount: nowPath3dLen
     }),
-    new THREE.MeshStandardMaterial({color: 0, wireframe: true})
+    new THREE.MeshStandardMaterial({color: 0xffffff, wireframe: true})
   );
   nowPath3d.position.copy(camera.position.clone().setLength(nowPath3dLen / 2).negate());
   nowPath3d.lookAt(camera.position);
   chokokuHole = nowPath3d;
-  scene.add(chokokuHole)
   return chokokuHole;
 }
 
