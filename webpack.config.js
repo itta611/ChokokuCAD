@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
@@ -18,7 +18,9 @@ module.exports = {
     alias: {
       'three/OrbitControls': path.join(__dirname, '/node_modules/three/examples/js/controls/OrbitControls.js'),
       'three/GLTFLoader': path.join(__dirname, '/node_modules/three/examples/js/loaders/GLTFLoader.js'),
+      'three/STLLoader': path.join(__dirname, '/node_modules/three/examples/js/loaders/STLLoader.js'),
       'three/GLTFExporter': path.join(__dirname, '/node_modules/three/examples/js/exporters/GLTFExporter.js'),
+      'three/STLExporter': path.join(__dirname, '/node_modules/three/examples/js/exporters/STLExporter.js'),
       'ThreeBSP': path.join(__dirname, '/node_modules/threebsp/index.js')
     }
   },

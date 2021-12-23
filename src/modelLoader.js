@@ -2,7 +2,9 @@ import {model, scene, updateModel, startRender, transformMesh} from './renderer.
 import {hideStartModal} from './gui.js';
 import {statuses} from './status.js';
 import {groupFace} from './faceGroup.js';
+import {i18n} from './i18n.js';
 import 'three/GLTFLoader';
+import 'three/STLLoader';
 
 let uploadModel;
 function onReaderLoad(reader, fileName, isAdd) {
@@ -12,12 +14,12 @@ function onReaderLoad(reader, fileName, isAdd) {
     STLLoader.load(stlBlob, function(modelGeometry) {
       uploadModel = new THREE.Mesh(
         modelGeometry,
-        new THREE.MeshStandardMaterial(model.material)
+        new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 1, vertexColors: THREE.FaceColors})
       );
-      uploadModel.material.vertexColors = false;
       setUploadModel(isAdd)
-    }, function() {}, function() {
+    }, function() {}, function(e) {
       alert(i18n('エラーが発生しました。', 'An error has occurred.'));
+      throw new Error(e);
     });
   } else if (new RegExp('([^\s]+(\\.(glb|gltf))$)', 'i').test(fileName)) {
     let GLTFLoader = new THREE.GLTFLoader();
@@ -26,13 +28,11 @@ function onReaderLoad(reader, fileName, isAdd) {
       uploadModel = arg.scene.children[0];
       if (uploadModel.geometry === undefined) {
         alert(i18n('申し訳ありませんが、このファイルには対応していません。\n代わりにSTL形式でアップロードしてみてください。', 'Sorry, this file format is not supported. \nPlease uploading in STL format instead.'));
-      } else {
-        uploadModel.material.vertexColors = false;
       }
       setUploadModel(isAdd)
-    }, function() {}, function (uploadError) {
+    }, function() {}, function (e) {
       alert(i18n('エラーが発生しました。', 'An error has occurred.'));
-      console.log(uploadError);
+      throw new Error(e);
     })
   } else {
     alert(i18n('ファイル形式が無効です（.glb, .gltf, .stlのみ）', 'The file format is not supported.(.glb, .gltf, .stl are supported.)'));
