@@ -180,10 +180,18 @@
       </div>
     </div>
     <div class="setting-item hidden" id="export-setting">
-      <p data-en="Export model glb(gltf)">モデルをglb(gltf)形式でエクスポートします。</p>
+      <p data-en="Export model">モデルをエクスポートします。</p>
       <div class="param-group">
+        <label for="export-file-format">
+          <span data-en="File type: ">形式：</span>
+          <select id="export-file-format">
+            <option data-en="STL *Color data is not saved." value="stl">STL ※色情報は保存されません</option>
+            <option data-en="GLTF" value="gltf">GLTF</option>
+          </select>
+        </label>
         <label for="export-file-name">
-          <span data-en="File name: ">ファイル名： </span><input type="text" id="export-file-name" value="無題のモデル" data-en="Untitled">
+          <span data-en="File name: ">ファイル名：</span>
+          <input type="text" id="export-file-name" value="無題のモデル" data-en="Untitled">
         </label>
       </div>
       <div class="param-group setting-center"><div class="btn" data-en="Export">エクスポート</div></div>
